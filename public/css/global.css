@@ -44,6 +44,10 @@ body {
     font-family: "Ahrefs";
 }
 
+.children {
+    height: 100vh !important;
+}
+
 input, button, textarea, select {
     font-family: "Ahrefs";
     outline: none;
