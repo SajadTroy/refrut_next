@@ -1,0 +1,39 @@
+.slider-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.slides{
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+}
+
+button.prev {
+    position: absolute;
+    top: 50%;
+    left: 1%;
+    border: none;
+    border-radius: 100%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #2F3039;
+    padding: 0 10px;
+}
+
+button.next {
+    position: absolute;
+    top: 50%;
+    right: 1%;
+    border: none;
+    border-radius: 100%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #2F3039;
+    padding: 0 10px;
+}
+

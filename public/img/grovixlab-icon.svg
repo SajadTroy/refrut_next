@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="1080.000000pt" height="1080.000000pt" viewBox="0 0 1080.000000 1080.000000"
+ preserveAspectRatio="xMidYMid meet">
+  <!-- Set the background color to #009cff -->
+  <rect width="100%" height="100%" fill="#009cff"/>
+  <!-- Apply the color overlay #001827 to the path group -->
+  <g transform="translate(0.000000,1080.000000) scale(0.100000,-0.100000)"
+    fill="#001827" stroke="none">
+    <path d="M5068 8970 c-57 -10 -154 -53 -213 -95 -57 -40 -2591 -2562 -2651
+    -2637 -24 -32 -57 -83 -72 -115 l-27 -58 0 -1420 0 -1420 705 0 705 0 5 -690
+    5 -690 1325 0 c1213 0 1331 1 1398 17 96 22 189 69 260 131 147 127 2262 2224
+    2262 2242 0 5 -422 432 -938 948 l-937 937 -538 -538 c-295 -295 -537 -542
+    -537 -547 0 -5 399 -409 887 -897 l888 -888 -1551 0 c-853 0 -1767 -3 -2032
+    -7 l-482 -6 0 2059 c0 1200 4 2075 10 2098 12 56 39 87 96 116 l49 25 2048 3
+    2047 2 0 714 0 713 -37 7 c-56 9 -2620 5 -2675 -4z"/>
+  </g>
+</svg>

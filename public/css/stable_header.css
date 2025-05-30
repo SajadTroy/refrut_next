@@ -1,0 +1,309 @@
+.header-container {
+    width: 100vw;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color: transparent;
+    border: none;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+.header-container.scrolled {
+    background-color: #fff;
+    border-bottom: 1px solid #efefef;
+}
+
+/* Desktop Header */
+.header-desktop .header-left {
+    width: 260px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 45px;
+}
+
+.header-desktop .header-left a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.header-desktop .header-left a img {
+    width: 120px;
+}
+
+.header-desktop .header-right {
+    width: 260px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 100px;
+}
+
+.header-desktop .header-center {
+    width: calc(100% - 520px);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 100px;
+}
+
+.header-desktop .header-center nav {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-desktop .header-center nav a {
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0 15px;
+}
+
+.header-desktop.scrolled .header-center nav a {
+    color: #000;
+}
+
+.header-desktop .header-center nav a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.header-desktop.scrolled .header-center nav a::after {
+    background-color: #000;
+}
+
+.header-desktop .header-center nav a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.header-desktop .header-right a {
+    width: 100px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: transparent;
+    text-decoration: none;
+    border-radius: 10000px;
+    border: 1px solid #fff;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    z-index: 1;
+    font-size: 14px;
+}
+
+.header-desktop .header-right a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    /* White background for transparent header */
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.header-desktop .header-right a:hover::before {
+    left: 0;
+    /* Slide white background in */
+}
+
+.header-desktop .header-right a:hover {
+    color: #000;
+    /* Text turns black */
+}
+
+.header-desktop.scrolled .header-right a {
+    color: #fff;
+    background: #000;
+    border: 1px solid #000;
+    transition: color 0.3s ease;
+}
+
+.header-desktop.scrolled .header-right a::before {
+    background: #fff;
+    /* White background for scrolled header */
+}
+
+.header-desktop.scrolled .header-right a:hover::before {
+    left: 0;
+}
+
+.header-desktop.scrolled .header-right a:hover {
+    color: #000;
+}
+
+/* Mobile Header */
+.header-mobile .header-left {
+    width: 170px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 20px;
+}
+
+.header-mobile .header-left a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-mobile .header-left a img {
+    width: 125px;
+}
+
+.header-mobile .header-right {
+    width: calc(100% - 170px);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 20px;
+}
+
+.header-mobile .header-right button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+}
+
+.header-mobile .header-right button svg {
+    fill: #fff;
+}
+
+.header-mobile.scrolled .header-right button svg {
+    fill: #000;
+}
+
+/* Nav Drawer */
+.nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #fff;
+    border-left: 1px solid #efefef;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.nav-drawer.open {
+    transform: translateX(0);
+}
+
+.nav-drawer a {
+    text-decoration: none;
+    color: #000;
+    padding: 15px 0;
+    font-size: 18px;
+    display: block;
+    border-bottom: 1px solid #efefef;
+}
+
+.nav-drawer-close {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.menu_line {
+    width: 30px;
+    height: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu_line .line {
+    width: 30px;
+    height: 2px;
+    background-color: #000;
+}
+
+.menu_cross_line {
+    width: 30px;
+    height: 13px;
+    position: relative; /* Allows absolute positioning of child lines */
+}
+
+.menu_cross_line .line {
+    width: 30px;
+    height: 2px;
+    background-color: #000;
+    position: absolute; /* Overlap lines at the center */
+    top: 50%; /* Center vertically */
+    left: 0;
+}
+
+.menu_cross_line .line:nth-child(1) {
+    transform: translateY(-50%) rotate(45deg); /* Center and rotate */
+}
+
+.menu_cross_line .line:nth-child(2) {
+    transform: translateY(-50%) rotate(-45deg); /* Center and rotate */
+}
+
+/* Responsive */
+@media only screen and (min-width: 1024px) {
+    .header-desktop {
+        display: flex;
+    }
+
+    .header-mobile {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .header-desktop {
+        display: none;
+    }
+
+    .header-mobile {
+        display: flex;
+    }
+}

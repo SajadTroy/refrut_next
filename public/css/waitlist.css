@@ -1,0 +1,202 @@
+/* public/css/waitlist.css */
+
+/* Main container styling */
+.main_container {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 30px; /* From your provided CSS, respects header */
+}
+
+/* Intro section styling */
+.waitlist .intro-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Centered for modern balance, unlike your text-align: left */
+    width: 100%;
+    min-height: 90vh; /* Full-screen like carousel */
+    background: #ffffff; /* White background for black-and-white theme */
+    padding: 2rem 0rem; /* Balanced padding for mobile, added side padding */
+    box-sizing: border-box;
+}
+
+/* Waitlist heading */
+.waitlist .waitlist-heading {
+    font-size: 2.5rem; /* Large heading for mobile */
+    font-weight: 700; /* Bold for emphasis */
+    color: #000000; /* Black text */
+    margin: 0 0 0.5rem 0;
+    max-width: 90%;
+    width: 600px;
+}
+
+/* Waitlist subheading */
+.waitlist .waitlist-subheading {
+    font-size: 1.25rem; /* Smaller than heading for hierarchy */
+    font-weight: 400; /* Lighter for readability */
+    color: #000000; /* Black text */
+    max-width: 90%;
+    width: 600px;
+    margin: 0 0 2rem 0;
+    line-height: 1.6;
+}
+
+/* Waitlist form container */
+.waitlist .waitlist_form {
+    max-width: 90%;
+    width: 600px;
+    padding: 0 1rem; /* Side padding for mobile */
+}
+
+/* Form styling */
+.waitlist .waitlist_form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between form groups */
+}
+
+/* Form group styling */
+.waitlist .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Left-aligned labels and inputs for clarity */
+}
+
+/* Labels */
+.waitlist .form-group label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000000; /* Black text */
+    margin-bottom: 0.5rem;
+}
+
+/* Inputs and select */
+.form-group input,
+.form-group select {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #000000; /* Black border for theme */
+    border-radius: 0.25rem;
+    background: #ffffff; /* White background */
+    color: #000000; /* Black text */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #333333; /* Darker border on focus */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow on focus */
+}
+
+/* Placeholder styling */
+.form-group input::placeholder {
+    color: #666666; /* Gray placeholder for contrast */
+}
+
+/* Select styling (to match inputs) */
+.form-group select {
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23000000' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); /* Custom black arrow */
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+}
+
+/* Button styling */
+.form-group button {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff; /* White text */
+    background: #000000; /* Black background */
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.form-group button:hover {
+    background: #333333; /* Darker black on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Submit status styling */
+.submit-status {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    text-align: center;
+}
+
+.submit-status.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.submit-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Fade-in animation for modern effect */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tablet and Desktop Styles */
+@media (min-width: 768px) {
+    .waitlist .intro-section {
+        padding: 3rem 2rem; /* More padding for tablet */
+        min-height: 100vh; /* Full-screen for tablet/desktop */
+    }
+
+    .waitlist-heading {
+        font-size: 3rem; /* Larger heading */
+    }
+
+    .waitlist-subheading {
+        font-size: 1.5rem; /* Larger subheading */
+    }
+
+    .waitlist_form {
+        padding: 0 2rem; /* More side padding */
+    }
+
+    .form-group label {
+        font-size: 1.125rem;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 1.125rem;
+        padding: 1rem 1.25rem;
+    }
+
+    .form-group button {
+        font-size: 1.25rem;
+        padding: 1rem 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .waitlist .intro-section {
+        padding: 4rem 2rem; /* More padding for desktop */
+    }
+
+    .waitlist-heading {
+        font-size: 3.5rem; /* Largest heading */
+    }
+
+    .waitlist-subheading {
+        font-size: 1.75rem; /* Largest subheading */
+    }
+
+    .waitlist_form {
+        max-width: 600px; /* Slightly wider form for desktop */
+    }
+}

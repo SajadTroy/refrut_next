@@ -1,0 +1,97 @@
+/* public/css/about.css */
+
+/* Main container styling */
+.main_container {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 60px; /* Respects header */
+}
+
+/* About section styling */
+.about-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align content to left */
+    text-align: left; /* Left-aligned text */
+    width: 100%;
+    min-height: 90vh; /* Full-screen like carousel */
+    background: #ffffff; /* White background for black-and-white theme */
+    padding: 2rem 1rem; /* 1rem left padding for spacing from edge */
+    box-sizing: border-box;
+}
+
+/* About heading */
+.about-heading {
+    font-size: 2.5rem; /* Large heading for mobile */
+    font-weight: 700; /* Bold for emphasis */
+    color: #000000; /* Black text */
+    max-width: 800px; /* Same width as other texts */
+    width: 100%;
+    margin: 0; /* No extra margin */
+}
+
+/* About subheading */
+.about-subheading {
+    font-size: 1.25rem; /* Smaller than heading */
+    font-weight: 400; /* Lighter for readability */
+    color: #000000; /* Black text */
+    max-width: 800px; /* Same width as other texts */
+    width: 100%;
+    margin: 0 0 2rem 0;
+    line-height: 1.6;
+}
+
+/* About content */
+.about-content {
+    max-width: 800px; /* Same width as other texts */
+    width: 100%;
+    margin: 0; /* No extra padding to align with heading */
+}
+
+/* Content text */
+.about-content p {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #000000; /* Black text */
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+
+/* Tablet and Desktop Styles */
+@media (min-width: 768px) {
+    .about-section {
+        padding: 3rem 2rem; /* More padding for tablet */
+        min-height: 100vh; /* Full-screen */
+    }
+
+    .about-heading {
+        font-size: 3rem; /* Larger heading */
+    }
+
+    .about-subheading {
+        font-size: 1.5rem; /* Larger subheading */
+    }
+
+    .about-content p {
+        font-size: 1.25rem; /* Larger body text */
+    }
+}
+
+@media (min-width: 1024px) {
+    .about-section {
+        padding: 4rem 2rem; /* More padding for desktop */
+    }
+
+    .about-heading {
+        font-size: 3.5rem; /* Largest heading */
+    }
+
+    .about-subheading {
+        font-size: 1.75rem; /* Largest subheading */
+    }
+
+    .about-content p {
+        font-size: 1.375rem; /* Largest body text */
+    }
+}
