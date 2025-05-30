@@ -1,0 +1,79 @@
+/* * {
+    margin: 0 !important;
+    padding: 0 !important;
+} */
+
+.children,
+code {
+    font: 15px/22px arial, sans-serif !important;
+}
+
+.children {
+    background: #fff !important;
+    color: #222 !important;
+    padding: 15px !important;
+}
+
+.children_not {
+    margin: 7% auto 0 !important;
+    max-width: 390px !important;
+    min-height: 180px !important;
+    padding: 30px 0 15px !important;
+}
+
+*>.children_not {
+    background: url("/img/res/attom.png") 100% 5px no-repeat !important;
+    padding-right: 205px !important;
+}
+
+p {
+    margin: 11px 0 22px !important;
+    overflow: hidden !important;
+}
+
+ins {
+    color: #777 !important;
+    text-decoration: none !important;
+}
+
+a img {
+    border: 0 !important;
+}
+
+@media screen and (max-width: 772px) {
+    .children_not {
+        background: none !important;
+        margin-top: 0 !important;
+        max-width: none !important;
+        padding-right: 0 !important;
+    }
+}
+
+#logo {
+    background: url("/img/res/refrut_logo_color_150x54dp.png") no-repeat !important;
+    margin-left: -5px !important;
+}
+
+@media only screen and (min-resolution: 192dpi) {
+    #logo {
+        background: url("/img/res/refrut_logo_color_150x54dp.png") no-repeat 0% 0%/100% 100% !important;
+        -moz-border-image: url("/img/res/refrut_logo_color_150x54dp.png") 0 !important;
+    }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    #logo {
+        background: url("/img/res/refrut_logo_color_150x54dp.png") no-repeat !important;
+        -webkit-background-size: 100% 100% !important;
+    }
+}
+
+#logo {
+    display: inline-block !important;
+    height: 54px !important;
+    width: 150px !important;
+}
+
+.footer {
+    display: none !important;
+}

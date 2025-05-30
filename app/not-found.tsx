@@ -1,27 +1,31 @@
 import '@/public/css/not-found.css';
 
-
 export const metadata = {
-    title: "404 - Page Not Found",
-    description: "The page you're looking for does not exist. Explore our cutting-edge laser beam technology and discover high-speed internet solutions at Piecom.",
-    metadataBase: new URL('https://refrut.com'),
-    keywords: ['Piecom', '404 Error', 'Page Not Found', 'Laser Beam Technology', 'Internet Solutions', 'High-Speed Internet', 'Kerala Startup'],
-    applicationName: 'Piecom',
-    referrer: 'origin-when-cross-origin',
-    openGraph: {
-        images: ['/img/opengraph/404.png'],
-    }
+  title: "404 - Page Not Found",
+  description:" The page you are looking for does not exist or has been moved.",
+  metadataBase: new URL('https://refrut.com'),
+  keywords: ["404", "Page Not Found", "Error", "Not Found", "Refrut"],
+  applicationName: 'Refrut',
+  referrer: 'origin-when-cross-origin',
+  openGraph: {
+    images: ['/img/opengraph/404.png'], // Update with actual image path
+  },
 };
 
-
-export default function Custom404() {
-    return (
-        <>
-            <div className="notfound-container">
-                <img src="/img/icons/graphics/error.png" alt="Not Found Image" className="notfound-image" />
-                <h1 className="notfound-title">404 - Not Found</h1>
-                <p className="notfound-message">The page you are looking for doesn’t exist or an error occurred.</p>
-            </div>
-        </>
-    )
+export default function Custom404({ status = '404', message = 'The requested page was not found on this server' }) {
+  return (
+    <div className="children_not">
+      <div data-body>
+        <a href="/" aria-label="GrovixLab">
+          <span className="logo" id='logo' />
+        </a>
+        <p>
+          <b>{status}.</b> <ins>That's an error.</ins>
+        </p>
+        <p>
+          {message}. <ins>That's all we know.</ins>
+        </p>
+      </div>
+    </div>
+  );
 }

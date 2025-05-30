@@ -15,6 +15,7 @@ export const metadata = {
 export default function Maintenance() {
   return (
     <>
+    <h1>hi</h1>
     </>
   )
 }

@@ -1,4 +1,5 @@
 import '@/public/css/global.css';
+import Navigation from '@/components/Navigation';
 
 export default function RootLayout({
   children,
@@ -13,7 +14,9 @@ export default function RootLayout({
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'></link>
       </head>
       <body>
-        {children}
+        <Navigation>
+          {children}
+        </Navigation>
       </body>
     </html>
   );
