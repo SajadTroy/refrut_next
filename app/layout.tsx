@@ -1,30 +1,11 @@
+// app/layout.tsx
 'use client';
 import '@/public/css/global.css';
-import Navigation from '@/components/Navigation';
-import { ReactNode, isValidElement } from 'react';
+import { ReactNode } from 'react';
+import { AppProvider } from '@/app/404-context';
+import ClientLayout from '@/app/client-layout';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  let is404 = false;
-
-  try {
-    const props: any = isValidElement(children) ? children.props : null;
-    const notFoundElements = props?.notFound;
-
-    if (Array.isArray(notFoundElements)) {
-      for (const element of notFoundElements) {
-        if (
-          typeof element === 'object' &&
-          element?._owner?.name === 'Custom404'
-        ) {
-          is404 = true;
-          break;
-        }
-      }
-    }
-  } catch (err) {
-    console.error('Error detecting 404:', err);
-  }
-
   return (
     <html lang="en">
       <head>
@@ -36,9 +17,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
-        <div className="children">
-          {is404 ? children : <Navigation>{children}</Navigation>}
-        </div>
+        <AppProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </AppProvider>
       </body>
     </html>
   );

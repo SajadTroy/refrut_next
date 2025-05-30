@@ -1,18 +1,17 @@
-import '@/public/css/not-found.css';
+'use client';
 
-export const metadata = {
-  title: "404 - Page Not Found",
-  description:" The page you are looking for does not exist or has been moved.",
-  metadataBase: new URL('https://refrut.com'),
-  keywords: ["404", "Page Not Found", "Error", "Not Found", "Refrut"],
-  applicationName: 'Refrut',
-  referrer: 'origin-when-cross-origin',
-  openGraph: {
-    images: ['/img/opengraph/404.png'], // Update with actual image path
-  },
-};
+import '@/public/css/not-found.css';
+import { useEffect } from 'react';
+import { useAppContext } from '@/app/404-context';
 
 export default function Custom404({ status = '404', message = 'The requested page was not found on this server' }) {
+  const { setIs404 } = useAppContext();
+
+  useEffect(() => {
+    setIs404(true);
+    return () => setIs404(false);
+  }, [setIs404]);
+  
   return (
     <div className="children_not">
       <div data-body>
