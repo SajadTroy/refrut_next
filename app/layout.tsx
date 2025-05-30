@@ -1,8 +1,4 @@
 import '@/public/css/global.css';
-import '@/public/css/header.css';
-import Footer from '@/components/footer';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { Analytics } from "@vercel/analytics/react"
 
 export default function RootLayout({
   children,
@@ -18,10 +14,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        <Footer />
       </body>
-      <GoogleAnalytics gaId="G-03PLFCM4J1" />
-      <Analytics />
     </html>
   );
 }
