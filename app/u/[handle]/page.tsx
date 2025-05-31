@@ -1,14 +1,13 @@
 import '@/styles/Profile.css';
 import Link from 'next/link';
-import { PageProps } from "next";
 
-// type Props = {
-//   params: {
-//     handle: string;
-//   };
-// };
+type Props = {
+  params: {
+    handle: string;
+  };
+};
 
-export async function generateMetadata({ params }: PageProps<{ handle: string }>) {
+export async function generateMetadata({ params }: Props) {
   const { handle } = await params;
 
   return {
@@ -27,7 +26,7 @@ export async function generateMetadata({ params }: PageProps<{ handle: string }>
   };
 }
 
-export default async function UserProfile({ params }: PageProps<{ handle: string }>) {
+export default async function UserProfile({ params }: Props) {
   const { handle } = await params;
 
   return (
