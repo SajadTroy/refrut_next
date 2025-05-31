@@ -1,11 +1,11 @@
 import '@/styles/Profile.css';
 import Link from 'next/link';
 
-type Props = {
-  params: {
-    handle: string;
-  };
-};
+// type Props = {
+//   params: {
+//     handle: string;
+//   };
+// };
 
 export async function generateMetadata(
   { params }: { params: { handle: string } }) {
@@ -27,7 +27,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function UserProfile({ params }: Props) {
+export default async function UserProfile({ params }: { params: { handle: string } }): Promise<JSX.Element> {
   const handle = params.handle;
 
   return (
