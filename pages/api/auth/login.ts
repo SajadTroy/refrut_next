@@ -33,4 +33,4 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     console.error("Login error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+} 
