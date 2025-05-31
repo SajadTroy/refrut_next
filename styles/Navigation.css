@@ -62,9 +62,26 @@
     background-color: #f0f0f0;
 }
 
+.container .desktop_nav_container .left_section .menu_items .nav_item.active {
+    background-color: #e0e0e0; /* Example active background color */
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item.active a {
+    color: #000; /* Darker text color for active item */
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item.active .nav_icon svg {
+    stroke: #000; /* Darker icon color for active item */
+}
+
 .container .desktop_nav_container .left_section .menu_items .nav_item.red span, 
 .container .desktop_nav_container .left_section .menu_items .nav_item.red svg {
     color: #d91824;
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item.red.active span,
+.container .desktop_nav_container .left_section .menu_items .nav_item.red.active svg {
+    color: #b1121c; /* Slightly darker red for active login item */
 }
 
 .container .desktop_nav_container .left_section .menu_items .nav_item a {
@@ -96,7 +113,6 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    font-weight: 500;
 }
 
 .container .desktop_nav_container .left_section .menu_items .nav_item a .nav_text span {
