@@ -259,6 +259,12 @@
     background-color: #fff;
 }
 
+@media (max-width: 1024px) {
+    .desktop_nav_container .right_section {
+        display: none !important;
+    }
+}
+
 /* Hide desktop_nav_container at 768px and below */
 @media (max-width: 768px) {
     .desktop_nav_container {
