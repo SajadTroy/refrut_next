@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Params }) {
     openGraph: {
       title: `@${handle} - Refrut`,
       description: `View @${handle}'s profile and their shared thoughts on Refrut.`,
-      url: `https://refrut.com/@${handle}`,
+      url: `https://refrut.com/u/${handle}`,
       images: [`/img/opengraph/${handle}.png`], // optionally dynamic
     },
   };
