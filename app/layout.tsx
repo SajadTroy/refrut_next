@@ -1,6 +1,6 @@
 // app/layout.tsx
 'use client';
-import '@/public/css/global.css';
+import '@/styles/global.css';
 import { ReactNode } from 'react';
 import { AppProvider } from '@/app/404-context';
 import ClientLayout from '@/app/client-layout';

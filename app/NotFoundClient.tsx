@@ -1,5 +1,5 @@
 'use client';
-import '@/public/css/not-found.css';
+import '@/styles/not-found.css';
 import { useEffect } from 'react';
 import { useAppContext } from '@/app/404-context';
 

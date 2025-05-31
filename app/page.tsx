@@ -1,4 +1,4 @@
-import '@/public/css/home.css';
+import '@/styles/home.css';
 
 export const metadata = {
   title: "Refrut",
