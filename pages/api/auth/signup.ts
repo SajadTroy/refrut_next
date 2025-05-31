@@ -5,15 +5,26 @@ import generate from 'generate-password';
 import bcrypt from "bcryptjs";
 import nodemailer from 'nodemailer';
 
-export const sendEmail = async (user: any) => {
-  const expiry = new Date(user.verificationTokenExpiry);
-  const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
+export interface User {
+    name: string;
+    email: string;
+    verificationToken: string;
+    verificationTokenExpiry: Date;
+    dateOfBirth: Date;
+    handle: string;
+    password: string;
+    _id: string;
+}
 
-  const verificationLink = `http://localhost:3000/verify/u/${user.verificationToken}`;
-  const message = `Hello ${user.name}, your account was created successfully. You need to verify your account using this link: <a href="${verificationLink}">${verificationLink}</a>. This link will expire on: ${formattedExpiry}.`;
+export const sendEmail = async (user: User) => {
+    const expiry = new Date(user.verificationTokenExpiry);
+    const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
-  // HTML email template
-  const htmlTemplate = `
+    const verificationLink = `http://localhost:3000/verify/u/${user.verificationToken}`;
+    const message = `Hello ${user.name}, your account was created successfully. You need to verify your account using this link: <a href="${verificationLink}">${verificationLink}</a>. This link will expire on: ${formattedExpiry}.`;
+
+    // HTML email template
+    const htmlTemplate = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -48,28 +59,28 @@ export const sendEmail = async (user: any) => {
     </html>
   `;
 
-  try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: Number(process.env.EMAIL_PORT),
-      secure: true, // true for 465, false for 587
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    try {
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: Number(process.env.EMAIL_PORT),
+            secure: true, // true for 465, false for 587
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
 
-    await transporter.sendMail({
-      from: `"Refrut" <${process.env.EMAIL_USER}>`,
-      to: user.email,
-      subject: 'Account Verification',
-      html: htmlTemplate,
-    });
+        await transporter.sendMail({
+            from: `"Refrut" <${process.env.EMAIL_USER}>`,
+            to: user.email,
+            subject: 'Account Verification',
+            html: htmlTemplate,
+        });
 
-    console.log('Email sent successfully to', user.email);
-  } catch (error) {
-    console.error('Error sending email:', error);
-  }
+        console.log('Email sent successfully to', user.email);
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
 };
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
