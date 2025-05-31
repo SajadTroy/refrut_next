@@ -9,8 +9,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params }: Props
-): Promise<Metadata> {
+  { params }: { params: { handle: string } }) {
   const handle = params.handle;
 
   return {
