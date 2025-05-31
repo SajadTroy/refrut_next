@@ -2,11 +2,11 @@ import '@/styles/Profile.css';
 import Link from 'next/link';
 import { PageProps } from "next";
 
-type Props = {
-  params: {
-    handle: string;
-  };
-};
+// type Props = {
+//   params: {
+//     handle: string;
+//   };
+// };
 
 export async function generateMetadata({ params }: PageProps<{ handle: string }>) {
   const { handle } = await params;
