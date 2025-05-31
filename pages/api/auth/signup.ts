@@ -22,7 +22,7 @@ export const sendEmail = async (user: User) => {
     const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
     const verificationLink = `${user.baseUrl}/verify/${user.verificationToken}`;
-    const message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <a href="${verificationLink}">${verificationLink}</a>. This link will expire on: ${formattedExpiry}.`;
+    const message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${verificationLink}">${verificationLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
 
     // HTML email template
     const htmlTemplate = `
@@ -46,7 +46,7 @@ export const sendEmail = async (user: User) => {
                 <td class="content">
                     <p>${message}</p>
                     <p>This email has been automatically generated. If you find any attachments or links, please avoid them.</p>
-                    <p>Warm regards,<br>Team Refrut</p>
+                    <p>Warm regards,<br><strong>Team Refrut</strong></p>
                 </td>
             </tr>
             <tr>
