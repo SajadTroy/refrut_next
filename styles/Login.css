@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
     background-color: #fff;
 }
 
@@ -11,6 +10,7 @@
     width: 300px;
     display: flex;
     flex-direction: column;
+    margin-top: 100px;
 }
 
 .login_container form .form_group {
