@@ -212,8 +212,8 @@
 }
 
 .container .mobile_nav_container .nav_container .nav_item a .nav_icon svg {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
 }
 
 .container .mobile_nav_container .nav_container .nav_item a .nav_text {
@@ -224,7 +224,7 @@
 }
 
 .container .mobile_nav_container .nav_container .nav_item a .nav_text span {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 /* Style for the 'Login' item in mobile nav */
