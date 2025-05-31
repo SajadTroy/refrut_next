@@ -27,6 +27,15 @@
     border-right:  1px solid #e5e5e5;
 }
 
+.container .desktop_nav_container .right_section {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0px 0px 0px;
+    border-left:  1px solid #e5e5e5;
+}
+
 .container .desktop_nav_container .left_section .header_logo {
     width: 100%;
     height: 60px;
