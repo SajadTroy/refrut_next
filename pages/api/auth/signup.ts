@@ -3,25 +3,73 @@ import User from "@/models/User";
 import type { NextApiRequest, NextApiResponse } from 'next';
 import generate from 'generate-password';
 import bcrypt from "bcryptjs";
-import emailjs from '@emailjs/browser';
+import nodemailer from 'nodemailer';
 
-emailjs.init(process.env.PUBLIC_KEY!);
+export const sendEmail = async (user: any) => {
+  const expiry = new Date(user.verificationTokenExpiry);
+  const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
-const sendEmail = async (user: any) => {
-    const expiry = new Date(user.verificationTokenExpiry);
-    const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
-    const templateParams = {
-        to_email: user.email,
-        to_name: user.name,
-        subject: "Account Verification",
-        message: `Hello ${user.name}, your account was created successfully. You need to verify your account using this link: http://localhost:3000/verify/u/${user.verificationToken}. This link will expire on: ${formattedExpiry}.`
-    };
-    try {
-        const result = await emailjs.send('service_tdmc8o6', 'template_15fyf7p', templateParams);
-        console.log('Email sent successfully:', result);
-    } catch (error) {
-        console.error('Error sending email:', error);
-    }
+  const verificationLink = `http://localhost:3000/verify/u/${user.verificationToken}`;
+  const message = `Hello ${user.name}, your account was created successfully. You need to verify your account using this link: <a href="${verificationLink}">${verificationLink}</a>. This link will expire on: ${formattedExpiry}.`;
+
+  // HTML email template
+  const htmlTemplate = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; }
+            .container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #f5f5f5; padding: 20px; }
+            .content { font-size: 16px; color: #333333; line-height: 1.6; text-align: left; }
+            .content p { margin: 10px 0; }
+            .footer { text-align: center; font-size: 12px; color: #888888; padding: 20px; }
+            .footer img { margin-top: 10px; height: 20px; }
+        </style>
+    </head>
+    <body>
+        <table class="container" align="center">
+            <tr>
+                <td class="content">
+                    <p>${message}</p>
+                    <p>This email has been automatically generated. If you find any attachments or links, please avoid them.</p>
+                    <p>Warm regards,<br>Team Refrut</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <img src="https://i.postimg.cc/tgZ4LQdn/logo.png" alt="Piecom Logo">
+                    <p>© Refrut. All rights reserved.</p>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+  `;
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: Number(process.env.EMAIL_PORT),
+      secure: true, // true for 465, false for 587
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: `"Refrut" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: 'Account Verification',
+      html: htmlTemplate,
+    });
+
+    console.log('Email sent successfully to', user.email);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 };
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
