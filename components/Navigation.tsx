@@ -129,7 +129,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
             </a>
           </div>
           <div className={`nav_item red ${pathname === '/login' ? 'active' : ''}`}>
-            <a href="/login">
+            <a href="/auth/login.rf">
               <div className="nav_icon">
                 <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7' /><path d='M13 15.5 9.5 12 13 8.5m6.5 3.496h-10' /></svg>
               </div>
