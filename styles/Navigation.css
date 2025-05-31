@@ -66,14 +66,6 @@
     background-color: #f0f0f0; /* Example active background color */
 }
 
-.container .desktop_nav_container .left_section .menu_items .nav_item.active a {
-    color: #000; /* Darker text color for active item */
-}
-
-.container .desktop_nav_container .left_section .menu_items .nav_item.active .nav_icon svg {
-    stroke: #000; /* Darker icon color for active item */
-}
-
 .container .desktop_nav_container .left_section .menu_items .nav_item.red span, 
 .container .desktop_nav_container .left_section .menu_items .nav_item.red svg {
     color: #d91824;
