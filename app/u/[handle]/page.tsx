@@ -1,4 +1,5 @@
 import '@/styles/Profile.css';
+import Link from 'next/link';
 
 type Props = {
   params: {
@@ -73,10 +74,10 @@ export default function UserProfile({ params }: Props) {
       </div>
       <div className="tabs">
         <div className="tab active">
-          <a href={`/u/${handle}`}>Posts</a>
+          <Link href={`/u/${handle}`}>Posts</Link>
         </div>
         <div className="tab">
-          <a href={`/u/${handle}/replies`}>Replies</a>
+          <Link href={`/u/${handle}/replies`}>Replies</Link>
         </div>
       </div>
     </div>
