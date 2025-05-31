@@ -1,10 +1,8 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    // Disable a specific rule
-    "no-console": "off",          // Allow console statements
-    "react/prop-types": "off",    // Disable prop-types validation
-    "no-unused-vars": "warn",     // Change to warning instead of error
-    // Add more rules as needed
+    "no-console": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": "warn"
   }
 }
