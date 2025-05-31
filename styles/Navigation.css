@@ -63,7 +63,7 @@
 }
 
 .container .desktop_nav_container .left_section .menu_items .nav_item.active {
-    background-color: #e0e0e0; /* Example active background color */
+    background-color: #f0f0f0; /* Example active background color */
 }
 
 .container .desktop_nav_container .left_section .menu_items .nav_item.active a {
