@@ -39,7 +39,7 @@ export default function LoginClient() {
                     <button type="submit" className="btn btn_primary">Sign Up</button>
                 </div>
                 <div className="form_text">
-                    <p>Already have an account? <a href="/auth/login">Login</a></p>
+                    <p>Already have an account? <a href="/auth/login.rf">Login</a></p>
                 </div>
             </form>
         </div>
