@@ -1,0 +1,90 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+.container .desktop_nav_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #ffffff;
+}
+
+.container .desktop_nav_container .left_section {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.container .desktop_nav_container .left_section .header_logo {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .desktop_nav_container .left_section .header_logo img {
+    max-width: 130px;
+    height: auto;
+}
+
+.container .desktop_nav_container .left_section .menu_items {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item {
+    height: 40px;
+    width: 130px;
+    display: flex;
+    flex-direction: row;
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item a {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: row;
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item a .nav_icon {
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item a .nav_text {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-weight: 500;
+}
+
+.container .desktop_nav_container .content_section {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+}
