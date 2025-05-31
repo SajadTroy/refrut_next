@@ -157,7 +157,16 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 verificationTokenExpiry
             });
             await newUser.save();
-            sendEmail(newUser);
+            sendEmail({
+                name: fullName,
+                email,
+                verificationToken,
+                verificationTokenExpiry,
+                dateOfBirth: dob,
+                handle,
+                password: hashedPassword,
+                _id: newUser._id.toString()
+            });
             return res.status(201).json({ message: "User registered successfully", userId: newUser._id });
         } else {
             inactiveUser.name = fullName;
@@ -167,7 +176,16 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
             inactiveUser.verificationToken = verificationToken;
             inactiveUser.verificationTokenExpiry = verificationTokenExpiry;
             await inactiveUser.save();
-            sendEmail(inactiveUser);
+            sendEmail({
+                name: fullName,
+                email,
+                verificationToken,
+                verificationTokenExpiry,
+                dateOfBirth: dob,
+                handle,
+                password: hashedPassword,
+                _id: inactiveUser._id.toString()
+            });
             return res.status(201).json({ message: "User registered successfully", userId: inactiveUser._id });
         }
     } catch (error) {
