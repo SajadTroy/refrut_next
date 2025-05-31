@@ -8,7 +8,7 @@ type Props = {
   };
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: PageProps<{ handle: string }>) {
   const { handle } = await params;
 
   return {
