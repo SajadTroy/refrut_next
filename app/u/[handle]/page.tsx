@@ -8,7 +8,7 @@ import Link from 'next/link';
 // };
 
 export async function generateMetadata(
-  { params }: { params: { handle: string } }) {
+  { params }: { params: { handle: string } }): Promise<any> {
   const handle = params.handle;
 
   return {
@@ -27,7 +27,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function UserProfile({ params }: { params: { handle: string } }): Promise<JSX.Element> {
+export default async function UserProfile({ params }: { params: { handle: string } }): Promise<any> {
   const handle = params.handle;
 
   return (
