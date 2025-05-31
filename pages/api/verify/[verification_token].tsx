@@ -19,7 +19,7 @@ export const sendEmail = async (user: User) => {
     const expiry = new Date(user.resetPasswordTokenExpiry);
     const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
-    const resetLink = `${user.baseUrl}/reset/${user.resetPasswordToken}`;
+    const resetLink = `${user.baseUrl}/api/reset/${user.resetPasswordToken}`;
     const message = `Hello <strong>${user.name}</strong>,<br> your account has been created successfully. This is the URL to reset your password: <strong><a href="${resetLink}">${resetLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
 
     // HTML email template

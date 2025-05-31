@@ -21,7 +21,7 @@ export const sendEmail = async (user: User) => {
     const expiry = new Date(user.verificationTokenExpiry);
     const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
-    const verificationLink = `${user.baseUrl}/verify/${user.verificationToken}`;
+    const verificationLink = `${user.baseUrl}/api/verify/${user.verificationToken}`;
     const message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${verificationLink}">${verificationLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
 
     // HTML email template
