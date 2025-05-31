@@ -72,7 +72,7 @@ export const sendEmail = async (user: User) => {
         await transporter.sendMail({
             from: `"Refrut" <${process.env.EMAIL_USER}>`,
             to: user.email,
-            subject: 'Account Verification',
+            subject: 'Account Created Successfully',
             html: htmlTemplate,
         });
 
