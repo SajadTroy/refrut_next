@@ -86,6 +86,9 @@ export const sendEmail = async (user: User) => {
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     try {
+        if (req.method !== "POST") {
+            return res.status(405).json({ error: "Method not allowed" });
+        }
         await connectDB();
         const { fullName, email, dateOfBirth } = await req.body;
 
