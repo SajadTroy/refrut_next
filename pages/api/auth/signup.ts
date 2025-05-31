@@ -167,7 +167,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 password: hashedPassword,
                 _id: newUser._id.toString()
             });
-            return res.status(201).json({ message: "User registered successfully", userId: newUser._id });
+            return res.redirect('/auth/login.rf');
         } else {
             inactiveUser.name = fullName;
             inactiveUser.password = hashedPassword;
@@ -186,7 +186,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 password: hashedPassword,
                 _id: inactiveUser._id.toString()
             });
-            return res.status(201).json({ message: "User registered successfully", userId: inactiveUser._id });
+            return res.redirect('/auth/login.rf');
         }
     } catch (error) {
         console.error("Signup error:", error);
