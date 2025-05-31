@@ -177,6 +177,8 @@
 .posts_container .post .post_header .user_info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .posts_container .post .post_header .user_info h1 {
