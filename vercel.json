@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/jobs/clear-expired-tokens",
-      "schedule": "0 * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }
