@@ -147,9 +147,9 @@
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 10px;
+    border-bottom: #e5e5e5 solid 1px;
 }
 
 .posts_container .post .post_header {
