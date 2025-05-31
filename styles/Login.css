@@ -33,13 +33,13 @@
 }
 
 .login_container form .form_group input {
-    padding: 10px;
+    padding: 13px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 .login_container form .form_group button {
-    padding: 10px;
+    padding: 13px;
     background-color: #040404;
     color: white;
     border: none;
