@@ -225,10 +225,21 @@
     justify-content: center;
 }
 
+.posts_container .post .post_actions button a {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .posts_container .post .post_actions button svg {
     margin-right: 5px;
 }
 
-.posts_container .post .post_actions button:hover {
+.posts_container .post .post_actions button.red {
     color: red;
 }

@@ -97,9 +97,9 @@ export default async function UserProfile({ params }: { params: Params }) {
               <span className="post_author_handle">@{handle}</span>
             </div>
           </Link>
-          <div className="post_content">
+          <Link href={`/post/abcd`} className="post_content">
             <p>This is a sample post content from @{handle}. It can be about anything interesting or engaging.</p>
-          </div>
+          </Link>
           <div className="post_details">
             <span className="post_time">Posted 2 hours ago</span>
             <span className="location">India</span>
@@ -110,10 +110,12 @@ export default async function UserProfile({ params }: { params: Params }) {
               <span className="like_count">10</span>
             </button>
             <button className="comment_button">
-              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M3.464 16.828C2 15.657 2 14.771 2 11s0-5.657 1.464-6.828C4.93 3 7.286 3 12 3s7.071 0 8.535 1.172S22 7.229 22 11s0 4.657-1.465 5.828C19.072 18 16.714 18 12 18c-2.51 0-3.8 1.738-6 3v-3.212c-1.094-.163-1.899-.45-2.536-.96' /></svg>
-              <span className="comment_count">5</span>
+              <Link href={`/post/abcd`}>
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M3.464 16.828C2 15.657 2 14.771 2 11s0-5.657 1.464-6.828C4.93 3 7.286 3 12 3s7.071 0 8.535 1.172S22 7.229 22 11s0 4.657-1.465 5.828C19.072 18 16.714 18 12 18c-2.51 0-3.8 1.738-6 3v-3.212c-1.094-.163-1.899-.45-2.536-.96' /></svg>
+                <span className="comment_count">5</span>
+              </Link>
             </button>
-            <button className="flag_button">
+            <button className="flag_button red">
               <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='m4.75 14 13.78-4.04c.96-.282.96-1.638 0-1.92L4.75 4m0 10V4m0 10v7m0-17V3' /></svg>
             </button>
           </div>
