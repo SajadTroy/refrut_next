@@ -140,9 +140,9 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
         const handle = email.split('@')[0] + generate.generate({
             length: 4,
             numbers: true,
-            symbols: true,
-            uppercase: true,
-            lowercase: true
+            symbols: false,
+            uppercase: false,
+            lowercase: false
         });
         console.log("Generated handle: @", handle);
         const hashedPassword = await bcrypt.hash(password, 10);
