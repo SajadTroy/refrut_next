@@ -157,7 +157,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 verificationTokenExpiry
             });
             await newUser.save();
-            sendEmail({
+            await sendEmail({
                 name: fullName,
                 email,
                 verificationToken,
@@ -176,7 +176,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
             inactiveUser.verificationToken = verificationToken;
             inactiveUser.verificationTokenExpiry = verificationTokenExpiry;
             await inactiveUser.save();
-            sendEmail({
+            await sendEmail({
                 name: fullName,
                 email,
                 verificationToken,
