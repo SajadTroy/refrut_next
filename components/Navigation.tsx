@@ -84,7 +84,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
             </a>
           </div>
         </div>
-        <div className="mobile_content_section">
+        <div className="content_section">
           {children}
         </div>
         <div className="nav_container">
