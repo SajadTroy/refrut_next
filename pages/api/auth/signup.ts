@@ -14,14 +14,15 @@ export interface User {
     handle: string;
     password: string;
     _id: string;
+    baseUrl: string;
 }
 
 export const sendEmail = async (user: User) => {
     const expiry = new Date(user.verificationTokenExpiry);
     const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
-    const verificationLink = `http://localhost:3000/verify/u/${user.verificationToken}`;
-    const message = `Hello ${user.name}, your account was created successfully. You need to verify your account using this link: <a href="${verificationLink}">${verificationLink}</a>. This link will expire on: ${formattedExpiry}.`;
+    const verificationLink = `${user.baseUrl}/verify/u/${user.verificationToken}`;
+    const message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <a href="${verificationLink}">${verificationLink}</a>. This link will expire on: ${formattedExpiry}.`;
 
     // HTML email template
     const htmlTemplate = `
@@ -87,6 +88,12 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     try {
         await connectDB();
         const { fullName, email, dateOfBirth } = await req.body;
+
+        const protocol = req.headers['x-forwarded-proto'] || 'http';
+        const host = req.headers.host;
+        const baseUrl = `${protocol}://${host}`;
+        console.log("Base URL:", baseUrl);
+
         const password = generate.generate({
             length: 10,
             numbers: true,
@@ -165,7 +172,8 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 dateOfBirth: dob,
                 handle,
                 password: hashedPassword,
-                _id: newUser._id.toString()
+                _id: newUser._id.toString(),
+                baseUrl
             });
             return res.redirect('/auth/login.rf');
         } else {
@@ -184,7 +192,8 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 dateOfBirth: dob,
                 handle,
                 password: hashedPassword,
-                _id: inactiveUser._id.toString()
+                _id: inactiveUser._id.toString(),
+                baseUrl
             });
             return res.redirect('/auth/login.rf');
         }
