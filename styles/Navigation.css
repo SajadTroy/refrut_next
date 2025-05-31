@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #fff;
 }
 
 .container .desktop_nav_container {
@@ -22,7 +22,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0px 0px 0px;
+    border-right: #ccc solid 1px;
 }
 
 .container .desktop_nav_container .left_section .header_logo {
@@ -43,14 +44,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .container .desktop_nav_container .left_section .menu_items .nav_item {
-    height: 40px;
-    width: 130px;
+    width: 120px;
     display: flex;
     flex-direction: row;
+    margin-top: 4px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.container .desktop_nav_container .left_section .menu_items .nav_item:hover {
+    background-color: #f0f0f0;
 }
 
 .container .desktop_nav_container .left_section .menu_items .nav_item a {
@@ -70,6 +79,11 @@
     justify-content: start;
 }
 
+.container .desktop_nav_container .left_section .menu_items .nav_item a .nav_icon svg {
+    width: 20px;
+    height: 20px;
+}
+
 .container .desktop_nav_container .left_section .menu_items .nav_item a .nav_text {
     flex: 1;
     height: 100%;
@@ -79,6 +93,10 @@
     font-weight: 500;
 }
 
+.container .desktop_nav_container .left_section .menu_items .nav_item a .nav_text span {
+    font-size: 16px;
+}
+
 .container .desktop_nav_container .content_section {
     flex: 1;
     height: 100%;
@@ -86,5 +104,5 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #e0e0e0;
+    background-color: #fff;
 }
