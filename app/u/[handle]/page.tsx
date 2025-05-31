@@ -1,5 +1,6 @@
 import '@/styles/Profile.css';
 import Link from 'next/link';
+import type { Metadata, ResolvingMetadata } from 'next';
 
 type Props = {
   params: {
@@ -7,7 +8,10 @@ type Props = {
   };
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const handle = params.handle;
 
   return {
