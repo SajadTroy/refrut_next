@@ -1,15 +1,10 @@
 import '@/styles/Profile.css';
 import Link from 'next/link';
 
-// type Props = {
-//   params: {
-//     handle: string;
-//   };
-// };
+type Params = Promise<{ handle: string }>;
 
-export async function generateMetadata(
-  { params }: { params: { handle: string } }): Promise<any> {
-  const handle = params.handle;
+export async function generateMetadata({ params }: { params: Params }) {
+  const { handle } = await params;
 
   return {
     title: `@${handle} - Refrut`,
@@ -27,8 +22,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function UserProfile({ params }: { params: { handle: string } }): Promise<any> {
-  const handle = params.handle;
+export default async function UserProfile({ params }: { params: Params }) {
+  const { handle } = await params;
 
   return (
     <div className="profile-container">
