@@ -68,7 +68,7 @@ export default function UserProfile({ params }: Props) {
           </div>
         </div>
         <div className="profile_button">
-          <button className="follow_button following">Follow @{handle}</button>
+          <button className="follow_button following">Following @{handle}</button>
         </div>
       </div>
       <div className="tabs">
