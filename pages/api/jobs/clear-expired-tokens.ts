@@ -16,25 +16,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const result = await User.updateMany(
       {
-        $or: [
-          { verificationTokenExpiry: { $lt: now } },
-          { resetPasswordTokenExpiry: { $lt: now } },
-        ]
+        verificationTokenExpiry: { $lt: now },
       },
       {
-        $set: {
-          verificationToken: null,
-          verificationTokenExpiry: null,
-          resetPasswordToken: null,
-          resetPasswordTokenExpiry: null,
-        }
+        $set: { verificationToken: null, verificationTokenExpiry: null }
+      }
+    );
+
+    const resetResult = await User.updateMany(
+      {
+        resetPasswordTokenExpiry: { $lt: now },
+      },
+      {
+        $set: { resetPasswordToken: null, resetPasswordTokenExpiry: null }
       }
     );
 
     return res.status(200).json({
       message: "Expired tokens cleared.",
-      matched: result.matchedCount,
-      modified: result.modifiedCount
+      VerificationTokensMatched: result.matchedCount,
+      VerificationTokensModified: result.modifiedCount,
+      ResetTokensMatched: resetResult.matchedCount,
+      ResetTokensModified: resetResult.modifiedCount
     });
 
   } catch (error) {
