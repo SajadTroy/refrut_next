@@ -52,7 +52,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
             <div className={`nav_item ${pathname === '/profile' ? 'active' : ''}`}>
               <a href="/profile">
                 <div className="nav_icon">
-                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0'/><path d='M14.5 9.25a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M17 19.5c-.317-6.187-9.683-6.187-10 0'/></svg>
+                  <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0'/><path d='M14.5 9.25a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M17 19.5c-.317-6.187-9.683-6.187-10 0'/></svg>
                 </div>
                 <div className="nav_text">
                   <span>Profile</span>
