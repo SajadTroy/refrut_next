@@ -3,21 +3,22 @@
 /* Content container */
 .content_container {
     width: 100%;
-    max-width: 600px;
-    /* Centered content for larger screens */
+    max-width: 600px; /* Centered content for larger screens */
     margin: 0 auto;
-    padding: 16px;
+    padding: 16px 8px; /* Reduced side padding for mobile */
     background-color: #fff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box; /* Ensure padding doesn't cause overflow */
 }
 
 /* Posts scroll container */
 .posts_scroll {
     flex: 1;
-    padding: 16px 0;
+    padding: 8px; /* Reduced padding to fit within content_container */
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 /* Individual post */
@@ -25,8 +26,9 @@
     background-color: #ffffff;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
-    margin-bottom: 16px;
-    padding: 16px;
+    margin-bottom: 12px;
+    padding: 12px; /* Reduced padding for better mobile fit */
+    box-sizing: border-box; /* Prevent padding from causing overflow */
 }
 
 /* Top post section (user info) */
@@ -77,8 +79,7 @@
 .user_name .verified svg {
     width: 16px;
     height: 16px;
-    color: #1DA1F2;
-    /* Twitter-like blue for verified badge */
+    color: #1DA1F2; /* Twitter-like blue for verified badge */
 }
 
 .user_name .username {
@@ -88,19 +89,20 @@
 
 /* Post content */
 .post_content {
-    margin: 12px 0;
+    margin: 8px 0; /* Reduced margin for tighter spacing */
 }
 
 .post_content p {
     font-size: 15px;
     color: #333;
     line-height: 1.5;
+    word-break: break-word; /* Prevent text overflow */
 }
 
 /* Post buttons (like, comment, report) */
 .post_buttons {
     display: flex;
-    gap: 24px;
+    gap: 20px; /* Slightly reduced gap for mobile */
 }
 
 .post_button {
@@ -125,29 +127,40 @@
 /* Hover and active states */
 .post_button:hover .icon svg,
 .post_button:hover span {
-    color: #d91824;
-    /* Match red from navigation's login button */
+    color: #d91824; /* Match red from navigation's login button */
 }
 
 .post_button:active .icon svg,
 .post_button:active span {
-    color: #b1121c;
-    /* Darker red for active state */
+    color: #b1121c; /* Darker red for active state */
+}
+
+/* Hide scrollbar but keep scrolling functionality */
+::-webkit-scrollbar {
+    display: none;
+}
+
+.posts_scroll {
+    -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .content_container {
-        padding: 8px;
+        padding: 8px 4px; /* Further reduced padding for mobile */
+        width: 100vw; /* Ensure it stays within viewport */
+        max-width: none; /* Remove max-width on mobile to use full width */
     }
 
-    .top_bar {
-        padding: 8px 12px;
+    .posts_scroll {
+        padding: 4px; /* Minimal padding to avoid edge touching */
     }
 
     .post {
-        padding: 12px;
-        margin-bottom: 12px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px; /* Slightly smaller radius for mobile */
     }
 
     .user_image {
@@ -181,6 +194,10 @@
     }
 }
 
-::-webkit-scrollbar {
-    display: none;
+/* Ensure content fits within navigation's content_section on mobile */
+@media (max-width: 768px) {
+    .content_container {
+        padding-top: 70px; /* Match navigation's mobile padding */
+        padding-bottom: 70px; /* Match navigation's mobile padding */
+    }
 }

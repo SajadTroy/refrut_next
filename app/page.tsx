@@ -27,7 +27,6 @@ export default function Home() {
       likes: 0,
       comments: 0,
     },
-    // Repeat for other posts (simplified for brevity)
     {
       id: 2,
       user: {
