@@ -39,16 +39,6 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
               </a>
             </div>
-            <div className={`nav_item ${pathname === '/trending' ? 'active' : ''}`}>
-              <a href="/trending">
-                <div className="nav_icon">
-                  <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M19.27 16.202A7.81 7.81 0 0 1 12.06 21c-4.313 0-7.81-3.492-7.81-7.8S5.89 7.13 8.455 3c4.806 2.1 4.806 8.4 4.806 8.4s1.579-3.038 4.807-4.5c1.034 3.042 2.43 6.365 1.202 9.302' /><path d='M12 18a5 5 0 0 1-5-5' /></svg>
-                </div>
-                <div className="nav_text">
-                  <span>Trending</span>
-                </div>
-              </a>
-            </div>
             <div className={`nav_item ${pathname === '/inbox' ? 'active' : ''}`}>
               <a href="/inbox">
                 <div className="nav_icon">
@@ -56,6 +46,16 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
                 <div className="nav_text">
                   <span>Inbox</span>
+                </div>
+              </a>
+            </div>
+            <div className={`nav_item ${pathname === '/profile' ? 'active' : ''}`}>
+              <a href="/profile">
+                <div className="nav_icon">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0'/><path d='M14.5 9.25a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M17 19.5c-.317-6.187-9.683-6.187-10 0'/></svg>
+                </div>
+                <div className="nav_text">
+                  <span>Profile</span>
                 </div>
               </a>
             </div>
@@ -108,16 +108,6 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
             </a>
           </div>
-          <div className={`nav_item ${pathname === '/trending' ? 'active' : ''}`}>
-            <a href="/trending">
-              <div className="nav_icon">
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M19.27 16.202A7.81 7.81 0 0 1 12.06 21c-4.313 0-7.81-3.492-7.81-7.8S5.89 7.13 8.455 3c4.806 2.1 4.806 8.4 4.806 8.4s1.579-3.038 4.807-4.5c1.034 3.042 2.43 6.365 1.202 9.302' /><path d='M12 18a5 5 0 0 1-5-5' /></svg>
-              </div>
-              <div className="nav_text">
-                <span>Trending</span>
-              </div>
-            </a>
-          </div>
           <div className={`nav_item ${pathname === '/inbox' ? 'active' : ''}`}>
             <a href="/inbox">
               <div className="nav_icon">
@@ -125,6 +115,26 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
               <div className="nav_text">
                 <span>Inbox</span>
+              </div>
+            </a>
+          </div>
+          <div className={`nav_item ${pathname === '/profile' ? 'active' : ''}`}>
+            <a href="/profile">
+              <div className="nav_icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0'/><path d='M14.5 9.25a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M17 19.5c-.317-6.187-9.683-6.187-10 0'/></svg>
+              </div>
+              <div className="nav_text">
+                <span>Profile</span>
+              </div>
+            </a>
+          </div>
+          <div className={`nav_item red ${pathname === '/login' ? 'active' : ''}`}>
+            <a href="/login">
+              <div className="nav_icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7' /><path d='M13 15.5 9.5 12 13 8.5m6.5 3.496h-10' /></svg>
+              </div>
+              <div className="nav_text">
+                <span>Login</span>
               </div>
             </a>
           </div>
