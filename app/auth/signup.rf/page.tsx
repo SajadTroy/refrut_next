@@ -1,5 +1,5 @@
 import '@/styles/Login.css';
-import SignupClient from '@/app/auth/login.rf/LoginClient';
+import SignupClient from '@/app/auth/signup.rf/SignupClient';
 
 export const metadata = {
   title: "Signup - Refrut",
