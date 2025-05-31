@@ -1,3 +1,4 @@
+import '@/public/css/Navigation.css';
 import React from 'react';
 
 type NavigationProps = {
