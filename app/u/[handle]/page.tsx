@@ -1,6 +1,5 @@
 import '@/styles/Profile.css';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 
 type Props = {
   params: {
