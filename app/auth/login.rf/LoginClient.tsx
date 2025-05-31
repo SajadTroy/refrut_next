@@ -14,11 +14,9 @@ export default function SSignupClient() {
         <div className="login_container">
             <form action="" method="post" name='form'>
                 <div className="form_group">
-                    <div className="form_header">
-                        <a href="/">
-                            <img src="/img/res/logo.png" alt="Logo" />
-                        </a>
-                    </div>
+                    <a href="/">
+                        <img src="/img/res/logo.png" alt="Logo" />
+                    </a>
                 </div>
                 <div className="form_group">
                     <label htmlFor="email">Email<span className='red'>*</span></label>

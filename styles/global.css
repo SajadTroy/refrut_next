@@ -54,6 +54,7 @@ input, button, textarea, select {
 }
 a {
     text-decoration: none;
+    color: #d91824;
 }
 button {
     cursor: pointer;
