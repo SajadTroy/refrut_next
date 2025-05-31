@@ -24,7 +24,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px 0px 0px 0px;
-    border-right: #ccc solid 1px;
+    border-right:  1px solid #e5e5e5;
 }
 
 .container .desktop_nav_container .left_section .header_logo {
@@ -140,7 +140,7 @@
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
-    border-bottom: 1px solid #ccc;
+    border-bottom:  1px solid #e5e5e5;
     position: fixed;
     top: 0;
     left: 0;
@@ -169,7 +169,7 @@
     justify-content: space-around;
     align-items: center;
     background-color: #ffffff;
-    border-top: 1px solid #ccc;
+    border-top:  1px solid #e5e5e5;
     position: fixed;
     bottom: 0;
     left: 0;
