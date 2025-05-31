@@ -14,10 +14,16 @@ export const metadata = {
 };
 
 export default function Home() {
-   const handle = 'SajadTroy';
+  const handle = 'SajadTroy';
   return (
     <div className="home_container">
       <div className="posts_container">
+        <form action="" method='post' className="write_box">
+          <input type="text" placeholder='Write something...' />
+          <button>
+            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='m14 10-3 3m9.288-9.969a.535.535 0 0 1 .68.681l-5.924 16.93a.535.535 0 0 1-.994.04l-3.219-7.242a.54.54 0 0 0-.271-.271l-7.242-3.22a.535.535 0 0 1 .04-.993z' /></svg>
+          </button>
+        </form>
 
         <div className="post">
           <Link href={`/u/${handle}`} className="post_header">
@@ -102,7 +108,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        
+
       </div>
     </div>
   );
