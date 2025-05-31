@@ -8,7 +8,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props) {
-  const { handle } = params;
+  const { handle } = await params;
 
   return {
     title: `@${handle} - Refrut`,
@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default function UserProfile({ params }: Props) {
-  const { handle } = params;
+export default async function UserProfile({ params }: Props) {
+  const { handle } = await params;
 
   return (
     <div className="profile-container">
