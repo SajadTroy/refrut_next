@@ -51,7 +51,7 @@ export const sendEmail = async (user: User) => {
             </tr>
             <tr>
                 <td class="footer">
-                    <img src="https://i.postimg.cc/tgZ4LQdn/logo.png" alt="Piecom Logo">
+                    <img src=src="https://refrut.vercel.app/img/res/logo.png" alt="Piecom Logo">
                     <p>© Refrut. All rights reserved.</p>
                 </td>
             </tr>
@@ -251,7 +251,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   <div class="container">
     <h2>🍕 Account Created!</h2>
     <p>Please check your email to verify your account and complete the setup process.</p>
-    <a href="/login" class="button">Go to Login</a>
+    <a href="/auth/login.rf" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);
@@ -346,7 +346,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   <div class="container">
     <h2>🍕 Account Created!</h2>
     <p>Please check your email to verify your account and complete the setup process.</p>
-    <a href="/login" class="button">Go to Login</a>
+    <a href="/auth/login.rf" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);

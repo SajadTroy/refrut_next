@@ -43,7 +43,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       `token=${token}; HttpOnly; Path=/; ${isProd ? 'Secure;' : ''} SameSite=Strict`
     );
 
-    return res.redirect(302, `/u/${user.handle}`);
+    return res.redirect(302, `/u/profile`);
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ error: "Internal server error" });

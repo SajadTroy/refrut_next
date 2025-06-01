@@ -43,7 +43,7 @@ export const sendEmail = async (user: User) => {
             </tr>
             <tr>
                 <td class="footer">
-                    <img src="https://i.postimg.cc/tgZ4LQdn/logo.png" alt="Piecom Logo">
+                    <img src=src="https://refrut.vercel.app/img/res/logo.png" alt="Piecom Logo">
                     <p>© Refrut. All rights reserved.</p>
                 </td>
             </tr>
@@ -204,7 +204,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   <div class="container">
     <h2>🔒 Password Reset Successful!</h2>
     <p>You can now log in with your new password.</p>
-    <a href="/login" class="button">Go to Login</a>
+    <a href="/auth/login.rf" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);
