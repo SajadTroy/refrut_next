@@ -179,7 +179,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 _id: newUser._id.toString(),
                 baseUrl
             });
-            return res.redirect('/auth/login.rf');
+            return res.send("<h2>Account created successfully. Please check your email for verification.</h2>");
         } else {
             inactiveUser.name = fullName;
             inactiveUser.password = hashedPassword;
@@ -199,7 +199,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 _id: inactiveUser._id.toString(),
                 baseUrl
             });
-            return res.redirect('/auth/login.rf');
+            return res.send("<h2>Account updated successfully. Please check your email for verification.</h2>");
         }
     } catch (error) {
         console.error("Signup error:", error);
