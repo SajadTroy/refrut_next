@@ -106,8 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const user = await User.findOne({
             resetPasswordToken: reset_token,
-            resetPasswordTokenExpiry: { $gt: new Date() },
-            isVerified: false
+            resetPasswordTokenExpiry: { $gt: new Date() }
         });
 
         if (!user) {
