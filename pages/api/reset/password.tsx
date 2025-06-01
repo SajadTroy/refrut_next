@@ -94,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!email) {
             return res.status(400).send("<h2>Email is required</h2>");
         }
-        
+
         await connectDB();
 
         const protocol = req.headers['x-forwarded-proto'] || 'http';
@@ -103,7 +103,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log("Base URL:", baseUrl);
 
         const user = await User.findOne({
-            email: email
+            email: email,
+            status: "active",
+            isVerified: true
         });
 
         if (!user) {
