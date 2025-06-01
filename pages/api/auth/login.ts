@@ -38,9 +38,11 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       email: user.email
     }, secret);
 
+    res.setHeader('Cache-Control', 'public, max-age=7776000, immutable');
+
     res.setHeader(
-      "Set-Cookie",
-      `token=${token}; HttpOnly; Path=/; ${isProd ? 'Secure;' : ''} SameSite=Strict`
+      'Set-Cookie',
+      `token=${token}; HttpOnly; Path=/; ${isProd ? 'Secure;' : ''} SameSite=Strict; Max-Age=7776000`
     );
 
     return res.redirect(302, `/u/profile`);
