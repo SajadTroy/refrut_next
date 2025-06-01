@@ -1,6 +1,6 @@
 'use client';
 import '@/styles/Profile.css';
-import Image from 'next/image';
+// import Image from 'next/image';
 import Link from 'next/link';
 
 export default async function ProfileClient({ handle }: { handle: String }) {
@@ -10,7 +10,7 @@ export default async function ProfileClient({ handle }: { handle: String }) {
       <div className="top_profile">
         <div className="profile_header">
           <div className="profile_image">
-            <Image
+            <img
               width={100}
               height={100}
               src={`/img/avatars/${handle}.png`}

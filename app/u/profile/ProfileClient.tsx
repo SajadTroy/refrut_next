@@ -30,8 +30,8 @@ export interface ClientUser {
 }
 
 export default function UserProfileClient() {
-
   const [user, setUser] = useState<ClientUser | null>(null);
+  const [imgSrc, setImgSrc] = useState(user?.profilePicture ?? '/img/avatars/default.png');
 
   useEffect(() => {
     fetch('/api/user/profile', {
@@ -45,6 +45,13 @@ export default function UserProfileClient() {
       });
   }, []);
 
+  useEffect(() => {
+    if (user?.profilePicture) {
+      setImgSrc(user.profilePicture);
+    }
+  }, [user]);
+
+
   return (
     <div className="profile-container">
       <div className="top_profile">
@@ -52,11 +59,9 @@ export default function UserProfileClient() {
           <div className="profile_image">
             {user ? (
               <Image
-                src={user.profilePicture}
-                alt={`Avatar of ${user.name}`}
-                onError={(e) => {
-                  e.currentTarget.src = '/img/avatars/default.png';
-                }}
+                src={imgSrc}
+                alt={`Avatar of ${user?.name || 'User'}`}
+                onError={() => setImgSrc('/img/avatars/default.png')}
                 width={100}
                 height={100}
                 className="profile_avatar"
