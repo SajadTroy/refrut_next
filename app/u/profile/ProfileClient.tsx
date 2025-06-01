@@ -53,6 +53,9 @@ export default function UserProfileClient() {
               <img
                 src={user.profilePicture || `/img/avatars/${user.handle}.png`}
                 alt={`Avatar of ${user.name}`}
+                onError={(e) => {
+                  e.currentTarget.src = '/img/avatars/default.png';
+                }}
                 className="profile_avatar"
               />
             ) : (
