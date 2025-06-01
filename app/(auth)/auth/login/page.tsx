@@ -37,7 +37,7 @@ export default async function Login() {
       </div>
       <div className="form_text">
         <p>
-          <a href="/auth/forgot-password.rf">Forgot your password?</a>
+          <a href="/auth/forgot-password">Forgot your password?</a>
         </p>
       </div>
       <div className="form_group">
