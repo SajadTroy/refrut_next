@@ -38,6 +38,8 @@ export default async function ResetPassword({ params }: { params: Params }) {
     const user = await User.findOne({
         resetPasswordToken: reset_token,
         resetPasswordTokenExpiry: { $gt: new Date() },
+        isVerified: true,
+        status: "active"
     });
 
     if (!user) {
