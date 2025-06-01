@@ -137,16 +137,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         res.setHeader('Content-Type', 'text/html');
-        return res.status(200).send(`<!DOCTYPE html>
+return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Password reset email sent successfully.">
   <title>Password Reset Email Sent</title>
   <style>
+    @font-face {
+      font-family: "Ahrefs";
+      src: url('/fonts/ahrefs-regular.ttf');
+    }
+
+    @font-face {
+      font-family: "Gilroy-Medium";
+      src: url('/fonts/gilroy/Gilroy-Medium.ttf');
+    }
+
+    @font-face {
+      font-family: "Gilroy-ExtraBold";
+      src: url('/fonts/gilroy/Gilroy-ExtraBold.ttf');
+    }
+
+    @font-face {
+      font-family: "Gilroy-Bold";
+      src: url('/fonts/gilroy/Gilroy-Bold.ttf');
+    }
+
+    @font-face {
+      font-family: "Gilroy-Light";
+      src: url('/fonts/gilroy/Gilroy-Light.ttf');
+    }
+
+    @font-face {
+      font-family: "Gilroy-Heavy";
+      src: url('/fonts/gilroy/Gilroy-Heavy.ttf');
+    }
+
     body {
       background: white;
-      font-family: Arial, sans-serif;
+      font-family: "Ahrefs";
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
@@ -154,21 +185,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       margin: 0;
       padding: 2rem;
     }
+
     .container {
-      max-width: 500px;
+      max-width: 600px;
       text-align: left;
     }
+
     h2 {
-      color: #1565c0; /* A calm blue for info */
-      margin-bottom: 0.5rem;
+      color: #d91824;
+      margin-bottom: 1rem;
     }
+
     p {
-      color: #444;
+      color: #333;
+      font-size: 1rem;
       line-height: 1.5;
     }
+
     strong {
       color: #000;
-      word-break: break-all;
+      word-break: break-word;
+    }
+
+    a.button {
+      color: #d91824;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -176,13 +217,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   <div class="container">
     <h2>✉️ Password Reset Email Sent</h2>
     <p>
-      A password reset link has been sent to your email: <strong>${user.email}</strong>.
+      A password reset link has been sent to your email: <strong>${user.email}</strong>.<br />
       Please check your inbox and spam folder. If you do not receive the email,
       please contact support.
     </p>
+    <a href="/login" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);
+
     } catch (error) {
         console.error("Verification error:", error);
         return res.status(500).json({ error: "Internal server error" });

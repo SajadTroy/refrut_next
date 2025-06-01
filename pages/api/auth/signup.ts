@@ -229,8 +229,6 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       padding: 2rem;
     }
     .container {
-      padding: 2rem;
-      border-radius: 8px;
       max-width: 600px;
       text-align: left;
     }
@@ -326,8 +324,6 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       padding: 2rem;
     }
     .container {
-      padding: 2rem;
-      border-radius: 8px;
       max-width: 600px;
       text-align: left;
     }
