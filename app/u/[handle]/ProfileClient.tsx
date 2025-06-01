@@ -1,10 +1,6 @@
 'use client';
 import '@/styles/Profile.css';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import connectDB from '@/lib/database';
-import User from '@/models/User';
-import { isUserAuthorized } from '@/lib/isUserAuthorized';
 
 export default async function ProfileClient({ handle }: { handle: String }) {
 
