@@ -1,5 +1,4 @@
 import '@/styles/Profile.css';
-import ResetClient from '@/app/(auth)/auth/reset/[reset_token]/ResetClient';
 import connectDB from '@/lib/database';
 import User from '@/models/User';
 
@@ -32,7 +31,7 @@ export default async function ResetPassword({ params }: { params: Params }) {
     }
 
     console.log("Reset token:", reset_token);
-    
+
 
     await connectDB();
     const user = await User.findOne({
@@ -46,5 +45,25 @@ export default async function ResetPassword({ params }: { params: Params }) {
         return <div className="error">Invalid reset token</div>;
     }
 
-    return (<ResetClient reset_token={reset_token} />);
+    return (
+        <div className="login_container">
+            <form action={`/api/reset/${reset_token}`} method="post" name='form'>
+                <div className="form_group">
+                    <a href="/">
+                        <img src="/img/res/logo.png" alt="Logo" />
+                    </a>
+                </div>
+                <div className="form_group">
+                    <label htmlFor="password">New Password<span className='red'>*</span></label>
+                    <input type="password" id="password" name="password" placeholder="Enter new password" required />
+                </div>
+                <div className="form_group">
+                    <button type="submit" className="btn btn_primary">Reset</button>
+                </div>
+                <div className="form_text">
+                    <p>Back to <a href="/auth/login">Login</a></p>
+                </div>
+            </form>
+        </div>
+    );
 }
