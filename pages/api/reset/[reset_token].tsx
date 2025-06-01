@@ -133,7 +133,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             baseUrl: baseUrl
         });
 
-        return res.status(200).send("<h2>Password reset successfully</h2><p>You can now log in with your new password.</p>");
+        res.setHeader('Content-Type', 'text/html');
+        return res.status(200).send(`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Password Reset</title>
+    <style>
+      body {
+        background: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        height: 100vh;
+        margin: 0;
+        padding: 2rem;
+      }
+      .container {
+        max-width: 500px;
+        text-align: left;
+      }
+      h2 {
+        color: #2e7d32; /* A pleasant green for success */
+        margin-bottom: 0.5rem;
+      }
+      p {
+        color: #444;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>🔒 Password Reset Successful!</h2>
+      <p>You can now log in with your new password.</p>
+    </div>
+  </body>
+</html>`);
     } catch (error) {
         console.error("Verification error:", error);
         return res.status(500).json({ error: "Internal server error" });

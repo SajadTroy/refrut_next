@@ -136,7 +136,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             baseUrl: baseUrl
         });
 
-        return res.status(200).send(`Password reset link has been sent to your email: <strong>${user.email}</strong>. Please check your inbox and spam folder. If you do not receive the email, please contact support.`);
+        res.setHeader('Content-Type', 'text/html');
+        return res.status(200).send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Password Reset Email Sent</title>
+  <style>
+    body {
+      background: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 500px;
+      text-align: left;
+    }
+    h2 {
+      color: #1565c0; /* A calm blue for info */
+      margin-bottom: 0.5rem;
+    }
+    p {
+      color: #444;
+      line-height: 1.5;
+    }
+    strong {
+      color: #000;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>✉️ Password Reset Email Sent</h2>
+    <p>
+      A password reset link has been sent to your email: <strong>${user.email}</strong>.
+      Please check your inbox and spam folder. If you do not receive the email,
+      please contact support.
+    </p>
+  </div>
+</body>
+</html>`);
     } catch (error) {
         console.error("Verification error:", error);
         return res.status(500).json({ error: "Internal server error" });

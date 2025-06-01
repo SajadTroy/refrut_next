@@ -46,6 +46,7 @@
     "swiper": "^11.1.15"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^18.3.12",

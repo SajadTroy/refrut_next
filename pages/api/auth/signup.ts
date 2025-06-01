@@ -179,7 +179,43 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 _id: newUser._id.toString(),
                 baseUrl
             });
-            return res.send("<h2>Account created successfully. Please check your email for verification.</h2>");
+
+            res.setHeader('Content-Type', 'text/html');
+            return res.send(`<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Account Created</title>
+      <style>
+        body {
+          background: white;
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: start;
+          align-items: start;
+          height: 100vh;
+          margin: 0;
+        }
+        .container {
+          padding: 2rem 3rem;
+          text-align: left;
+        }
+        h2 {
+          color: #d91824;
+        }
+        p {
+          color: #333;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>🍕 Account Created!</h2>
+        <p>Please check your email to verify your account and complete the setup process.</p>
+      </div>
+    </body>
+  </html>`);
         } else {
             inactiveUser.name = fullName;
             inactiveUser.password = hashedPassword;
@@ -199,7 +235,43 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
                 _id: inactiveUser._id.toString(),
                 baseUrl
             });
-            return res.send("<h2>Account updated successfully. Please check your email for verification.</h2>");
+
+            res.setHeader('Content-Type', 'text/html');
+            return res.send(`<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Account Created</title>
+      <style>
+        body {
+          background: white;
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: start;
+          align-items: start;
+          height: 100vh;
+          margin: 0;
+        }
+        .container {
+          padding: 2rem 3rem;
+          text-align: left;
+        }
+        h2 {
+          color: #d91824;
+        }
+        p {
+          color: #333;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>🍕 Account Created!</h2>
+        <p>Please check your email to verify your account and complete the setup process.</p>
+      </div>
+    </body>
+  </html>`);
         }
     } catch (error) {
         console.error("Signup error:", error);
