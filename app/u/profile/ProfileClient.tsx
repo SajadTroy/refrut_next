@@ -1,5 +1,6 @@
 'use client';
 import '@/styles/Profile.css';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton'
@@ -50,12 +51,14 @@ export default function UserProfileClient() {
         <div className="profile_header">
           <div className="profile_image">
             {user ? (
-              <img
-                src={user.profilePicture || `/img/avatars/${user.handle}.png`}
+              <Image
+                src={user.profilePicture}
                 alt={`Avatar of ${user.name}`}
                 onError={(e) => {
                   e.currentTarget.src = '/img/avatars/default.png';
                 }}
+                width={100}
+                height={100}
                 className="profile_avatar"
               />
             ) : (
@@ -107,10 +110,10 @@ export default function UserProfileClient() {
         {user ? (
           <>
             <div className="tab active">
-              <Link href={`/u/${user.handle}`}>Posts</Link>
+              <Link href={`/u/profile`}>Posts</Link>
             </div>
             <div className="tab">
-              <Link href={`/u/${user.handle}/replies`}>Replies</Link>
+              <Link href={`/u/profile/replies`}>Replies</Link>
             </div>
           </>
         ) : (

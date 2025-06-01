@@ -1,5 +1,6 @@
 'use client';
 import '@/styles/Profile.css';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default async function ProfileClient({ handle }: { handle: String }) {
@@ -9,10 +10,15 @@ export default async function ProfileClient({ handle }: { handle: String }) {
       <div className="top_profile">
         <div className="profile_header">
           <div className="profile_image">
-            <img
+            <Image
+              width={100}
+              height={100}
               src={`/img/avatars/${handle}.png`}
               alt={`Profile of ${handle}`}
               className="profile_picture"
+              onError={(e) => {
+                e.currentTarget.src = '/img/avatars/default.png';
+              }}
             />
           </div>
           <div className="profile_details">
@@ -142,7 +148,7 @@ export default async function ProfileClient({ handle }: { handle: String }) {
             </button>
           </div>
         </div>
-        
+
       </div>
     </div>
   );
