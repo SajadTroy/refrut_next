@@ -1,7 +1,6 @@
 import connectDB from "@/lib/database";
 import User from "@/models/User";
 import type { NextApiRequest, NextApiResponse } from 'next';
-import generate from 'generate-password';
 import bcrypt from "bcryptjs";
 import nodemailer from 'nodemailer';
 
