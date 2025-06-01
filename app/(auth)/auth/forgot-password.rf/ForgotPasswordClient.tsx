@@ -2,9 +2,9 @@
 import '@/styles/Login.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppContext } from '@/app/404-context';
+import { useAppContext } from '@/app/(user)/404-context';
 
-export default function LoginClient() {
+export default function ForgotPasswordClient() {
     const { setIs404 } = useAppContext();
     const router = useRouter();
     const [checked, setChecked] = useState(false);
@@ -18,7 +18,8 @@ export default function LoginClient() {
         const checkLogin = async () => {
             try {
                 const res = await fetch('/api/user/profile', {
-                    method: 'POST'});
+                    method: 'POST'
+                });
                 if (res.ok) {
                     router.replace('/u/profile');
                     return;
@@ -26,7 +27,7 @@ export default function LoginClient() {
             } catch (err) {
                 console.error('Error checking login:', err);
             }
-            setChecked(true); 
+            setChecked(true);
         };
         checkLogin();
     }, [router]);
@@ -35,7 +36,7 @@ export default function LoginClient() {
 
     return (
         <div className="login_container">
-            <form action="/api/auth/login" method="post" name='form'>
+            <form action="/api/reset/password" method="post" name='form'>
                 <div className="form_group">
                     <a href="/">
                         <img src="/img/res/logo.png" alt="Logo" />
@@ -46,19 +47,10 @@ export default function LoginClient() {
                     <input type="email" id="email" name="email" placeholder="Enter your email" required />
                 </div>
                 <div className="form_group">
-                    <label htmlFor="password">Password<span className='red'>*</span></label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required />
+                    <button type="submit" className="btn btn_primary">Send Reset Link</button>
                 </div>
                 <div className="form_text">
-                    <p>
-                        <a href="/auth/forgot-password.rf">Forgot your password?</a>
-                    </p>
-                </div>
-                <div className="form_group">
-                    <button type="submit" className="btn btn_primary">Login</button>
-                </div>
-                <div className="form_text">
-                    <p>Don't have an account? <a href="/auth/signup.rf">Signup</a></p>
+                    <p>Back to <a href="/auth/login">Login</a></p>
                 </div>
             </form>
         </div>

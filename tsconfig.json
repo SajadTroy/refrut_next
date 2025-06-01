@@ -33,8 +33,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "pages/404.ts"
-, "pages/api/waitlist/route.js", "app/auth/login.rf"  ],
+    "nopages/404.ts"
+, "nopages/api/waitlist/route.js", "app/(auth)/auth/login"  ],
   "exclude": [
     "node_modules"
   ]

@@ -33,17 +33,17 @@ export default function UserProfileClient() {
   const [user, setUser] = useState<ClientUser | null>(null);
   const [imgSrc, setImgSrc] = useState(user?.profilePicture ?? '/img/avatars/default.png');
 
-  useEffect(() => {
-    fetch('/api/user/profile', {
-      method: 'POST',
-    }).then(res => {
-      if (res.ok) return res.json();
-      throw new Error('Unauthorized');
-    }).then(data => setUser(data.user))
-      .catch(() => {
-        window.location.href = '/auth/login.rf';
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch('/api/user/profile', {
+  //     method: 'POST',
+  //   }).then(res => {
+  //     if (res.ok) return res.json();
+  //     throw new Error('Unauthorized');
+  //   }).then(data => setUser(data.user))
+  //     .catch(() => {
+  //       window.location.href = '/auth/login';
+  //     });
+  // }, []);
 
   useEffect(() => {
     if (user?.profilePicture) {

@@ -1,7 +1,7 @@
 'use client';
 import '@/styles/Login.css';
 import { useEffect } from 'react';
-import { useAppContext } from '@/app/404-context';
+import { useAppContext } from '@/app/(user)/404-context';
 
 export default function ResetClient({ reset_token }: { reset_token: string }) {
     const { setIs404 } = useAppContext();
@@ -26,7 +26,7 @@ export default function ResetClient({ reset_token }: { reset_token: string }) {
                     <button type="submit" className="btn btn_primary">Reset</button>
                 </div>
                 <div className="form_text">
-                    <p>Back to <a href="/auth/login.rf">Login</a></p>
+                    <p>Back to <a href="/auth/login">Login</a></p>
                 </div>
             </form>
         </div>

@@ -1,5 +1,5 @@
 import '@/styles/Login.css';
-import ForgotPasswordClient from '@/app/auth/forgot-password.rf/ForgotPasswordClient';
+import ForgotPasswordClient from '@/app/(auth)/auth/forgot-password.rf/ForgotPasswordClient';
 
 export const metadata = {
   title: "Forgot Password - Refrut",

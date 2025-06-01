@@ -1,4 +1,4 @@
-import NotFoundClient from '@/app/NotFoundClient';
+import '@/styles/not-found.css';
 
 export const metadata = {
   title: '404 - Page Not Found',
@@ -8,5 +8,19 @@ export const metadata = {
 };
 
 export default function NotFound() {
-  return <NotFoundClient />;
+  return (
+    <div className="children_not">
+      <div data-body>
+        <a href="/" aria-label="GrovixLab">
+          <span className="logo" id="logo" />
+        </a>
+        <p>
+          <b>404.</b> <ins>That's an error.</ins>
+        </p>
+        <p>
+          The requested page was not found on this server. <ins>That's all we know.</ins>
+        </p>
+      </div>
+    </div>
+  );
 }

@@ -1,5 +1,5 @@
 import '@/styles/Profile.css';
-import ResetClient from '@/app/reset/[reset_token]/ResetClient';
+import ResetClient from '@/app/(auth)/auth/reset/[reset_token]/ResetClient';
 import connectDB from '@/lib/database';
 import User from '@/models/User';
 

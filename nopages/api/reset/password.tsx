@@ -20,7 +20,7 @@ export const sendEmail = async (user: User) => {
     const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
 
     const resetLink = `${user.baseUrl}/reset/${user.resetPasswordToken}`;
-    const message = `Hello <strong>${user.name}</strong>,<br> your account has been created successfully. This is the URL to reset your password: <strong><a href="${resetLink}">${resetLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
+    const message = `Hello <strong>${user.name}</strong>,<br> You requested a password reset. Please use the following link to reset your password: <strong><a href="${resetLink}">${resetLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}</strong>.<br>If you did not request this, please contact our support team immediately.`;
 
     // HTML email template
     const htmlTemplate = `
@@ -72,7 +72,7 @@ export const sendEmail = async (user: User) => {
         await transporter.sendMail({
             from: `"Refrut" <${process.env.EMAIL_USER}>`,
             to: user.email,
-            subject: 'Account Created Successfully',
+            subject: 'Password Reset Link',
             html: htmlTemplate,
         });
 
@@ -85,14 +85,14 @@ export const sendEmail = async (user: User) => {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        if (req.method !== "GET") {
+        if (req.method !== "POST") {
             return res.status(405).json({ error: "Method not allowed" });
         }
 
-        const { verification_token } = req.query;
+        const { email } = req.body;
 
-        if (!verification_token) {
-            return res.status(400).json({ error: "Invalid verification token" });
+        if (!email) {
+            return res.status(400).send("<h2>Email is required</h2>");
         }
 
         await connectDB();
@@ -103,20 +103,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log("Base URL:", baseUrl);
 
         const user = await User.findOne({
-            verificationToken: verification_token,
-            verificationTokenExpiry: { $gt: new Date() },
-            isVerified: false
+            email: email,
+            status: "active",
+            isVerified: true
         });
 
         if (!user) {
-            return res.status(404).json({ error: "Verification token not found or expired" });
+            return res.status(404).send("<h2>User not found</h2>");
         }
-
-        user.isVerified = true;
-        user.status = "active";
-        user.updatedAt = new Date();
-        user.verificationToken = null;
-        user.verificationTokenExpiry = null;
 
         // Generate a new reset password token
         user.resetPasswordToken = generate.generate({
@@ -143,84 +137,95 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         res.setHeader('Content-Type', 'text/html');
-        return res.status(200).send(`<!DOCTYPE html>
+return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Account verified successfully. A password reset link has been sent to your email.">
-  <title>Account Verified</title>
+  <meta name="description" content="Password reset email sent successfully.">
+  <title>Password Reset Email Sent</title>
   <style>
-  @font-face {
-    font-family: "Ahrefs";
-    src: url('/fonts/ahrefs-regular.ttf');
-}
+    @font-face {
+      font-family: "Ahrefs";
+      src: url('/fonts/ahrefs-regular.ttf');
+    }
 
-@font-face {
-    font-family: "Gilroy-Medium";
-    src: url('/fonts/gilroy/Gilroy-Medium.ttf');
-}
+    @font-face {
+      font-family: "Gilroy-Medium";
+      src: url('/fonts/gilroy/Gilroy-Medium.ttf');
+    }
 
-@font-face {
-    font-family: "Gilroy-ExtraBold";
-    src: url('/fonts/gilroy/Gilroy-ExtraBold.ttf');
-}
+    @font-face {
+      font-family: "Gilroy-ExtraBold";
+      src: url('/fonts/gilroy/Gilroy-ExtraBold.ttf');
+    }
 
-@font-face {
-    font-family: "Gilroy-Bold";
-    src: url('/fonts/gilroy/Gilroy-Bold.ttf');
-}
+    @font-face {
+      font-family: "Gilroy-Bold";
+      src: url('/fonts/gilroy/Gilroy-Bold.ttf');
+    }
 
-@font-face {
-    font-family: "Gilroy-Light";
-    src: url('/fonts/gilroy/Gilroy-Light.ttf');
-}
+    @font-face {
+      font-family: "Gilroy-Light";
+      src: url('/fonts/gilroy/Gilroy-Light.ttf');
+    }
 
-@font-face {
-    font-family: "Gilroy-Heavy";
-    src: url('/fonts/gilroy/Gilroy-Heavy.ttf');
-}
+    @font-face {
+      font-family: "Gilroy-Heavy";
+      src: url('/fonts/gilroy/Gilroy-Heavy.ttf');
+    }
+
     body {
       background: white;
       font-family: "Ahrefs";
       display: flex;
-      justify-content: start;
-      align-items: start;
+      justify-content: flex-start;
+      align-items: flex-start;
       height: 100vh;
       margin: 0;
       padding: 2rem;
     }
+
     .container {
       max-width: 600px;
       text-align: left;
     }
+
     h2 {
-      color:  #d91824;
+      color: #d91824;
       margin-bottom: 1rem;
     }
+
     p {
       color: #333;
       font-size: 1rem;
       line-height: 1.5;
     }
+
     strong {
       color: #000;
+      word-break: break-word;
     }
+
     a.button {
-    color:  #d91824;
+      color: #d91824;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>✅ Account Verified Successfully!</h2>
-    <p>A password reset link has been sent to your email: <strong>${user.email}</strong>.</p>
-    <p>Please check your inbox and spam folder. If you do not receive the email, please contact support.</p>
-    <a href="/auth/login.rf" class="button">Go to Login</a>
+    <h2>✉️ Password Reset Email Sent</h2>
+    <p>
+      A password reset link has been sent to your email: <strong>${user.email}</strong>.<br />
+      Please check your inbox and spam folder. If you do not receive the email,
+      please contact support.
+    </p>
+    <a href="/auth/login" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);
+
     } catch (error) {
         console.error("Verification error:", error);
         return res.status(500).json({ error: "Internal server error" });

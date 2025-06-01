@@ -251,7 +251,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   <div class="container">
     <h2>🍕 Account Created!</h2>
     <p>Please check your email to verify your account and complete the setup process.</p>
-    <a href="/auth/login.rf" class="button">Go to Login</a>
+    <a href="/auth/login" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);
@@ -346,7 +346,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   <div class="container">
     <h2>🍕 Account Created!</h2>
     <p>Please check your email to verify your account and complete the setup process.</p>
-    <a href="/auth/login.rf" class="button">Go to Login</a>
+    <a href="/auth/login" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);

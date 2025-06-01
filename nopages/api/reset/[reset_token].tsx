@@ -204,7 +204,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   <div class="container">
     <h2>🔒 Password Reset Successful!</h2>
     <p>You can now log in with your new password.</p>
-    <a href="/auth/login.rf" class="button">Go to Login</a>
+    <a href="/auth/login" class="button">Go to Login</a>
   </div>
 </body>
 </html>`);
