@@ -112,7 +112,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (!user) {
-            return res.status(404).send("<h2>Reset token not found or expired</h2>");
+            return res.status(404).json({ error: "Reset token not found or expired" });
         }
 
         // Hash the new password
@@ -142,9 +142,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   <meta name="description" content="Your password has been successfully reset.">
   <title>Password Reset</title>
   <style>
+  @font-face {
+    font-family: "Ahrefs";
+    src: url('/fonts/ahrefs-regular.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Medium";
+    src: url('/fonts/gilroy/Gilroy-Medium.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-ExtraBold";
+    src: url('/fonts/gilroy/Gilroy-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Bold";
+    src: url('/fonts/gilroy/Gilroy-Bold.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Light";
+    src: url('/fonts/gilroy/Gilroy-Light.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Heavy";
+    src: url('/fonts/gilroy/Gilroy-Heavy.ttf');
+}
     body {
       background: white;
-      font-family: Arial, sans-serif;
+      font-family: "Ahrefs";
       display: flex;
       justify-content: start;
       align-items: start;

@@ -189,9 +189,38 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   <meta name="description" content="Account created successfully. Please verify your email to complete setup.">
   <title>Account Created</title>
   <style>
+  @font-face {
+    font-family: "Ahrefs";
+    src: url('/fonts/ahrefs-regular.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Medium";
+    src: url('/fonts/gilroy/Gilroy-Medium.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-ExtraBold";
+    src: url('/fonts/gilroy/Gilroy-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Bold";
+    src: url('/fonts/gilroy/Gilroy-Bold.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Light";
+    src: url('/fonts/gilroy/Gilroy-Light.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Heavy";
+    src: url('/fonts/gilroy/Gilroy-Heavy.ttf');
+}
     body {
       background: white;
-      font-family: Arial, sans-serif;
+      font-family: "Ahrefs";
       display: flex;
       justify-content: start;
       align-items: start;
@@ -257,9 +286,38 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   <meta name="description" content="Account created successfully. Please verify your email to complete setup.">
   <title>Account Created</title>
   <style>
+  @font-face {
+    font-family: "Ahrefs";
+    src: url('/fonts/ahrefs-regular.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Medium";
+    src: url('/fonts/gilroy/Gilroy-Medium.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-ExtraBold";
+    src: url('/fonts/gilroy/Gilroy-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Bold";
+    src: url('/fonts/gilroy/Gilroy-Bold.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Light";
+    src: url('/fonts/gilroy/Gilroy-Light.ttf');
+}
+
+@font-face {
+    font-family: "Gilroy-Heavy";
+    src: url('/fonts/gilroy/Gilroy-Heavy.ttf');
+}
     body {
       background: white;
-      font-family: Arial, sans-serif;
+      font-family: "Ahrefs";
       display: flex;
       justify-content: start;
       align-items: start;
