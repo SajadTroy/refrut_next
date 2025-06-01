@@ -12,7 +12,7 @@ export default function SSignupClient() {
     }, [setIs404]);
     return (
         <div className="login_container">
-            <form action="" method="post" name='form'>
+            <form action="/api/auth/login" method="post" name='form'>
                 <div className="form_group">
                     <a href="/">
                         <img src="/img/res/logo.png" alt="Logo" />
