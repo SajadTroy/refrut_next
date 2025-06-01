@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/app/404-context';
 
-export default function SSignupClient() {
+export default function LoginClient() {
     const { setIs404 } = useAppContext();
     const router = useRouter();
     const [checked, setChecked] = useState(false);

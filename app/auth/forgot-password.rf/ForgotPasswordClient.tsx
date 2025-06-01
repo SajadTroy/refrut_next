@@ -1,15 +1,39 @@
 'use client';
 import '@/styles/Login.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/app/404-context';
 
 export default function ForgotPasswordClient() {
     const { setIs404 } = useAppContext();
+    const router = useRouter();
+    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         setIs404(true);
         return () => setIs404(false);
     }, [setIs404]);
+
+    useEffect(() => {
+        const checkLogin = async () => {
+            try {
+                const res = await fetch('/api/user/profile', {
+                    method: 'POST'
+                });
+                if (res.ok) {
+                    router.replace('/u/profile');
+                    return;
+                }
+            } catch (err) {
+                console.error('Error checking login:', err);
+            }
+            setChecked(true);
+        };
+        checkLogin();
+    }, [router]);
+
+    if (!checked) return null;
+
     return (
         <div className="login_container">
             <form action="/api/reset/password" method="post" name='form'>
