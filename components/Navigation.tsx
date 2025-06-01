@@ -39,6 +39,16 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
               </a>
             </div>
+            <div className={`nav_item ${pathname === '/new' ? 'active' : ''}`}>
+              <a href="/new">
+                <div className="nav_icon">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0m-5.5 0H12m0 0H8.5m3.5 0V8.5m0 3.5v3.5'/></svg>
+                </div>
+                <div className="nav_text">
+                  <span>New Post</span>
+                </div>
+              </a>
+            </div>
             <div className={`nav_item ${pathname === '/inbox' ? 'active' : ''}`}>
               <a href="/inbox">
                 <div className="nav_icon">
@@ -59,7 +69,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
               </a>
             </div>
-            <div className={`nav_item red ${pathname === '/login' ? 'active' : ''}`}>
+            <div className={`nav_item red ${pathname === '/auth/login.rf' ? 'active' : ''}`}>
               <a href="/auth/login.rf">
                 <div className="nav_icon">
                   <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7' /><path d='M13 15.5 9.5 12 13 8.5m6.5 3.496h-10' /></svg>
@@ -111,6 +121,16 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
             </a>
           </div>
+           <div className={`nav_item ${pathname === '/new' ? 'active' : ''}`}>
+            <a href="/new">
+              <div className="nav_icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0m-5.5 0H12m0 0H8.5m3.5 0V8.5m0 3.5v3.5'/></svg>
+              </div>
+              <div className="nav_text">
+                <span>New Post</span>
+              </div>
+            </a>
+          </div>
           <div className={`nav_item ${pathname === '/inbox' ? 'active' : ''}`}>
             <a href="/inbox">
               <div className="nav_icon">
@@ -131,16 +151,6 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
             </a>
           </div>
-          {/* <div className={`nav_item red ${pathname === '/login' ? 'active' : ''}`}>
-            <a href="/auth/login.rf">
-              <div className="nav_icon">
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"><path d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7' /><path d='M13 15.5 9.5 12 13 8.5m6.5 3.496h-10' /></svg>
-              </div>
-              <div className="nav_text">
-                <span>Login</span>
-              </div>
-            </a>
-          </div> */}
         </div>
       </div>
     </div>
