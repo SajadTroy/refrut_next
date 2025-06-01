@@ -136,41 +136,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.setHeader('Content-Type', 'text/html');
         return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Password Reset</title>
-    <style>
-      body {
-        background: white;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        height: 100vh;
-        margin: 0;
-        padding: 2rem;
-      }
-      .container {
-        max-width: 500px;
-        text-align: left;
-      }
-      h2 {
-        color:  #d91824; /* A pleasant red for error */
-        margin-bottom: 0.5rem;
-      }
-      p {
-        color: #444;
-        line-height: 1.5;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>🔒 Password Reset Successful!</h2>
-      <p>You can now log in with your new password.</p>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Your password has been successfully reset.">
+  <title>Password Reset</title>
+  <style>
+    body {
+      background: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      text-align: left;
+    }
+    h2 {
+      color: #d91824;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    a.button {
+      color: #d91824;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔒 Password Reset Successful!</h2>
+    <p>You can now log in with your new password.</p>
+    <a href="/login" class="button">Go to Login</a>
+  </div>
+</body>
 </html>`);
     } catch (error) {
         console.error("Verification error:", error);

@@ -182,40 +182,52 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 
             res.setHeader('Content-Type', 'text/html');
             return res.send(`<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Account Created</title>
-      <style>
-        body {
-          background: white;
-          font-family: Arial, sans-serif;
-          display: flex;
-          justify-content: start;
-          align-items: start;
-          height: 100vh;
-          margin: 0;
-        }
-        .container {
-          padding: 2rem 3rem;
-          text-align: left;
-        }
-        h2 {
-          color: #d91824;
-        }
-        p {
-          color: #333;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h2>🍕 Account Created!</h2>
-        <p>Please check your email to verify your account and complete the setup process.</p>
-      </div>
-    </body>
-  </html>`);
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Account created successfully. Please verify your email to complete setup.">
+  <title>Account Created</title>
+  <style>
+    body {
+      background: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      text-align: left;
+    }
+    h2 {
+      color: #d91824;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    a.button {
+      color: #d91824;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🍕 Account Created!</h2>
+    <p>Please check your email to verify your account and complete the setup process.</p>
+    <a href="/login" class="button">Go to Login</a>
+  </div>
+</body>
+</html>`);
         } else {
             inactiveUser.name = fullName;
             inactiveUser.password = hashedPassword;
@@ -238,40 +250,52 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 
             res.setHeader('Content-Type', 'text/html');
             return res.send(`<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Account Created</title>
-      <style>
-        body {
-          background: white;
-          font-family: Arial, sans-serif;
-          display: flex;
-          justify-content: start;
-          align-items: start;
-          height: 100vh;
-          margin: 0;
-        }
-        .container {
-          padding: 2rem 3rem;
-          text-align: left;
-        }
-        h2 {
-          color: #d91824;
-        }
-        p {
-          color: #333;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h2>🍕 Account Created!</h2>
-        <p>Please check your email to verify your account and complete the setup process.</p>
-      </div>
-    </body>
-  </html>`);
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Account created successfully. Please verify your email to complete setup.">
+  <title>Account Created</title>
+  <style>
+    body {
+      background: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      text-align: left;
+    }
+    h2 {
+      color: #d91824;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    a.button {
+      color: #d91824;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🍕 Account Created!</h2>
+    <p>Please check your email to verify your account and complete the setup process.</p>
+    <a href="/login" class="button">Go to Login</a>
+  </div>
+</body>
+</html>`);
         }
     } catch (error) {
         console.error("Signup error:", error);

@@ -109,7 +109,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (!user) {
-            return res.status(404).send("<h2>Verification token not found or expired</h2>");
+            return res.status(404).json({ error: "Verification token not found or expired" });
         }
 
         user.isVerified = true;
@@ -143,7 +143,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         res.setHeader('Content-Type', 'text/html');
-return res.status(200).send(`<!DOCTYPE html>
+        return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -152,7 +152,7 @@ return res.status(200).send(`<!DOCTYPE html>
   <title>Account Verified</title>
   <style>
     body {
-      background: #f9f9f9;
+      background: white;
       font-family: Arial, sans-serif;
       display: flex;
       justify-content: start;
@@ -162,7 +162,6 @@ return res.status(200).send(`<!DOCTYPE html>
       padding: 2rem;
     }
     .container {
-      background: white;
       padding: 2rem;
       border-radius: 8px;
       max-width: 600px;
@@ -181,13 +180,7 @@ return res.status(200).send(`<!DOCTYPE html>
       color: #000;
     }
     a.button {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.6rem 1.2rem;
-      background-color: #000;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
+    color:  #d91824;
       font-weight: bold;
     }
   </style>
@@ -201,7 +194,6 @@ return res.status(200).send(`<!DOCTYPE html>
   </div>
 </body>
 </html>`);
-
     } catch (error) {
         console.error("Verification error:", error);
         return res.status(500).json({ error: "Internal server error" });
