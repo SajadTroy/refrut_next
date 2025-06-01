@@ -109,7 +109,8 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
             length: 32,
             numbers: true,
             uppercase: true,
-            lowercase: true
+            lowercase: true,
+            symbols: false
         });
         console.log("Generated verification token:", verificationToken);
         const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now

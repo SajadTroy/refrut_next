@@ -1,4 +1,3 @@
-'use client';
 import '@/styles/Profile.css';
 import ResetClient from '@/app/reset/[reset_token]/ResetClient';
 import connectDB from '@/lib/database';
@@ -31,6 +30,9 @@ export default async function ResetPassword({ params }: { params: Params }) {
     if (!reset_token) {
         return <div className="error">Invalid reset token</div>;
     }
+
+    console.log("Reset token:", reset_token);
+    
 
     await connectDB();
     const user = await User.findOne({

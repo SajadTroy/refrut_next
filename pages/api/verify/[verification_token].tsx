@@ -113,6 +113,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         user.isVerified = true;
+        user.status = "active";
+        user.updatedAt = new Date();
         user.verificationToken = null;
         user.verificationTokenExpiry = null;
 
@@ -120,7 +122,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         user.resetPasswordToken = generate.generate({
             length: 32,
             numbers: true,
-            symbols: true,
+            symbols: false,
             uppercase: true,
             lowercase: true
         });
