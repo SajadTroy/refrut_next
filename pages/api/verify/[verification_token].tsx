@@ -142,7 +142,66 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             baseUrl: baseUrl
         });
 
-        return res.status(200).send(`Account verified successfully. Password reset link has been sent to your email: <strong>${user.email}</strong>. Please check your inbox and spam folder. If you do not receive the email, please contact support.`);
+        res.setHeader('Content-Type', 'text/html');
+return res.status(200).send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Account verified successfully. A password reset link has been sent to your email.">
+  <title>Account Verified</title>
+  <style>
+    body {
+      background: #f9f9f9;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      text-align: left;
+    }
+    h2 {
+      color:  #d91824;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    strong {
+      color: #000;
+    }
+    a.button {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #000;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>✅ Account Verified Successfully!</h2>
+    <p>A password reset link has been sent to your email: <strong>${user.email}</strong>.</p>
+    <p>Please check your inbox and spam folder. If you do not receive the email, please contact support.</p>
+    <a href="/login" class="button">Go to Login</a>
+  </div>
+</body>
+</html>`);
+
     } catch (error) {
         console.error("Verification error:", error);
         return res.status(500).json({ error: "Internal server error" });

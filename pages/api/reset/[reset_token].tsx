@@ -156,7 +156,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         text-align: left;
       }
       h2 {
-        color: #2e7d32; /* A pleasant green for success */
+        color:  #d91824; /* A pleasant red for error */
         margin-bottom: 0.5rem;
       }
       p {
