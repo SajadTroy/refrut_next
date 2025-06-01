@@ -2,12 +2,16 @@ import connectDB from "@/lib/database";
 import User from "@/models/User";
 import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
+
+const secret = process.env.JWT_SECRET || 'bakabaka';
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method not allowed" });
     }
+    const isProd = process.env.NODE_ENV === 'production';
     await connectDB();
     const { email, password } = req.body;
     if (!email || !password) {
@@ -28,7 +32,18 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     // Optionally, update last login time
     user.lastLogin = new Date();
     await user.save();
-    return res.status(200).json({ message: "Login successful", userId: user._id });
+
+    const token = await jwt.sign({
+      userId: user._id,
+      email: user.email
+    }, secret);
+
+    res.setHeader(
+      "Set-Cookie",
+      `token=${token}; HttpOnly; Path=/; ${isProd ? 'Secure;' : ''} SameSite=Strict`
+    );
+
+    return res.redirect(302, `/u/${user.handle}`);
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ error: "Internal server error" });
