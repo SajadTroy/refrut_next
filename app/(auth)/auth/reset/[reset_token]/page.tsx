@@ -1,6 +1,7 @@
-import '@/styles/Profile.css';
+import '@/styles/Login.css';
 import connectDB from '@/lib/database';
 import User from '@/models/User';
+import NewPasswordClient from './NewPasswordClient';
 
 type Params = Promise<{ reset_token: string }>;
 
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }) {
             title: `Reset Password - Refrut`,
             description: `Use the link below to reset your password.`,
             url: `https://refrut.com/reset/${reset_token}`,
-            images: [`/img/opengraph/reset.png`], // optionally dynamic
+            images: [`/img/opengraph/reset.png`],
         },
     };
 }
@@ -30,40 +31,13 @@ export default async function ResetPassword({ params }: { params: Params }) {
         return <div className="error">Invalid reset token</div>;
     }
 
-    console.log("Reset token:", reset_token);
-
-
     await connectDB();
     const user = await User.findOne({
         resetPasswordToken: reset_token,
         resetPasswordTokenExpiry: { $gt: new Date() },
         isVerified: true,
-        status: "active"
+        status: 'active',
     });
 
-    if (!user) {
-        return <div className="error">Invalid reset token</div>;
-    }
-
-    return (
-        <div className="login_container">
-            <form action={`/api/reset/${reset_token}`} method="post" name='form'>
-                <div className="form_group">
-                    <a href="/">
-                        <img src="/img/res/logo.png" alt="Logo" />
-                    </a>
-                </div>
-                <div className="form_group">
-                    <label htmlFor="password">New Password<span className='red'>*</span></label>
-                    <input type="password" id="password" name="password" placeholder="Enter new password" required />
-                </div>
-                <div className="form_group">
-                    <button type="submit" className="btn btn_primary">Reset</button>
-                </div>
-                <div className="form_text">
-                    <p>Back to <a href="/auth/login">Login</a></p>
-                </div>
-            </form>
-        </div>
-    );
+    return <NewPasswordClient resetToken={reset_token} isValid={!!user} />;
 }

@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const loginDetailSchema = new mongoose.Schema({
+    ip: { type: String, required: true },
+    latitude: { type: Number },
+    longitude: { type: Number },
+    country: { type: String },
+    region: { type: String },
+    isp: { type: String },
+    device: { type: String },
+    browser: { type: String },
+    timestamp: { type: Date, default: Date.now },
+});
+
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -24,7 +36,8 @@ const userSchema = new mongoose.Schema({
         instagram: { type: String, default: "" },
         linkedin: { type: String, default: "" },
         github: { type: String, default: "" }
-    }
+    },
+    recentLogins: { type: [loginDetailSchema], default: [] }
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

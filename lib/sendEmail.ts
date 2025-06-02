@@ -1,23 +1,97 @@
 import nodemailer from 'nodemailer';
 
-export interface User {
+export interface EmailUser {
     name: string;
     email: string;
-    verificationToken: string;
-    verificationTokenExpiry: Date;
-    dateOfBirth: Date;
-    handle: string;
-    password: string;
+    token?: string;
+    tokenExpiry?: Date;
+    dateOfBirth?: Date;
+    handle?: string;
     _id: string;
     baseUrl: string;
+    ip?: string;
+    latitude?: number;
+    longitude?: number;
+    country?: string;
+    region?: string;
+    isp?: string;
+    device?: string;
+    browser?: string;
+    loginTime?: Date;
 }
 
-export const sendEmailSignup = async (user: User) => {
-    const expiry = new Date(user.verificationTokenExpiry);
-    const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
+export default async function sendEmail(
+    user: EmailUser,
+    type: 'signup' | 'password-reset' | 'password-reset-confirmation' | 'new-login'
+): Promise<void> {
+    let subject: string;
+    let message: string;
 
-    const verificationLink = `${user.baseUrl}/api/verify/${user.verificationToken}`;
-    const message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${verificationLink}">${verificationLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
+    if (type === 'signup') {
+        if (!user.token || !user.tokenExpiry) {
+            throw new Error('Token and expiry are required for signup email');
+        }
+        const expiry = new Date(user.tokenExpiry);
+        const formattedExpiry = `${expiry
+            .getHours()
+            .toString()
+            .padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}:${expiry.getFullYear()}`;
+        const verificationLink = `${user.baseUrl}/api/verify/${user.token}`;
+        subject = 'Account Verification';
+        message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${verificationLink}">${verificationLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
+    } else if (type === 'password-reset') {
+        if (!user.token || !user.tokenExpiry) {
+            throw new Error('Token and expiry are required for password reset email');
+        }
+        const expiry = new Date(user.tokenExpiry);
+        const formattedExpiry = `${expiry
+            .getHours()
+            .toString()
+            .padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}:${expiry.getFullYear()}`;
+        const resetLink = `${user.baseUrl}/auth/reset/${user.token}`; // Fixed typo: 'auuth' to 'auth'
+        subject = 'Password Reset Link';
+        message = `Hello <strong>${user.name}</strong>,<br> You requested a password reset. Please use the following link to reset your password: <strong><a href="${resetLink}">${resetLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}</strong>.<br>If you did not request this, please contact our support team immediately.`;
+    } else if (type === 'password-reset-confirmation') {
+        subject = 'Your Password Has Been Reset';
+        message = `Hello <strong>${user.name}</strong>,<br> The password for your account with the handle <strong>@${user.handle}</strong> has been reset. If this was not you, please contact our support team immediately.`;
+    } else {
+        // new-login
+        if (!user.ip || !user.loginTime) {
+            throw new Error('IP and login time are required for new login email');
+        }
+        const loginTime = new Date(user.loginTime);
+        const formattedTime = `${loginTime
+            .getHours()
+            .toString()
+            .padStart(2, '0')}:${loginTime.getMinutes().toString().padStart(2, '0')}:${loginTime
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')} on ${loginTime.getDate().toString().padStart(2, '0')}/${(loginTime.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}/${loginTime.getFullYear()}`;
+        subject = 'New Login Detected';
+        message = `Hello <strong>${user.name}</strong>,<br> A new login to your account with the handle <strong>@${user.handle}</strong> was detected.<br><br>` +
+            `Details:<br>` +
+            `- Time: <strong>${formattedTime}</strong><br>` +
+            `- IP Address: <strong>${user.ip}</strong><br>` +
+            (user.latitude && user.longitude ? `- Location: <strong>Lat ${user.latitude}, Lon ${user.longitude}</strong><br>` : '') +
+            (user.country ? `- Country: <strong>${user.country}</strong><br>` : '') +
+            (user.region ? `- Region: <strong>${user.region}</strong><br>` : '') +
+            (user.isp ? `- ISP: <strong>${user.isp}</strong><br>` : '') +
+            (user.device ? `- Device: <strong>${user.device}</strong><br>` : '') +
+            (user.browser ? `- Browser: <strong>${user.browser}</strong><br>` : '') +
+            `<br>If this was not you, please secure your account immediately by resetting your password or contacting our support team.`;
+    }
 
     const htmlTemplate = `
     <!DOCTYPE html>
@@ -45,7 +119,7 @@ export const sendEmailSignup = async (user: User) => {
             </tr>
             <tr>
                 <td class="footer">
-                    <img src=src="https://refrut.vercel.app/img/res/logo.png" alt="Piecom Logo">
+                    <img src="https://refrut.vercel.app/img/res/logo.png" alt="Refrut">
                     <p>© Refrut. All rights reserved.</p>
                 </td>
             </tr>
@@ -58,7 +132,7 @@ export const sendEmailSignup = async (user: User) => {
         const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
-            secure: true, // true for 465, false for 587
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
@@ -68,12 +142,13 @@ export const sendEmailSignup = async (user: User) => {
         await transporter.sendMail({
             from: `"Refrut" <${process.env.EMAIL_USER}>`,
             to: user.email,
-            subject: 'Account Verification',
+            subject,
             html: htmlTemplate,
         });
 
-        console.log('Email sent successfully to', user.email);
+        console.log(`Email sent successfully to ${user.email} for ${type}`);
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error(`Error sending ${type} email:`, error);
+        throw error;
     }
-};
+}

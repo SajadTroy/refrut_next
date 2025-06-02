@@ -137,10 +137,10 @@ export default function UserProfileClient({ userId }: { userId: string }) {
             <button
               type="submit"
               className="follow_button following"
-              style={{ width: '100px' }}
+              style={{ width: '120px' }}
               disabled={pending}
             >
-              {pending ? 'Logging out' : 'Logout'}
+              {pending ? 'Wait...' : 'Logout'}
             </button>
           </form>
           {state?.errors?.general && (

@@ -1,5 +1,6 @@
 // app/layout.tsx
-'use client';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from "@vercel/analytics/next"
 import '@/styles/global.css';
 import { ReactNode } from 'react';
 
@@ -16,6 +17,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </head>
             <body className='children'>
                 {children}
+                <SpeedInsights />
+                <Analytics />
             </body>
         </html>
     );
