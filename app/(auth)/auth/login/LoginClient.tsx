@@ -2,10 +2,28 @@
 
 import '@/styles/Login.css';
 import { login, LoginFormState } from '@/app/(auth)/auth/login/action';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function LoginClient() {
     const [state, action, pending] = useActionState<LoginFormState, FormData>(login, { errors: {} });
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams) {
+            const forgotPassword = searchParams.get('forgot-password');
+            const signup = searchParams.get('signup');
+            const resetPassword = searchParams.get('reset-password');
+
+            if (forgotPassword === 'success') {
+                alert('Password reset link sent! Please check your email.');
+            } else if (signup === 'success') {
+                alert('Account created successfully! Please verify your email to log in.');
+            } else if (resetPassword === 'success') {
+                alert('Password reset successful! You can now log in with your new password.');
+            }
+        }
+    }, [searchParams]);
 
     return (
         <div className="login_container">
