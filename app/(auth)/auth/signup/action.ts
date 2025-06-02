@@ -24,7 +24,7 @@ export async function signup(
   );
 
   if (result.success) {
-    redirect('/auth/login');
+    redirect('/auth/login?signup=success');
   }
 
   return {
