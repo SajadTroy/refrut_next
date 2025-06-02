@@ -1,23 +1,40 @@
 import nodemailer from 'nodemailer';
 
-export interface User {
+export interface EmailUser {
     name: string;
     email: string;
-    verificationToken: string;
-    verificationTokenExpiry: Date;
-    dateOfBirth: Date;
-    handle: string;
-    password: string;
+    token: string;
+    tokenExpiry: Date;
+    dateOfBirth?: Date;
+    handle?: string;
     _id: string;
     baseUrl: string;
 }
 
-export const sendEmailSignup = async (user: User) => {
-    const expiry = new Date(user.verificationTokenExpiry);
-    const formattedExpiry = `${expiry.getHours().toString().padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry.getSeconds().toString().padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1).toString().padStart(2, '0')}:${expiry.getFullYear()}`;
+export default async function sendEmail(
+    user: EmailUser,
+    type: 'signup' | 'password-reset'
+): Promise<void> {
+    const expiry = new Date(user.tokenExpiry);
+    const formattedExpiry = `${expiry
+        .getHours()
+        .toString()
+        .padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry
+            .getSeconds()
+            .toString()
+            .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
+                .toString()
+                .padStart(2, '0')}:${expiry.getFullYear()}`;
 
-    const verificationLink = `${user.baseUrl}/api/verify/${user.verificationToken}`;
-    const message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${verificationLink}">${verificationLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
+    const link =
+        type === 'signup'
+            ? `${user.baseUrl}/api/verify/${user.token}`
+            : `${user.baseUrl}/reset/${user.token}`;
+    const subject = type === 'signup' ? 'Account Verification' : 'Password Reset Link';
+    const message =
+        type === 'signup'
+            ? `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${link}">${link}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`
+            : `Hello <strong>${user.name}</strong>,<br> You requested a password reset. Please use the following link to reset your password: <strong><a href="${link}">${link}</a></strong>. This link will expire on: <strong>${formattedExpiry}</strong>.<br>If you did not request this, please contact our support team immediately.`;
 
     const htmlTemplate = `
     <!DOCTYPE html>
@@ -45,7 +62,7 @@ export const sendEmailSignup = async (user: User) => {
             </tr>
             <tr>
                 <td class="footer">
-                    <img src=src="https://refrut.vercel.app/img/res/logo.png" alt="Refrut">
+                    <img src="https://refrut.vercel.app/img/res/logo.png" alt="Refrut">
                     <p>© Refrut. All rights reserved.</p>
                 </td>
             </tr>
@@ -59,7 +76,7 @@ export const sendEmailSignup = async (user: User) => {
             service: process.env.EMAIL_SERVICE,
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
-            secure: true, // true for 465, false for 587
+            secure: true, // true for 465
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
@@ -69,12 +86,13 @@ export const sendEmailSignup = async (user: User) => {
         await transporter.sendMail({
             from: `"Refrut" <${process.env.EMAIL_USER}>`,
             to: user.email,
-            subject: 'Account Verification',
+            subject,
             html: htmlTemplate,
         });
 
-        console.log('Email sent successfully to', user.email);
+        console.log(`Email sent successfully to ${user.email} for ${type}`);
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error(`Error sending ${type} email:`, error);
+        throw error; // Let the caller handle the error
     }
-};
+}

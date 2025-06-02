@@ -3,7 +3,7 @@ import connectDB from "@/lib/database";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import generate from 'generate-password';
-import { sendEmailSignup } from "@/lib/sendEmail";
+import sendEmail from "@/lib/sendEmail";
 
 export type LoginResState = {
     email?: string;
@@ -17,6 +17,12 @@ export type SignupResState = {
     fullName?: string;
     email?: string;
     dateOfBirth?: string;
+    general?: string;
+    success?: boolean;
+};
+
+export type PasswordResetState = {
+    email?: string;
     general?: string;
     success?: boolean;
 };
@@ -139,17 +145,16 @@ export async function signupUser(
                 verificationTokenExpiry,
             });
             await newUser.save();
-            await sendEmailSignup({
+            await sendEmail({
                 name: fullName,
                 email,
-                verificationToken,
-                verificationTokenExpiry,
+                token: verificationToken,
+                tokenExpiry: verificationTokenExpiry,
                 dateOfBirth: dob,
                 handle,
-                password: hashedPassword,
                 _id: newUser._id.toString(),
                 baseUrl,
-            });
+            }, 'signup');
 
             return { success: true };
         } else {
@@ -160,22 +165,78 @@ export async function signupUser(
             inactiveUser.verificationToken = verificationToken;
             inactiveUser.verificationTokenExpiry = verificationTokenExpiry;
             await inactiveUser.save();
-            await sendEmailSignup({
+            await sendEmail({
                 name: fullName,
                 email,
-                verificationToken,
-                verificationTokenExpiry,
+                token: verificationToken,
+                tokenExpiry: verificationTokenExpiry,
                 dateOfBirth: dob,
                 handle,
-                password: hashedPassword,
                 _id: inactiveUser._id.toString(),
                 baseUrl,
-            });
+            }, 'signup');
 
             return { success: true };
         }
     } catch (error) {
         console.error('Signup error:', error);
+        return { general: 'Internal server error' };
+    }
+}
+
+export async function requestPasswordReset(email: string): Promise<PasswordResetState> {
+    try {
+        await connectDB();
+
+        if (!email) {
+            return { email: 'Email is required' };
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return { email: 'Invalid email format' };
+        }
+
+        const user = await User.findOne({ email, status: 'active', isVerified: true });
+        if (!user) {
+            return { email: 'User not found' };
+        }
+
+        const bannedUser = await User.findOne({ email, status: 'banned' });
+        if (bannedUser) {
+            return { email: 'User is banned' };
+        }
+
+        const resetPasswordToken = generate.generate({
+            length: 32,
+            numbers: true,
+            symbols: false,
+            uppercase: true,
+            lowercase: true,
+        });
+
+        const resetPasswordTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+        user.resetPasswordToken = resetPasswordToken;
+        user.resetPasswordTokenExpiry = resetPasswordTokenExpiry;
+        await user.save();
+
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        await sendEmail(
+            {
+                name: user.name,
+                email: user.email,
+                token: resetPasswordToken,
+                tokenExpiry: resetPasswordTokenExpiry,
+                _id: user._id.toString(),
+                baseUrl,
+            },
+            'password-reset'
+        );
+
+        return { success: true };
+    } catch (error) {
+        console.error('Password reset error:', error);
         return { general: 'Internal server error' };
     }
 }
