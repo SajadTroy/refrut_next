@@ -56,6 +56,7 @@ export const sendEmailSignup = async (user: User) => {
 
     try {
         const transporter = nodemailer.createTransport({
+            service: process.env.EMAIL_SERVICE,
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
             secure: true, // true for 465, false for 587
