@@ -2,10 +2,29 @@
 
 import '@/styles/Login.css';
 import { signup, SignupFormState } from '@/app/(auth)/auth/signup/action';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 
 export default function SignupClient() {
   const [state, action, pending] = useActionState<SignupFormState, FormData>(signup, { errors: {} });
+  const [dateOfBirth, setDateOfBirth] = useState('');
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // Allow only digits
+    if (value.length > 8) value = value.slice(0, 8); // Limit to 8 digits (DDMMYYYY)
+
+    let formatted = '';
+    if (value.length > 0) {
+      formatted = value.slice(0, 2); // DD
+      if (value.length > 2) {
+        formatted += '/' + value.slice(2, 4); // DD/MM
+        if (value.length > 4) {
+          formatted += '/' + value.slice(4, 8); // DD/MM/YYYY
+        }
+      }
+    }
+
+    setDateOfBirth(formatted);
+  };
 
   return (
     <div className="login_container">
@@ -57,6 +76,8 @@ export default function SignupClient() {
             type="text"
             id="dateOfBirth"
             name="dateOfBirth"
+            value={dateOfBirth}
+            onChange={handleDateChange}
             placeholder="DD/MM/YYYY"
             required
           />
