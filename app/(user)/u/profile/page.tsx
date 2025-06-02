@@ -1,6 +1,6 @@
 import '@/styles/Profile.css';
 import UserProfileClient from './ProfileClient';
-import { verifySession } from '@/lib/session';
+import { destroySession, verifySession } from '@/lib/session';
 
 export async function generateMetadata() {
 
