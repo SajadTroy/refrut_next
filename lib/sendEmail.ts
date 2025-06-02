@@ -3,8 +3,8 @@ import nodemailer from 'nodemailer';
 export interface EmailUser {
     name: string;
     email: string;
-    token: string;
-    tokenExpiry: Date;
+    token?: string;
+    tokenExpiry?: Date;
     dateOfBirth?: Date;
     handle?: string;
     _id: string;
@@ -13,28 +13,49 @@ export interface EmailUser {
 
 export default async function sendEmail(
     user: EmailUser,
-    type: 'signup' | 'password-reset'
+    type: 'signup' | 'password-reset' | 'password-reset-confirmation'
 ): Promise<void> {
-    const expiry = new Date(user.tokenExpiry);
-    const formattedExpiry = `${expiry
-        .getHours()
-        .toString()
-        .padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry
-            .getSeconds()
-            .toString()
-            .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
-                .toString()
-                .padStart(2, '0')}:${expiry.getFullYear()}`;
+    let subject: string;
+    let message: string;
 
-    const link =
-        type === 'signup'
-            ? `${user.baseUrl}/api/verify/${user.token}`
-            : `${user.baseUrl}/auth/reset/${user.token}`;
-    const subject = type === 'signup' ? 'Account Verification' : 'Password Reset Link';
-    const message =
-        type === 'signup'
-            ? `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${link}">${link}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`
-            : `Hello <strong>${user.name}</strong>,<br> You requested a password reset. Please use the following link to reset your password: <strong><a href="${link}">${link}</a></strong>. This link will expire on: <strong>${formattedExpiry}</strong>.<br>If you did not request this, please contact our support team immediately.`;
+    if (type === 'signup') {
+        if (!user.token || !user.tokenExpiry) {
+            throw new Error('Token and expiry are required for signup email');
+        }
+        const expiry = new Date(user.tokenExpiry);
+        const formattedExpiry = `${expiry
+            .getHours()
+            .toString()
+            .padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}:${expiry.getFullYear()}`;
+        const verificationLink = `${user.baseUrl}/api/verify/${user.token}`;
+        subject = 'Account Verification';
+        message = `Hello <strong>${user.name}</strong>,<br> your account was created successfully. You need to verify your account using this link: <strong><a href="${verificationLink}">${verificationLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}.</strong>`;
+    } else if (type === 'password-reset') {
+        if (!user.token || !user.tokenExpiry) {
+            throw new Error('Token and expiry are required for password reset email');
+        }
+        const expiry = new Date(user.tokenExpiry);
+        const formattedExpiry = `${expiry
+            .getHours()
+            .toString()
+            .padStart(2, '0')}:${expiry.getMinutes().toString().padStart(2, '0')}:${expiry
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}:${expiry.getFullYear()}`;
+        const resetLink = `${user.baseUrl}/auuth/reset/${user.token}`;
+        subject = 'Password Reset Link';
+        message = `Hello <strong>${user.name}</strong>,<br> You requested a password reset. Please use the following link to reset your password: <strong><a href="${resetLink}">${resetLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}</strong>.<br>If you did not request this, please contact our support team immediately.`;
+    } else {
+        subject = 'Your Password Has Been Reset';
+        message = `Hello <strong>${user.name}</strong>,<br> The password for your account with the handle <strong>@${user.handle}</strong> has been reset. If this was not you, please contact our support team immediately.`;
+    }
 
     const htmlTemplate = `
     <!DOCTYPE html>
@@ -73,7 +94,6 @@ export default async function sendEmail(
 
     try {
         const transporter = nodemailer.createTransport({
-            service: process.env.EMAIL_SERVICE,
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
             secure: true, // true for 465
@@ -93,6 +113,6 @@ export default async function sendEmail(
         console.log(`Email sent successfully to ${user.email} for ${type}`);
     } catch (error) {
         console.error(`Error sending ${type} email:`, error);
-        throw error; // Let the caller handle the error
+        throw error;
     }
 }

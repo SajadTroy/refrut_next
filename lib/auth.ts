@@ -27,6 +27,14 @@ export type PasswordResetState = {
     success?: boolean;
 };
 
+export type ResetPasswordState = {
+    password?: string;
+    confirmPassword?: string;
+    token?: string;
+    general?: string;
+    success?: boolean;
+};
+
 export async function loginUser(email: string, password: string): Promise<LoginResState | undefined> {
     try {
         await connectDB();
@@ -232,6 +240,60 @@ export async function requestPasswordReset(email: string): Promise<PasswordReset
                 baseUrl,
             },
             'password-reset'
+        );
+
+        return { success: true };
+    } catch (error) {
+        console.error('Password reset error:', error);
+        return { general: 'Internal server error' };
+    }
+}
+
+export async function resetPassword(
+    resetToken: string,
+    password: string
+): Promise<ResetPasswordState> {
+    try {
+        await connectDB();
+
+        if (!resetToken) {
+            return { token: 'Invalid reset token' };
+        }
+        if (!password) {
+            return { password: 'Password is required' };
+        }
+        if (password.length < 8) {
+            return { password: 'Password must be at least 8 characters long' };
+        }
+
+        const user = await User.findOne({
+            resetPasswordToken: resetToken,
+            resetPasswordTokenExpiry: { $gt: new Date() },
+            isVerified: true,
+            status: 'active',
+        });
+
+        if (!user) {
+            return { token: 'Reset token not found or expired' };
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        user.resetPasswordToken = null;
+        user.resetPasswordTokenExpiry = null;
+        await user.save();
+
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        await sendEmail(
+            {
+                name: user.name,
+                email: user.email,
+                dateOfBirth: user.dateOfBirth,
+                handle: user.handle,
+                _id: user._id.toString(),
+                baseUrl,
+            },
+            'password-reset-confirmation'
         );
 
         return { success: true };
