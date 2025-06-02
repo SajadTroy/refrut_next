@@ -1,5 +1,5 @@
 import '@/styles/Login.css';
-import LoginClient from '@/app/(auth)/auth/login/loginClient';
+import LoginClient from '@/app/(auth)/auth/login/LoginClient';
 import { restrictUnauthorizedAccess } from '@/lib/session';
 
 
