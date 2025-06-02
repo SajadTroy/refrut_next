@@ -65,6 +65,11 @@ export async function createSession(userId: string, shouldRedirect: boolean = tr
     }
 }
 
+export async function getSession() {
+  const token = (await cookies()).get(cookie.name)?.value;
+  return await decrypt(token);
+}
+
 // Verify the current session
 export async function verifySession() {
     const token = (await cookies()).get(cookie.name)?.value;

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { logout, LogoutFormState } from '@/app/(user)/u/profile/action';
+import { logout, LogoutFormState, fetchUserProfile, FetchUserProfileState } from '@/app/(user)/u/profile/action';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -24,20 +24,31 @@ export interface ClientUser {
   lastLogin: string | null;
   roles: string[];
   status: 'active' | 'inactive' | 'banned';
-  socialLinks: {
-    x: string;
-    facebook: string;
-    instagram: string;
-    linkedin: string;
-    github: string;
-  };
 }
 
 export default function UserProfileClient({ userId }: { userId: string }) {
   const [user, setUser] = useState<ClientUser | null>(null);
-  const [imgSrc, setImgSrc] = useState(user?.profilePicture ?? '/img/avatars/default.png');
+  const [imgSrc, setImgSrc] = useState('/img/avatars/default.png');
+  const [error, setError] = useState<string | null>(null);
   const [state, action, pending] = useActionState<LogoutFormState, FormData>(logout, { errors: {} });
   const router = useRouter();
+
+  // Fetch user profile
+  useEffect(() => {
+    async function loadProfile() {
+      const result: FetchUserProfileState = await fetchUserProfile(userId);
+      if (result.success && result.user) {
+        setUser(result.user);
+        setImgSrc(result.user.profilePicture || '/img/avatars/default.png');
+      } else {
+        setError(result.errors?.general || 'Failed to load profile');
+        if (result.errors?.general?.includes('Unauthorized')) {
+          router.push('/auth/login');
+        }
+      }
+    }
+    loadProfile();
+  }, [userId, router]);
 
   // Handle redirect after successful logout
   useEffect(() => {
@@ -46,27 +57,14 @@ export default function UserProfileClient({ userId }: { userId: string }) {
     }
   }, [state, router]);
 
-  // Uncomment to fetch user data
-  // useEffect(() => {
-  //   fetch('/api/user/profile', {
-  //     method: 'POST',
-  //   }).then(res => {
-  //     if (res.ok) return res.json();
-  //     throw new Error('Unauthorized');
-  //   }).then(data => setUser(data.user))
-  //     .catch(() => {
-  //       window.location.href = '/auth/login';
-  //     });
-  // }, []);
-
-  useEffect(() => {
-    if (user?.profilePicture) {
-      setImgSrc(user.profilePicture);
-    }
-  }, [user]);
-
   return (
     <div className="profile-container">
+      {error && (
+        <div className="notification error">
+          {error}
+          <button onClick={() => setError(null)}>×</button>
+        </div>
+      )}
       <div className="top_profile">
         <div className="profile_header">
           <div className="profile_image">
@@ -132,7 +130,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
         </div>
         <div className="profile_button">
           <button className="follow_button">Edit Profile</button>
-          &nbsp;
+           
           <form action={action}>
             <button
               type="submit"
@@ -171,9 +169,6 @@ export default function UserProfileClient({ userId }: { userId: string }) {
           </>
         )}
       </div>
-
-      {/* User Posts (Commented Out) */}
-      {/* ... existing posts section ... */}
     </div>
   );
 }
