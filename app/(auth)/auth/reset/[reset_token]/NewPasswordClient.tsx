@@ -67,7 +67,7 @@ export default function NewPasswordClient({ resetToken, isValid }: { resetToken:
                         {pending ? 'Resetting...' : 'Reset'}
                     </button>
                 </div>
-                <div className="form_text">
+                <div className="form_text" style={{ marginTop: '10px' }}>
                     <p>
                         Back to <a href="/auth/login">Login</a>
                     </p>
