@@ -45,7 +45,7 @@ export const sendEmailSignup = async (user: User) => {
             </tr>
             <tr>
                 <td class="footer">
-                    <img src=src="https://refrut.vercel.app/img/res/logo.png" alt="Piecom Logo">
+                    <img src=src="https://refrut.vercel.app/img/res/logo.png" alt="Refrut">
                     <p>© Refrut. All rights reserved.</p>
                 </td>
             </tr>
