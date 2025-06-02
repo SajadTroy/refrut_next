@@ -130,7 +130,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
         </div>
         <div className="profile_button">
           <button className="follow_button">Edit Profile</button>
-           
+           &nbsp;
           <form action={action}>
             <button
               type="submit"
