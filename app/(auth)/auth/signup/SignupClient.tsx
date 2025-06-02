@@ -80,7 +80,7 @@ export default function SignupClient() {
             {pending ? 'Signing up...' : 'Sign Up'}
           </button>
         </div>
-        <div className="form_text">
+        <div className="form_text" style={{ marginTop: '10px' }}>
           <p>
             Already have an account? <a href="/auth/login">Login</a>
           </p>
