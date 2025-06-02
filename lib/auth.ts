@@ -1,9 +1,22 @@
 'use server';
-import connectDB from "@/lib/database";
-import User from "@/models/User";
-import bcrypt from "bcryptjs";
+
+import connectDB from '@/lib/database';
+import User from '@/models/User';
+import bcrypt from 'bcryptjs';
 import generate from 'generate-password';
-import sendEmail from "@/lib/sendEmail";
+import sendEmail from '@/lib/sendEmail';
+import { UAParser } from 'ua-parser-js';
+import fetch from 'node-fetch';
+
+interface IpApiResponse {
+    latitude?: number;
+    longitude?: number;
+    country_name?: string;
+    region?: string;
+    org?: string;
+    error?: boolean;
+    reason?: string;
+}
 
 export type LoginResState = {
     email?: string;
@@ -35,37 +48,134 @@ export type ResetPasswordState = {
     success?: boolean;
 };
 
-export async function loginUser(email: string, password: string): Promise<LoginResState | undefined> {
+async function getLocationData(ip: string): Promise<{
+    latitude?: number;
+    longitude?: number;
+    country?: string;
+    region?: string;
+    isp?: string;
+}> {
+    try {
+        const response = await fetch(`https://ipapi.co/${ip}/json/`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch location data');
+        }
+        const data = (await response.json()) as IpApiResponse;
+        return {
+            latitude: data.latitude,
+            longitude: data.longitude,
+            country: data.country_name,
+            region: data.region,
+            isp: data.org,
+        };
+    } catch (error) {
+        console.error('Error fetching location data:', error);
+        return {};
+    }
+}
+
+async function getDeviceData(userAgent: string): Promise<{
+    device?: string;
+    browser?: string;
+}> {
+    const parser = new UAParser(userAgent);
+    const result = parser.getResult();
+    return {
+        device: result.device.model || result.os.name || 'Unknown',
+        browser: result.browser.name || 'Unknown',
+    };
+}
+
+export async function loginUser(
+    email: string,
+    password: string,
+    ip: string,
+    userAgent: string
+): Promise<LoginResState> {
     try {
         await connectDB();
 
         if (!email || !password) {
-            return ({ email: "Email required", password: "Password required" });
+            return { email: 'Email required', password: 'Password required' };
         }
 
-        const user = await User.findOne({ email, status: "active", isVerified: true });
-        const bannedUser = await User.findOne({ email, status: "banned" });
+        const user = await User.findOne({ email, status: 'active', isVerified: true });
+        const bannedUser = await User.findOne({ email, status: 'banned' });
 
         if (bannedUser) {
-            return ({ email: "User is banned" });
+            return { email: 'User is banned' };
         }
         if (!user) {
-            return ({ email: "User not found" });
+            return { email: 'User not found' };
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return ({ password: "Invalid password" });
+            return { password: 'Invalid password' };
         }
 
-        // Optionally, update last login time
-        user.lastLogin = new Date();
+        const loginTime = new Date();
+        const locationData = await getLocationData(ip);
+        const deviceData = await getDeviceData(userAgent);
+
+        const loginDetails = {
+            ip,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+            country: locationData.country,
+            region: locationData.region,
+            isp: locationData.isp,
+            device: deviceData.device,
+            browser: deviceData.browser,
+            timestamp: loginTime,
+        };
+
+        // Check if this is a new login
+        const isNewLogin = !user.recentLogins.some(
+            (login: any) =>
+                login.ip === ip &&
+                login.device === deviceData.device &&
+                login.browser === deviceData.browser &&
+                login.country === locationData.country
+        );
+
+        // Update recent logins (limit to 5)
+        user.recentLogins.unshift(loginDetails);
+        if (user.recentLogins.length > 5) {
+            user.recentLogins = user.recentLogins.slice(0, 5);
+        }
+
+        user.lastLogin = loginTime;
         await user.save();
 
-        return ({ success: true, userId: user._id.toString() });
+        // Send new login notification if it's a new login
+        if (isNewLogin) {
+            const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+            await sendEmail(
+                {
+                    name: user.name,
+                    email: user.email,
+                    handle: user.handle,
+                    _id: user._id.toString(),
+                    baseUrl,
+                    ip,
+                    latitude: locationData.latitude,
+                    longitude: locationData.longitude,
+                    country: locationData.country,
+                    region: locationData.region,
+                    isp: locationData.isp,
+                    device: deviceData.device,
+                    browser: deviceData.browser,
+                    loginTime,
+                },
+                'new-login'
+            );
+        }
+
+        return { success: true, userId: user._id.toString() };
     } catch (error) {
-        console.error("Login error:", error);
-        return ({ general: "Internal server error" });
+        console.error('Login error:', error);
+        return { general: 'Internal server error' };
     }
 }
 

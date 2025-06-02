@@ -9,11 +9,20 @@ export interface EmailUser {
     handle?: string;
     _id: string;
     baseUrl: string;
+    ip?: string;
+    latitude?: number;
+    longitude?: number;
+    country?: string;
+    region?: string;
+    isp?: string;
+    device?: string;
+    browser?: string;
+    loginTime?: Date;
 }
 
 export default async function sendEmail(
     user: EmailUser,
-    type: 'signup' | 'password-reset' | 'password-reset-confirmation'
+    type: 'signup' | 'password-reset' | 'password-reset-confirmation' | 'new-login'
 ): Promise<void> {
     let subject: string;
     let message: string;
@@ -49,12 +58,39 @@ export default async function sendEmail(
                 .padStart(2, '0')}-${expiry.getDate().toString().padStart(2, '0')}:${(expiry.getMonth() + 1)
                     .toString()
                     .padStart(2, '0')}:${expiry.getFullYear()}`;
-        const resetLink = `${user.baseUrl}/auuth/reset/${user.token}`;
+        const resetLink = `${user.baseUrl}/auth/reset/${user.token}`; // Fixed typo: 'auuth' to 'auth'
         subject = 'Password Reset Link';
         message = `Hello <strong>${user.name}</strong>,<br> You requested a password reset. Please use the following link to reset your password: <strong><a href="${resetLink}">${resetLink}</a></strong>. This link will expire on: <strong>${formattedExpiry}</strong>.<br>If you did not request this, please contact our support team immediately.`;
-    } else {
+    } else if (type === 'password-reset-confirmation') {
         subject = 'Your Password Has Been Reset';
         message = `Hello <strong>${user.name}</strong>,<br> The password for your account with the handle <strong>@${user.handle}</strong> has been reset. If this was not you, please contact our support team immediately.`;
+    } else {
+        // new-login
+        if (!user.ip || !user.loginTime) {
+            throw new Error('IP and login time are required for new login email');
+        }
+        const loginTime = new Date(user.loginTime);
+        const formattedTime = `${loginTime
+            .getHours()
+            .toString()
+            .padStart(2, '0')}:${loginTime.getMinutes().toString().padStart(2, '0')}:${loginTime
+                .getSeconds()
+                .toString()
+                .padStart(2, '0')} on ${loginTime.getDate().toString().padStart(2, '0')}/${(loginTime.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}/${loginTime.getFullYear()}`;
+        subject = 'New Login Detected';
+        message = `Hello <strong>${user.name}</strong>,<br> A new login to your account with the handle <strong>@${user.handle}</strong> was detected.<br><br>` +
+            `Details:<br>` +
+            `- Time: <strong>${formattedTime}</strong><br>` +
+            `- IP Address: <strong>${user.ip}</strong><br>` +
+            (user.latitude && user.longitude ? `- Location: <strong>Lat ${user.latitude}, Lon ${user.longitude}</strong><br>` : '') +
+            (user.country ? `- Country: <strong>${user.country}</strong><br>` : '') +
+            (user.region ? `- Region: <strong>${user.region}</strong><br>` : '') +
+            (user.isp ? `- ISP: <strong>${user.isp}</strong><br>` : '') +
+            (user.device ? `- Device: <strong>${user.device}</strong><br>` : '') +
+            (user.browser ? `- Browser: <strong>${user.browser}</strong><br>` : '') +
+            `<br>If this was not you, please secure your account immediately by resetting your password or contacting our support team.`;
     }
 
     const htmlTemplate = `
@@ -96,7 +132,7 @@ export default async function sendEmail(
         const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
-            secure: true, // true for 465
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
