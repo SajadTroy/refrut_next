@@ -1,5 +1,6 @@
 import '@/styles/Profile.css';
 import UserProfileClient from './ProfileClient';
+import { verifySession } from '@/lib/session';
 
 export async function generateMetadata() {
 
@@ -20,6 +21,6 @@ export async function generateMetadata() {
 }
 
 export default async function UserProfile() {
-
-  return (<UserProfileClient/>);
+  const { userId } = await verifySession();
+  return (<UserProfileClient userId={userId} />);
 }

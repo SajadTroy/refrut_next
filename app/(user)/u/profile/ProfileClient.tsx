@@ -29,7 +29,7 @@ export interface ClientUser {
   };
 }
 
-export default function UserProfileClient() {
+export default function UserProfileClient({ userId }: {  userId: string }) {
   const [user, setUser] = useState<ClientUser | null>(null);
   const [imgSrc, setImgSrc] = useState(user?.profilePicture ?? '/img/avatars/default.png');
 

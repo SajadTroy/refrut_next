@@ -2,48 +2,53 @@
 import connectDB from "@/lib/database";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
 import generate from 'generate-password';
 import { sendEmailSignup } from "@/lib/sendEmail";
 import { cookies } from 'next/headers';
-const secret = process.env.JWT_SECRET || 'bakabaka';
-const isProd = process.env.NODE_ENV === 'production';
 
-export async function loginUser(email: string, password: string) {
+export type LoginResState = {
+    email?: string;
+    password?: string;
+    general?: string;
+    success?: boolean;
+    userId?: string;
+};
+
+export async function loginUser(email: string, password: string): Promise<LoginResState | undefined> {
     try {
         await connectDB();
         const cookieStore = await cookies();
 
         if (!email || !password) {
-            return ({ error: "Email and password are required" });
+            return ({ email: "Email required", password: "Password required" });
         }
         const user = await User.findOne({ email, status: "active", isVerified: true });
         const bannedUser = await User.findOne({ email, status: "banned" });
         if (bannedUser) {
-            return ({ error: "User is banned" });
+            return ({ email: "User is banned" });
         }
         if (!user) {
-            return ({ error: "User not found" });
+            return ({ email: "User not found" });
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return ({ error: "Invalid password" });
+            return ({ password: "Invalid password"});
         }
         // Optionally, update last login time
         user.lastLogin = new Date();
         await user.save();
 
-        const token = await jwt.sign({
-            userId: user._id,
-            email: user.email
-        }, secret);
+        // const token = await jwt.sign({
+        //     userId: user._id,
+        //     email: user.email
+        // }, secret);
 
-        cookieStore.set('token', token, { secure: isProd });
+        // cookieStore.set('token', token, { secure: isProd });
 
-        return ({ error: null });
+        return ({ success: true, userId: user._id.toString() });
     } catch (error) {
         console.error("Login error:", error);
-        return ({ error: "Internal server error" });
+        return ({ general: "Internal server error" });
     }
 }
 
@@ -146,7 +151,8 @@ export async function signupUser(fullName: string, email: string, dateOfBirth: s
             });
 
             return ({
-                error: null, message: 'Signup successful! Please check your email to verify your account.'});
+                error: null, message: 'Signup successful! Please check your email to verify your account.'
+            });
         } else {
             inactiveUser.name = fullName;
             inactiveUser.password = hashedPassword;
@@ -168,7 +174,8 @@ export async function signupUser(fullName: string, email: string, dateOfBirth: s
             });
 
             return ({
-                error: null, message: 'Signup successful! Please check your email to verify your account.'});
+                error: null, message: 'Signup successful! Please check your email to verify your account.'
+            });
         }
     } catch (error) {
         console.error("Signup error:", error);
