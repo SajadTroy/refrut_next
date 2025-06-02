@@ -29,7 +29,7 @@ export default async function sendEmail(
     const link =
         type === 'signup'
             ? `${user.baseUrl}/api/verify/${user.token}`
-            : `${user.baseUrl}/reset/${user.token}`;
+            : `${user.baseUrl}/auth/reset/${user.token}`;
     const subject = type === 'signup' ? 'Account Verification' : 'Password Reset Link';
     const message =
         type === 'signup'
