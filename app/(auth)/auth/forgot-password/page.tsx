@@ -1,5 +1,6 @@
 import '@/styles/Login.css';
 import ForgotPasswordClient from './ForgotPAsswordClient';
+import { restrictUnauthorizedAccess } from '@/lib/session';
 
 export const metadata = {
   title: "Forgot Password - Refrut",
@@ -13,6 +14,7 @@ export const metadata = {
   },
 };
 
-export default function ForgotPassword() {
+export default async function ForgotPassword() {
+  await restrictUnauthorizedAccess();
   return (<ForgotPasswordClient />);
 }
