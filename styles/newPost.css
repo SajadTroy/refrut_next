@@ -95,7 +95,6 @@
 
 .home_container .posting-card__button:not(:disabled):hover {
   background-color: #222222;
-  transform: translateY(-1px);
 }
 
 /* ==== RESPONSIVE ADJUSTMENTS ==== */
@@ -148,3 +147,28 @@
     padding: 4px 6px;
   }
 }
+
+/* Existing CSS from previous response, with error message styling */
+.home_container .posting-card__error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  text-align: left;
+  width: 100%;
+}
+
+@media only screen and (max-width: 480px) {
+  .home_container .posting-card__error {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .home_container .posting-card__error {
+    font-size: 0.6875rem;
+    margin-bottom: 4px;
+  }
+}
+
+/* Include the rest of your CSS from the previous response */
