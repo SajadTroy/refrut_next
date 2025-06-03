@@ -19,11 +19,28 @@ export default async function RootLayout({
   }
 
   const rawHeaders = await headers();
-  // Read the custom header set by middleware
-  const pathname = rawHeaders.get('x-custom-pathname') || '/';
+  const allHeaders = Object.fromEntries(rawHeaders.entries());
+  console.log('All headers:', allHeaders);
 
-  console.log('All headers:', Object.fromEntries(rawHeaders.entries()));
-  console.log('Pathname:', pathname);
+  // Try x-custom-pathname first (if middleware is set up)
+  let pathname = allHeaders['x-custom-pathname'] || null;
+
+  // Fallback to referer if x-custom-pathname is not set
+  if (!pathname && allHeaders['referer']) {
+    try {
+      const url = new URL(allHeaders['referer']);
+      pathname = url.pathname;
+      console.log('Using referer pathname:', pathname);
+    } catch (error) {
+      console.error('Error parsing referer:', error);
+      pathname = '/';
+    }
+  } else if (!pathname) {
+    console.warn('x-custom-pathname and referer not set, defaulting to "/"');
+    pathname = '/';
+  }
+
+  console.log('Final pathname:', pathname);
 
   return (
     <html lang="en">
