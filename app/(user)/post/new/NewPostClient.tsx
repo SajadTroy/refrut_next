@@ -1,4 +1,3 @@
-// app/new/NewPostForm.tsx
 'use client';
 
 import { useActionState } from 'react';
