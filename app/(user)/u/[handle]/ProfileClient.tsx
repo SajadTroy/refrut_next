@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getUser, isFollowing } from '@/app/(user)/u/[handle]/action';
+import { followUser, getUser, isFollowing, unfollowUser } from '@/app/(user)/u/[handle]/action';
 
 // Assuming Skeleton is from a library like react-loading-skeleton
 import Skeleton from 'react-loading-skeleton';
@@ -105,6 +105,43 @@ export default function ProfileClient({ handle }: { handle: string }) {
     checkFollowing();
   }, [handle, router]);
 
+  const handleFollowToggle = async () => {
+    if (!user) return;
+    try {
+      let result;
+      if (isFollowingUser) {
+        result = await unfollowUser(handle);
+        if (result.success) {
+          setIsFollowingUser(false);
+          setFollowers(followers ? followers.filter(f => f.follower !== user._id) : null);
+        }
+      } else {
+        result = await followUser(handle);
+        if (result.success) {
+          setIsFollowingUser(true);
+          setFollowers(followers ? [...followers, {
+            _id: `temp-${Date.now()}`, // Temporary ID
+            follower: user._id,
+            following: user._id,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }] : [{
+            _id: `temp-${Date.now()}`,
+            follower: user._id,
+            following: user._id,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }]);
+        }
+      }
+      if (result.error) {
+        setError(result.error);
+      }
+    } catch (err) {
+      setError('An error occurred while updating follow status');
+    }
+  };
+
   return (
     <div className="profile-container">
       {error && (error)}
@@ -173,7 +210,7 @@ export default function ProfileClient({ handle }: { handle: string }) {
         </div>
         <div className="profile_button">
           <form style={{ width: '100%' }}>
-            <button
+            <button onClick={handleFollowToggle}
               type="submit"
               className={`follow_button ${isFollowingUser ? 'following' : null}`}>
               {isFollowingUser ? "Unfollow" : "Follow"}

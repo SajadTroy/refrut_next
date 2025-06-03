@@ -113,3 +113,83 @@ export async function isFollowing(handle: string): Promise<boolean> {
     return false;
   }
 }
+
+export async function followUser(handle: string): Promise<{ success?: boolean; error?: string }> {
+  try {
+    await connectDB();
+
+    if (!handle) {
+      return { error: "Required user handle." };
+    }
+
+    const session = await getSessionUserDetails();
+    if (!session.userId) {
+      return { error: "User not authenticated." };
+    }
+
+    const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
+    if (!publicUser) {
+      return { error: "User not found." };
+    }
+
+    if (publicUser._id.toString() === session.userId) {
+      return { error: "Cannot follow yourself." };
+    }
+
+    const existingFollow = await Follow.findOne({
+      follower: session.userId,
+      following: publicUser._id,
+    }).exec();
+
+    if (existingFollow) {
+      return { error: "Already following this user." };
+    }
+
+    const follow = new Follow({
+      follower: session.userId,
+      following: publicUser._id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    await follow.save();
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error following user:', error);
+    return { error: "An error occurred while following the user." };
+  }
+}
+
+export async function unfollowUser(handle: string): Promise<{ success?: boolean; error?: string }> {
+  try {
+    await connectDB();
+
+    if (!handle) {
+      return { error: "Required user handle." };
+    }
+
+    const session = await getSessionUserDetails();
+    if (!session.userId) {
+      return { error: "User not authenticated." };
+    }
+
+    const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
+    if (!publicUser) {
+      return { error: "User not found." };
+    }
+
+    const follow = await Follow.findOneAndDelete({
+      follower: session.userId,
+      following: publicUser._id,
+    }).exec();
+
+    if (!follow) {
+      return { error: "Not following this user." };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+    return { error: "An error occurred while unfollowing the user." };
+  }
+}
