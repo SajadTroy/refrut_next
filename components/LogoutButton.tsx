@@ -4,13 +4,14 @@ import '@/styles/Profile.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { logout, LogoutFormState } from '@/app/(user)/u/profile/action';
 import { useActionState } from 'react';
+import Link from 'next/link';
 
 export default function LogoutButton() {
     const [state, action, pending] = useActionState<LogoutFormState, FormData>(logout, { errors: {} });
 
     return (
         <div className="profile_button">
-            <button className="follow_button">Edit Profile</button>
+            <Link href={'/u/profile/edit'} className="follow_button">Edit Profile</Link>
             &nbsp;&nbsp;
             <form action={action}>
                 <button

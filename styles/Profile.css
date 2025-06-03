@@ -97,6 +97,9 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .profile-container .top_profile .profile_button .follow_button:hover {
