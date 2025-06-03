@@ -25,7 +25,6 @@ export default async function RootLayout({
 
   const rawHeaders = await headers();
   const allHeaders = Object.fromEntries(rawHeaders.entries());
-  console.log('All headers:', allHeaders);
 
   // Try x-custom-pathname first (if middleware is added later)
   let pathname = allHeaders['x-custom-pathname'] || null;
@@ -37,7 +36,6 @@ export default async function RootLayout({
       // Ensure referer hostname matches current host to avoid external referers
       if (url.hostname === allHeaders['host']) {
         pathname = url.pathname;
-        console.log('Using referer pathname:', pathname);
       } else {
         console.warn('Referer hostname mismatch:', url.hostname, 'vs', allHeaders['host']);
         pathname = '/';
