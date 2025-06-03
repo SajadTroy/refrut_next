@@ -115,3 +115,8 @@ export async function destroySession() {
     });
     redirect('/auth/login');
 }
+
+export async function checkAuthStatus(): Promise<boolean> {
+  const session = await getSessionUserDetails();
+  return session.isAuthenticated;
+}
