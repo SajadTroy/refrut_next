@@ -39,7 +39,6 @@ interface User {
   bio?: string;
   profilePicture?: string;
   dateOfBirth?: Date;
-  createdAt: Date;
   isVerified: boolean;
   roles: string[];
   status: string;

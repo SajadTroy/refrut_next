@@ -37,7 +37,6 @@ interface User {
   bio?: string;
   profilePicture?: string;
   dateOfBirth?: Date;
-  createdAt: Date;
   isVerified: boolean;
   roles: string[];
   status: string;
@@ -82,7 +81,7 @@ export async function getUser(handle: string): Promise<UserResponse> {
 
     const session = await getSessionUserDetails();
 
-    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -resetPasswordToken -verificationTokenExpiry -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins').exec() as User | null;
+    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -updatedAt -createdAt -resetPasswordToken -verificationTokenExpiry -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins').exec() as User | null;
 
     if (!publicUser) {
       return { handle: "No user found" };
