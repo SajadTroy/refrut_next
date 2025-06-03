@@ -1,34 +1,10 @@
-'use client';
-
 import '@/styles/Profile.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { logout, LogoutFormState, fetchUserProfile, FetchUserProfileState } from '@/app/(user)/u/profile/action';
-import { useActionState } from 'react';
-import { useRouter } from 'next/navigation';
-
-interface Post {
-  _id: string;
-  parentPost?: string;
-  author: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  likes: string[];
-  cchildPosts: string[];
-  tags: string[];
-}
-
-interface Follow {
-  _id: string;
-  follower: string;
-  following: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { fetchUserProfile, FetchUserProfileState } from '@/app/(user)/u/profile/action';
+import LogoutButton from '@/components/LogoutButton';
 
 export interface ClientUser {
   _id: string;
@@ -46,59 +22,22 @@ export interface ClientUser {
   status: 'active' | 'inactive' | 'banned';
 }
 
-export default function UserProfileClient({ userId }: { userId: string }) {
-  const [user, setUser] = useState<ClientUser | null>(null);
-  const [followers, setFollowers] = useState<Follow[] | null>(null);
-  const [followings, setFollowings] = useState<Follow[] | null>(null);
-  const [posts, setPosts] = useState<Post[] | null>(null);
-  const [imgSrc, setImgSrc] = useState('/img/avatars/default.png');
-  const [error, setError] = useState<string | null>(null);
-  const [state, action, pending] = useActionState<LogoutFormState, FormData>(logout, { errors: {} });
-  const router = useRouter();
+export default async function UserProfileClient({ userId }: { userId: string }) {
+  const result: FetchUserProfileState = await fetchUserProfile(userId);
 
-  // Fetch user profile
-  useEffect(() => {
-    async function loadProfile() {
-      const result: FetchUserProfileState = await fetchUserProfile(userId);
-      if (result.success && result.user) {
-        setUser(result.user);
-        setFollowers(result.followers || null);
-        setFollowings(result.followings || null);
-        setPosts(result.posts || null);
-        setImgSrc(result.user.profilePicture || '/img/avatars/default.png');
-      } else {
-        setError(result.errors?.general || 'Failed to load profile');
-        if (result.errors?.general?.includes('Unauthorized')) {
-          router.push('/auth/login');
-        }
-      }
-    }
-    loadProfile();
-  }, [userId, router]);
-
-  // Handle redirect after successful logout
-  useEffect(() => {
-    if (state?.success) {
-      router.push('/auth/login');
-    }
-  }, [state, router]);
+  const imageSrc = result.user?.profilePicture?.startsWith('http')
+    ? result.user?.profilePicture
+    : '/img/avatars/default.png';
 
   return (
     <div className="profile-container">
-      {error && (
-        <div className="notification error">
-          {error}
-          <button onClick={() => setError(null)}>×</button>
-        </div>
-      )}
       <div className="top_profile">
         <div className="profile_header">
           <div className="profile_image">
-            {user ? (
+            {result.user ? (
               <Image
-                src={imgSrc}
-                alt={`Avatar of ${user?.name || 'User'}`}
-                onError={() => setImgSrc('/img/avatars/default.png')}
+                src={imageSrc}
+                alt={`Avatar of ${result.user?.name}`}
                 width={100}
                 height={100}
                 className="profile_avatar"
@@ -109,10 +48,10 @@ export default function UserProfileClient({ userId }: { userId: string }) {
           </div>
           <div className="profile_details">
             <h1 className="profile_name">
-              {user ? (
+              {result.user ? (
                 <>
-                  {user.name}
-                  {user.roles.includes('creator') && (
+                  {result.user.name}
+                  {result.user.roles.includes('creator') && (
                     <div className="verified">
                       <svg
                         width="24"
@@ -131,51 +70,33 @@ export default function UserProfileClient({ userId }: { userId: string }) {
               )}
             </h1>
             <span style={{ marginTop: '2px' }} className="profile_handle">
-              {user ? `@${user.handle}` : <Skeleton width={100} />}
+              {result.user ? `@${result.user.handle}` : <Skeleton width={100} />}
             </span>
           </div>
         </div>
         <div className="profile_about">
           <p className="profile_bio">
-            {user ? user.bio || 'This user has not set a bio yet.' : <Skeleton width={200} />}
+            {result.user ? result.user.bio || 'This user has not set a bio yet.' : <Skeleton width={200} />}
           </p>
         </div>
         <div className="profile_stats">
           <div className="stat_item">
-            <span className="stat_value">{posts?.length || 0}</span>
+            <span className="stat_value">{result.posts?.length || 0}</span>
             <span className="stat_label">Posts</span>
           </div>
           <div className="stat_item">
-            <span className="stat_value">{followers?.length || 0}</span>
+            <span className="stat_value">{result.followers?.length || 0}</span>
             <span className="stat_label">Followers</span>
           </div>
           <div className="stat_item">
-            <span className="stat_value">{followings?.length || 0}</span>
+            <span className="stat_value">{result.followings?.length || 0}</span>
             <span className="stat_label">Following</span>
           </div>
         </div>
-        <div className="profile_button">
-          <button className="follow_button">Edit Profile</button>
-          &nbsp;
-          <form action={action}>
-            <button
-              type="submit"
-              className="follow_button following"
-              style={{ width: '120px' }}
-              disabled={pending}
-            >
-              {pending ? 'Wait...' : 'Logout'}
-            </button>
-          </form>
-          {state?.errors?.general && (
-            <div className="form_text error">
-              <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.general}</p>
-            </div>
-          )}
-        </div>
+        <LogoutButton />
       </div>
       <div className="tabs">
-        {user ? (
+        {result.user ? (
           <>
             <div className="tab">
               <Link href={`/u/profile`}>Posts</Link>
@@ -186,10 +107,10 @@ export default function UserProfileClient({ userId }: { userId: string }) {
           </>
         ) : (
           <>
-            <div className="tab active">
+            <div className="tab">
               <Skeleton width={50} />
             </div>
-            <div className="tab">
+            <div className="tab active">
               <Skeleton width={50} />
             </div>
           </>
