@@ -1,5 +1,6 @@
 import '@/styles/home.css';
 import HomeClient from './HomeClient';
+import { restrictUnauthorizedAccess } from '@/lib/session';
 
 export const metadata = {
   title: "Refrut",
@@ -13,6 +14,8 @@ export const metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+
+  await restrictUnauthorizedAccess();
   return (<HomeClient />)
 };
