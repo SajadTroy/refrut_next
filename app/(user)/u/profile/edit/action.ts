@@ -69,7 +69,10 @@ export async function updateProfile(
     // Check for duplicate handle
     try {
         await connectDB();
-        const existingUser = await User.findOne({ handle, _id: { $ne: session.userId } });
+        const existingUser = await User.findOne({
+            handle: { $regex: `^${handle}$`, $options: 'i' }, // case-insensitive exact match
+            _id: { $ne: session.userId } // exclude current user
+        });
         if (existingUser) {
             errors.handle = 'This handle is already taken.';
         }
