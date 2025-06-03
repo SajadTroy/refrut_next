@@ -83,3 +83,33 @@ export async function getUser(handle: string): Promise<UserResponse> {
     return { handle: "An error occurred while fetching user data" };
   }
 }
+
+export async function isFollowing(handle: string): Promise<boolean> {
+  try {
+    await connectDB();
+
+    if (!handle) {
+      return false;
+    }
+
+    const session = await getSessionUserDetails();
+    if (!session.userId) {
+      return false;
+    }
+
+    const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
+    if (!publicUser) {
+      return false;
+    }
+
+    const follow = await Follow.findOne({
+      follower: session.userId,
+      following: publicUser._id,
+    }).exec();
+
+    return !!follow;
+  } catch (error) {
+    console.error('Error checking follow status:', error);
+    return false;
+  }
+}

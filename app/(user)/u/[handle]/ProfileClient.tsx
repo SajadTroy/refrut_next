@@ -3,9 +3,9 @@
 import '@/styles/Profile.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getUser } from '@/app/(user)/u/[handle]/action';
+import { getUser, isFollowing } from '@/app/(user)/u/[handle]/action';
 
 // Assuming Skeleton is from a library like react-loading-skeleton
 import Skeleton from 'react-loading-skeleton';
@@ -58,6 +58,7 @@ export default function ProfileClient({ handle }: { handle: string }) {
   const [followers, setFollowers] = useState<Follow[] | null>(null);
   const [followings, setFollowings] = useState<Follow[] | null>(null);
   const [posts, setPosts] = useState<Post[] | null>(null);
+  const [isFollowingUser, setIsFollowingUser] = useState(false)
   const [imgSrc, setImgSrc] = useState('/img/avatars/default.png');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -87,24 +88,26 @@ export default function ProfileClient({ handle }: { handle: string }) {
     loadProfile();
   }, [handle, router]);
 
-  // Mock logout action (replace with actual logout logic)
-  const handleLogout = async () => {
-    try {
-      // Implement actual logout logic here, e.g., clear session
-      router.push('/auth/login');
-    } catch (err) {
-      setError('Failed to logout');
+  
+  useEffect(() => {
+    async function checkFollowing() {
+      try {
+        const followingStatus: Boolean = await isFollowing(handle);
+        if (followingStatus) {
+          setIsFollowingUser(true);
+        } else {
+          setIsFollowingUser(false);
+        }
+      } catch (err) {
+        setError('An error occurred while loading the follow status');
+      }
     }
-  };
+    checkFollowing();
+  }, [handle, router]);
 
   return (
     <div className="profile-container">
-      {error && (
-        <div className="notification error">
-          {error}
-          <button onClick={() => setError(null)}>×</button>
-        </div>
-      )}
+      {error && (error)}
       <div className="top_profile">
         <div className="profile_header">
           <div className="profile_image">
@@ -169,11 +172,11 @@ export default function ProfileClient({ handle }: { handle: string }) {
           </div>
         </div>
         <div className="profile_button">
-          <form action={handleLogout} style={{ width: '100%' }}>
+          <form style={{ width: '100%' }}>
             <button
               type="submit"
-              className="follow_button">
-              Follow
+              className={`follow_button ${isFollowingUser ? 'following' : null}`}>
+              {isFollowingUser ? "Unfollow" : "Follow"}
             </button>
           </form>
         </div>
