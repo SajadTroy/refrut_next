@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "pages/404.ts"
-, "pages/api/waitlist/route.js", "app/(auth)/auth/login"  ],
+, "pages/api/waitlist/route.js", "app/(auth)/auth/login", "app/(user)/action.ts", "app/(user)/HomeClient.tsx", "lib/database.ts"  ],
   "exclude": [
     "node_modules"
   ]

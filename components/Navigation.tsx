@@ -84,8 +84,8 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
             </div>
             {isAuthenticated && (
               <>
-                <div className={`nav_item ${pathname === '/new' ? 'active' : ''}`}>
-                  <Link href="/new">
+                <div className={`nav_item ${pathname === '/post/new' ? 'active' : ''}`}>
+                  <Link href="/post/new">
                     <div className="nav_icon">
                       <svg
                         width="24"
@@ -241,8 +241,8 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
           </div>
           {isAuthenticated && (
             <>
-              <div className={`nav_item ${pathname === '/new' ? 'active' : ''}`}>
-                <Link href="/new">
+              <div className={`nav_item ${pathname === '/post/new' ? 'active' : ''}`}>
+                <Link href="/post/new">
                   <div className="nav_icon">
                     <svg
                       width="24"

@@ -1,7 +1,7 @@
 'use server';
 
 import connectDB from '@/lib/database';
-import User from '@/models/User';
+import { User } from "@/models";
 import bcrypt from 'bcryptjs';
 import generate from 'generate-password';
 import sendEmail from '@/lib/sendEmail';

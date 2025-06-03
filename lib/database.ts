@@ -1,17 +1,21 @@
-import mongoose from 'mongoose';
+// /lib/database.ts
+import mongoose from "mongoose";
 
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI!);
-    console.log(`MongoDB connected: ${conn.connection.host}`);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(`Error: ${error.message}`);
-    } else {
-      console.error('Unknown error connecting to MongoDB');
-    }
-    process.exit(1);
+const MONGODB_URI = process.env.MONGODB_URI!;
+if (!MONGODB_URI) throw new Error("Please define MONGODB_URI in .env.local");
+
+let cached = (global as any).mongoose;
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
+
+export default async function connectDB() {
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    cached.promise = mongoose
+      .connect(MONGODB_URI, { bufferCommands: false })
+      .then((mongooseInstance) => mongooseInstance);
   }
-};
-
-export default connectDB;
+  cached.conn = await cached.promise;
+  return cached.conn;
+}

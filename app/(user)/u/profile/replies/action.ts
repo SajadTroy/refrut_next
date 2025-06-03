@@ -2,9 +2,7 @@
 
 import { destroySession, getSession } from '@/lib/session';
 import connectDB from '@/lib/database';
-import User from '@/models/User';
-import Follow from '@/models/Follow';
-import Post from '@/models/Post';
+import { User, Post, Follow } from "@/models";
 
 export type LogoutFormState = {
   errors?: {

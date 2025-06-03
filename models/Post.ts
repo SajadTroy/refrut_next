@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     likes: { type: [mongoose.Types.ObjectId] , ref: 'User', default: [] },
-    cchildPosts: [{ type: mongoose.Types.ObjectId, ref: 'Post', default: [] }],
+    childPosts: [{ type: mongoose.Types.ObjectId, ref: 'Post', default: [] }],
     tags: { type: [String], default: [] },
 });
 

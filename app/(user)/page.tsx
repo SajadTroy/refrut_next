@@ -1,5 +1,4 @@
 import '@/styles/home.css';
-import HomeClient from './HomeClient';
 import { verifySession } from '@/lib/session';
 
 export const metadata = {
@@ -17,5 +16,7 @@ export const metadata = {
 export default async function Home() {
 
   await verifySession();
-  return (<HomeClient />)
+  return (
+    <></>
+  )
 };
