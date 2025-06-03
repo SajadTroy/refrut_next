@@ -15,7 +15,6 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  // 1) Determine if user is authenticated (server‐side)
   let isAuthenticated = false;
   try {
     isAuthenticated = await checkAuthStatus();
@@ -24,9 +23,6 @@ export default async function RootLayout({
     isAuthenticated = false;
   }
 
-  // 2) Extract current pathname from headers()
-  //    Next.js injects a header named 'x-invoke-path' that holds the request’s path.
-  //    We build a URL with a dummy origin to read pathname.
   const rawHeaders = await headers();
   const invokedPath = rawHeaders.get('x-invoke-path') || '/';
   const pathname = new URL(invokedPath, 'http://example.com').pathname;
@@ -42,9 +38,6 @@ export default async function RootLayout({
         />
       </head>
       <body>
-        {/* 
-          3) Pass both `isAuthenticated` and `pathname` into Navigation (server component) 
-        */}
         <Navigation isAuthenticated={isAuthenticated} pathname={pathname}>
           {children}
         </Navigation>
