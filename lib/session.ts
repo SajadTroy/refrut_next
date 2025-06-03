@@ -99,10 +99,10 @@ export async function restrictUnauthorizedAccess(shouldRedirect: boolean = true)
     const session = await decrypt(token);
 
     if (session?.userId && shouldRedirect) {
-        return;
+        redirect('/u/profile');
     }
 
-   redirect('/auth/login');
+    return { isAuthorized: !!session?.userId, userId: session?.userId || null };
 }
 
 // Destroy the session
