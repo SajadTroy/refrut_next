@@ -48,100 +48,104 @@ export default function EditProfile({ userId }: { userId: String }) {
         let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
         if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
         if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
-        if (value.length > 10) value = value.slice(0, 10); // Limit to MM/DD/YYYY
+        if (value.length > 10) value = value.slice(0, 10); // Limit to DD/MM/YYYY
         setDateOfBirth(value);
     };
 
     // Redirect on successful update
     useEffect(() => {
         if (state?.success) {
-            router.push('/u/profile'); // Redirect to profile page or wherever you prefer
+            router.push('/u/profile');
         }
     }, [state, router]);
 
     return (
         <div className="login_container">
             <form action={action} name="form">
-                {/* Name */}
-                <div className="form_group">
-                    <label htmlFor="name">
-                        Full Name<span className="red">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your full name"
-                        defaultValue={user?.name || ''}
-                        required
-                    />
-                </div>
-                <div className="form_text error">
-                    {state?.errors?.name && (
-                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.name}</p>
-                    )}
-                </div>
-
-                {/* Email (Disabled) */}
-                <div className="form_group">
-                    <label htmlFor="email">
-                        Email<span className="red">*</span>
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        defaultValue={user?.email || ''}
-                        disabled
-                        required
-                    />
-                </div>
-                <div className="form_text error">
-                    {state?.errors?.email && (
-                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.email}</p>
-                    )}
-                </div>
-
-                {/* Username (Handle) */}
-                <div className="form_group">
-                    <label htmlFor="handle">
-                        Username<span className="red">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        id="handle"
-                        name="handle"
-                        placeholder="Enter your username"
-                        defaultValue={user?.handle || ''}
-                        required
-                    />
-                </div>
-                <div className="form_text error">
-                    {state?.errors?.handle && (
-                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.handle}</p>
-                    )}
+                {/* Row 1: Name and Email */}
+                <div className="form_row">
+                    {/* Name */}
+                    <div className="form_group">
+                        <label htmlFor="name">
+                            Full Name<span className="red">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your full name"
+                            defaultValue={user?.name || ''}
+                            required
+                        />
+                        <div className="form_text error">
+                            {state?.errors?.name && (
+                                <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.name}</p>
+                            )}
+                        </div>
+                    </div>
+                    {/* Email (Disabled) */}
+                    <div className="form_group">
+                        <label htmlFor="email">
+                            Email<span className="red">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            defaultValue={user?.email || ''}
+                            disabled
+                            required
+                        />
+                        <div className="form_text error">
+                            {state?.errors?.email && (
+                                <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.email}</p>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Date of Birth */}
-                <div className="form_group">
-                    <label htmlFor="dateOfBirth">
-                        Date of Birth (DD/MM/YYYY)
-                    </label>
-                    <input
-                        type="text"
-                        id="dateOfBirth"
-                        name="dateOfBirth"
-                        placeholder="DD/MM/YYYY"
-                        value={dateOfBirth}
-                        onChange={handleDateOfBirthChange}
-                        maxLength={10}
-                    />
-                </div>
-                <div className="form_text error">
-                    {state?.errors?.dateOfBirth && (
-                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.dateOfBirth}</p>
-                    )}
+                {/* Row 2: Handle and Date of Birth */}
+                <div className="form_row">
+                    {/* Username (Handle) */}
+                    <div className="form_group">
+                        <label htmlFor="handle">
+                            Username<span className="red">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="handle"
+                            name="handle"
+                            placeholder="Enter your username"
+                            defaultValue={user?.handle || ''}
+                            required
+                        />
+                        <div className="form_text error">
+                            {state?.errors?.handle && (
+                                <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.handle}</p>
+                            )}
+                        </div>
+                    </div>
+                    {/* Date of Birth */}
+                    <div className="form_group">
+                        <label htmlFor="dateOfBirth">
+                            Date of Birth (DD/MM/YYYY)
+                        </label>
+                        <input
+                            type="text"
+                            id="dateOfBirth"
+                            name="dateOfBirth"
+                            placeholder="DD/MM/YYYY"
+                            value={dateOfBirth}
+                            onChange={handleDateOfBirthChange}
+                            maxLength={10}
+                        />
+                        <div className="form_text error">
+                            {state?.errors?.dateOfBirth && (
+                                <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.dateOfBirth}</p>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 {/* Bio */}
@@ -155,11 +159,11 @@ export default function EditProfile({ userId }: { userId: String }) {
                         maxLength={160}
                         className="form_textarea"
                     />
-                </div>
-                <div className="form_text error">
-                    {state?.errors?.bio && (
-                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.bio}</p>
-                    )}
+                    <div className="form_text error">
+                        {state?.errors?.bio && (
+                            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.bio}</p>
+                        )}
+                    </div>
                 </div>
 
                 {/* General Error */}

@@ -2,7 +2,6 @@
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    /* Prevent horizontal overflow */
 }
 
 .login_container {
@@ -20,10 +19,8 @@
 .login_container form {
     width: 100%;
     max-width: 600px;
-    /* Increased for desktop row layout */
     display: flex;
     flex-direction: column;
-    margin-top: 50px;
     gap: 16px;
 }
 
@@ -37,7 +34,6 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    /* Equal width for name and email in row */
 }
 
 .login_container form .form_group a {
@@ -106,15 +102,20 @@
     margin-bottom: 8px;
 }
 
-/* Desktop layout: Name and Email in a row */
+/* Desktop layout: Name and Email in one row, Handle and DOB in another */
 @media only screen and (min-width: 768px) {
     .login_container form .form_row {
         flex-direction: row;
         gap: 24px;
     }
 
-    .login_container form .form_group {
+    .login_container form .form_row .form_group {
         flex: 1;
+    }
+
+    /* Ensure error messages don't disrupt the layout */
+    .login_container form .form_text.error {
+        min-height: 20px; /* Reserve space for error messages */
     }
 }
 
@@ -152,7 +153,6 @@
 
 /* Ultra-narrow screens */
 @media only screen and (max-width: 320px) {
-
     .login_container form .form_group input,
     .login_container form .form_group textarea {
         padding: 13px;
