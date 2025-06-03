@@ -1,11 +1,12 @@
 'use server';
 
-import { getSession } from '@/lib/session';
+import { getSessionUserDetails } from '@/lib/session';
 import connectDB from '@/lib/database';
 import User from '@/models/User';
 import Follow from '@/models/Follow';
 import { redirect } from 'next/navigation';
 import Post from '@/models/Post';
+import mongoose from 'mongoose';
 
 // Define TypeScript interfaces based on Mongoose schemas
 interface LoginDetail {
@@ -68,6 +69,7 @@ interface UserResponse {
   followings?: Follow[];
   posts?: Post[];
   handle?: string;
+  redirect?: string; // Added to indicate redirect URL
 }
 
 export async function getUser(handle: string): Promise<UserResponse> {
@@ -78,10 +80,16 @@ export async function getUser(handle: string): Promise<UserResponse> {
       return { handle: "Required user handle." };
     }
 
-    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -resetPasswordToken -verificationTokenExpiry -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins').lean().exec() as User | null;
+    const session = await getSessionUserDetails();
+
+    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -resetPasswordToken -verificationTokenExpiry -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins').exec() as User | null;
 
     if (!publicUser) {
       return { handle: "No user found" };
+    }
+
+    if (publicUser._id.toString() === session.userId) {
+      return { redirect: '/u/profile' };
     }
 
     const userFollowers = await Follow.find({ following: publicUser._id }).exec() as Follow[];

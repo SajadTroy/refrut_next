@@ -70,6 +70,17 @@ export async function getSession() {
   return await decrypt(token);
 }
 
+// Get session user details
+export async function getSessionUserDetails() {
+    const token = (await cookies()).get(cookie.name)?.value;
+    const session = await decrypt(token);
+
+    return {
+        userId: session?.userId || null,
+        isAuthenticated: !!session?.userId
+    };
+}
+
 // Verify the current session
 export async function verifySession() {
     const token = (await cookies()).get(cookie.name)?.value;

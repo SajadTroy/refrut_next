@@ -3,7 +3,7 @@
 import '@/styles/Profile.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getUser } from '@/app/(user)/u/[handle]/action';
 
@@ -71,6 +71,7 @@ interface UserResponse {
   followings?: Follow[];
   posts?: Post[];
   handle?: string;
+  redirect?: string; // Added to indicate redirect URL
 }
 
 export default function ProfileClient({ handle }: { handle: string }) {
@@ -86,7 +87,9 @@ export default function ProfileClient({ handle }: { handle: string }) {
     async function loadProfile() {
       try {
         const result: UserResponse = await getUser(handle);
-        if (result.user) {
+        if (result.redirect) {
+          router.push(result.redirect); // Use router.push instead of redirect
+        } else if (result.user) {
           setUser(result.user);
           setFollowers(result.followers || null);
           setFollowings(result.followings || null);
@@ -95,7 +98,7 @@ export default function ProfileClient({ handle }: { handle: string }) {
         } else {
           setError(result.handle || 'Failed to load profile');
           if (result.handle?.includes('No user found')) {
-            router.push('/not-found');
+            setError('No user found.');
           }
         }
       } catch (err) {
