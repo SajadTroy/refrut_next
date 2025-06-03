@@ -5,6 +5,7 @@ import connectDB from '@/lib/database';
 import User from '@/models/User';
 import Follow from '@/models/Follow';
 import Post from '@/models/Post';
+import { redirect } from 'next/navigation';
 
 interface User {
   _id: string;
@@ -124,7 +125,7 @@ export async function followUser(handle: string): Promise<{ success?: boolean; e
 
     const session = await getSessionUserDetails();
     if (!session.userId) {
-      return { error: "User not authenticated." };
+      redirect('/auth/login');
     }
 
     const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
@@ -170,7 +171,7 @@ export async function unfollowUser(handle: string): Promise<{ success?: boolean;
 
     const session = await getSessionUserDetails();
     if (!session.userId) {
-      return { error: "User not authenticated." };
+      redirect('/auth/login');
     }
 
     const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
