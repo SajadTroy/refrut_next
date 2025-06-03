@@ -71,7 +71,7 @@ export async function updateProfile(
         await connectDB();
         const existingUser = await User.findOne({ handle, _id: { $ne: session.userId } });
         if (existingUser) {
-            errors.handle = 'This username is already taken.';
+            errors.handle = 'This handle is already taken.';
         }
     } catch (error) {
         console.error('Error checking handle:', error);
@@ -85,12 +85,6 @@ export async function updateProfile(
     try {
         // Connect to the database
         await connectDB();
-
-        let handleUSer = await User.findOne({ handle: handle });
-
-        if (handleUSer) {
-            return { errors: { handle: "Handle is already used." } };
-        }
 
         // Parse dateOfBirth to Date object if provided
         let parsedDateOfBirth = null;
