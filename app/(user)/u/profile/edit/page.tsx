@@ -1,4 +1,4 @@
-import '@/styles/Profile.css';
+import '@/styles/EditProfile.css';
 import EditProfileClient from '@/app/(user)/u/profile/edit/EditProfile';
 import { verifySession } from '@/lib/session';
 

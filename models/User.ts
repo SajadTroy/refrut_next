@@ -30,13 +30,13 @@ const userSchema = new mongoose.Schema({
     lastLogin: { type: Date, default: null },
     roles: { type: [String], default: ["user"] }, // e.g., ['user', 'admin']
     status: { type: String, default: "inactive" }, // e.g., 'active', 'inactive', 'banned'
-    socialLinks: {
-        x: { type: String, default: "" },
-        facebook: { type: String, default: "" },
-        instagram: { type: String, default: "" },
-        linkedin: { type: String, default: "" },
-        github: { type: String, default: "" }
-    },
+    // socialLinks: {
+    //     x: { type: String, default: "" },
+    //     facebook: { type: String, default: "" },
+    //     instagram: { type: String, default: "" },
+    //     linkedin: { type: String, default: "" },
+    //     github: { type: String, default: "" }
+    // },
     recentLogins: { type: [loginDetailSchema], default: [] }
 });
 
