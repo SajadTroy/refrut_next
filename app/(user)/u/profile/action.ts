@@ -3,6 +3,7 @@
 import { destroySession, getSession } from '@/lib/session';
 import connectDB from '@/lib/database';
 import { User, Post, Follow } from "@/models";
+import { redirect } from 'next/navigation';
 
 
 export type LogoutFormState = {
@@ -60,7 +61,7 @@ export type FetchUserProfileState = {
 export async function logout(): Promise<LogoutFormState> {
   try {
     await destroySession();
-    return { success: true };
+    redirect('/auth/login');
   } catch (error) {
     console.error('Logout error:', error);
     return { errors: { general: 'Failed to log out' } };
