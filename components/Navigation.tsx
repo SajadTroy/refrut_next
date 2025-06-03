@@ -1,32 +1,18 @@
-'use client';
-
+// components/Navigation.tsx
 import '@/styles/Navigation.css';
-import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { checkAuthStatus } from '@/lib/session';
 
 type NavigationProps = {
   children: React.ReactNode;
+  isAuthenticated: boolean;
+  pathname: string;
 };
 
-const Navigation: React.FC<NavigationProps> = ({ children }) => {
-  const pathname = usePathname();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
-  useEffect(() => {
-    async function fetchAuthStatus() {
-      try {
-        const authStatus = await checkAuthStatus();
-        setIsAuthenticated(authStatus);
-      } catch (error) {
-        console.error('Error checking auth status:', error);
-        setIsAuthenticated(false);
-      }
-    }
-    fetchAuthStatus();
-  }, []);
-
+export default function Navigation({
+  children,
+  isAuthenticated,
+  pathname,
+}: NavigationProps) {
   return (
     <div className="container">
       <div className="desktop_nav_container">
@@ -40,6 +26,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
             <div className={`nav_item ${pathname === '/' ? 'active' : ''}`}>
               <Link href="/">
                 <div className="nav_icon">
+                  {/* Home SVG */}
                   <svg
                     width="24"
                     height="24"
@@ -60,9 +47,11 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
               </Link>
             </div>
+
             <div className={`nav_item ${pathname === '/search' ? 'active' : ''}`}>
               <Link href="/search">
                 <div className="nav_icon">
+                  {/* Search SVG */}
                   <svg
                     width="24"
                     height="24"
@@ -82,11 +71,13 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
               </Link>
             </div>
+
             {isAuthenticated && (
               <>
                 <div className={`nav_item ${pathname === '/post/new' ? 'active' : ''}`}>
                   <Link href="/post/new">
                     <div className="nav_icon">
+                      {/* New Post SVG */}
                       <svg
                         width="24"
                         height="24"
@@ -106,16 +97,18 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                     </div>
                   </Link>
                 </div>
+
                 <div className={`nav_item ${pathname === '/inbox' ? 'active' : ''}`}>
                   <Link href="/inbox">
                     <div className="nav_icon">
+                      {/* Inbox SVG */}
                       <svg
                         width="24"
                         height="24"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.5"
-                        viewBox="0 0 24 !’24"
+                        viewBox="0 0 24 24"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         xmlns="http://www.w3.org/2000/svg"
@@ -128,9 +121,11 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                     </div>
                   </Link>
                 </div>
+
                 <div className={`nav_item ${pathname === '/u/profile' ? 'active' : ''}`}>
                   <Link href="/u/profile">
                     <div className="nav_icon">
+                      {/* Profile SVG */}
                       <svg
                         width="24"
                         height="24"
@@ -153,10 +148,12 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                 </div>
               </>
             )}
+
             {!isAuthenticated && (
               <div className={`nav_item red ${pathname === '/auth/login' ? 'active' : ''}`}>
                 <Link href="/auth/login">
                   <div className="nav_icon">
+                    {/* Login SVG */}
                     <svg
                       width="24"
                       height="24"
@@ -180,10 +177,12 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
             )}
           </div>
         </div>
+
         <div className="content_section">{children}</div>
         <div className="right_section"></div>
       </div>
 
+      {/* Mobile Layout */}
       <div className="mobile_nav_container">
         <div className="header">
           <div className="header_logo">
@@ -197,6 +196,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
           <div className={`nav_item ${pathname === '/' ? 'active' : ''}`}>
             <Link href="/">
               <div className="nav_icon">
+                {/* Home SVG */}
                 <svg
                   width="24"
                   height="24"
@@ -217,9 +217,11 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
             </Link>
           </div>
+
           <div className={`nav_item ${pathname === '/search' ? 'active' : ''}`}>
             <Link href="/search">
               <div className="nav_icon">
+                {/* Search SVG */}
                 <svg
                   width="24"
                   height="24"
@@ -239,11 +241,13 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
             </Link>
           </div>
+
           {isAuthenticated && (
             <>
               <div className={`nav_item ${pathname === '/post/new' ? 'active' : ''}`}>
                 <Link href="/post/new">
                   <div className="nav_icon">
+                    {/* New Post SVG */}
                     <svg
                       width="24"
                       height="24"
@@ -263,9 +267,11 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                   </div>
                 </Link>
               </div>
+
               <div className={`nav_item ${pathname === '/inbox' ? 'active' : ''}`}>
                 <Link href="/inbox">
                   <div className="nav_icon">
+                    {/* Inbox SVG */}
                     <svg
                       width="24"
                       height="24"
@@ -285,9 +291,11 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
                   </div>
                 </Link>
               </div>
+
               <div className={`nav_item ${pathname === '/u/profile' ? 'active' : ''}`}>
                 <Link href="/u/profile">
                   <div className="nav_icon">
+                    {/* Profile SVG */}
                     <svg
                       width="24"
                       height="24"
@@ -310,10 +318,12 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
               </div>
             </>
           )}
+
           {!isAuthenticated && (
             <div className={`nav_item red ${pathname === '/auth/login' ? 'active' : ''}`}>
               <Link href="/auth/login">
                 <div className="nav_icon">
+                  {/* Login SVG */}
                   <svg
                     width="24"
                     height="24"
@@ -339,6 +349,4 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
       </div>
     </div>
   );
-};
-
-export default Navigation;
+}
