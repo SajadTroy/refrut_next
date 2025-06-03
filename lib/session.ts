@@ -102,7 +102,7 @@ export async function restrictUnauthorizedAccess(shouldRedirect: boolean = true)
         return;
     }
 
-    return { isAuthorized: !!session?.userId, userId: session?.userId || null };
+   redirect('/auth/login');
 }
 
 // Destroy the session
