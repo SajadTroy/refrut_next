@@ -99,7 +99,7 @@ export async function restrictUnauthorizedAccess(shouldRedirect: boolean = true)
     const session = await decrypt(token);
 
     if (session?.userId && shouldRedirect) {
-        redirect('/u/profile');
+        return;
     }
 
     return { isAuthorized: !!session?.userId, userId: session?.userId || null };
