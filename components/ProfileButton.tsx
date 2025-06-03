@@ -4,7 +4,6 @@ import '@/styles/Profile.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { followUser, isFollowing, unfollowUser } from '@/app/(user)/u/[handle]/action';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 interface User {
   _id: string;
@@ -26,55 +25,66 @@ type ProfileButtonProps = {
 
 export default function ProfileButton({ handle, user }: ProfileButtonProps) {
   const [isFollowingUser, setIsFollowingUser] = useState(false);
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
+  // On mount (or when `handle` changes), check the follow status once
   useEffect(() => {
     async function checkFollowing() {
       try {
         const followingStatus: boolean = await isFollowing(handle);
         setIsFollowingUser(followingStatus);
       } catch {
-        alert('Error occurred while checking follow status.');
+        console.error('Error checking follow status.');
       }
     }
     checkFollowing();
   }, [handle]);
 
+  // Toggle follow/unfollow without any page refresh
   const handleFollowToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // prevent form from submitting
+    e.preventDefault();
 
-    if (!user) return;
+    if (!user || loading) return;
+    setLoading(true);
 
     try {
       if (isFollowingUser) {
         const result = await unfollowUser(handle);
         if (result.success) {
           setIsFollowingUser(false);
-          router.refresh(); // re‐fetch server data
+        } else {
+          alert(result.error || 'Could not unfollow.');
         }
       } else {
         const result = await followUser(handle);
         if (result.success) {
           setIsFollowingUser(true);
-          router.refresh(); // re‐fetch server data
+        } else {
+          alert(result.error || 'Could not follow.');
         }
       }
     } catch {
-      alert('Error occurred while toggling follow.');
+      alert('Network or server error.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="profile_button">
-      <form style={{ width: '100%' }}>
-        <button
-          onClick={handleFollowToggle}
-          type="submit"
-          className={`follow_button ${isFollowingUser ? 'following' : ''}`}
-        >
-          {isFollowingUser ? 'Unfollow' : 'Follow'}
-        </button>
-      </form>
+      <button
+        onClick={handleFollowToggle}
+        disabled={loading}
+        className={`follow_button ${isFollowingUser ? 'following' : ''}`}
+      >
+        {loading
+          ? isFollowingUser
+            ? 'Unfollowing…'
+            : 'Following…'
+          : isFollowingUser
+          ? 'Unfollow'
+          : 'Follow'}
+      </button>
     </div>
   );
 }
