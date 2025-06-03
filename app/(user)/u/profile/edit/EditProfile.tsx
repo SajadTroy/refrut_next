@@ -6,175 +6,176 @@ import { useActionState, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface User {
-  name: string;
-  email: string;
-  handle: string;
-  bio: string;
-  dateOfBirth?: string;
+    name: string;
+    email: string;
+    handle: string;
+    bio: string;
+    dateOfBirth?: string;
 }
 
 export default function EditProfile({ userId }: { userId: String }) {
-  const [state, action, pending] = useActionState<UpdateProfileFormState, FormData>(updateProfile, {
-    errors: {},
-  });
-  const [user, setUser] = useState<User | null>(null);
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const router = useRouter();
+    const [state, action, pending] = useActionState<UpdateProfileFormState, FormData>(updateProfile, {
+        errors: {},
+    });
+    const [user, setUser] = useState<User | null>(null);
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const router = useRouter();
 
-  // Fetch user data to pre-populate the form
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await getUSer(userId);
-        if (response?.user) {
-          setUser(response.user);
-          if (response.user.dateOfBirth) {
-            const dob = new Date(response.user.dateOfBirth);
-            setDateOfBirth(
-              `${dob.getMonth() + 1}/${dob.getDate()}/${dob.getFullYear()}`
-            );
-          }
+    // Fetch user data to pre-populate the form
+    useEffect(() => {
+        async function fetchUser() {
+            try {
+                const response = await getUSer(userId);
+                if (response?.user) {
+                    setUser(response.user);
+                    if (response.user.dateOfBirth) {
+                        const dob = new Date(response.user.dateOfBirth);
+                        const day = String(dob.getDate()).padStart(2, '0');
+                        const month = String(dob.getMonth() + 1).padStart(2, '0');
+                        const year = dob.getFullYear();
+                        setDateOfBirth(`${day}/${month}/${year}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
         }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    }
-    fetchUser();
-  }, [userId]);
+        fetchUser();
+    }, [userId]);
 
-  // Handle auto-slash formatting for DOB
-  const handleDateOfBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
-    if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
-    if (value.length > 10) value = value.slice(0, 10); // Limit to MM/DD/YYYY
-    setDateOfBirth(value);
-  };
+    // Handle auto-slash formatting for DOB
+    const handleDateOfBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+        if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
+        if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5);
+        if (value.length > 10) value = value.slice(0, 10); // Limit to MM/DD/YYYY
+        setDateOfBirth(value);
+    };
 
-  // Redirect on successful update
-  useEffect(() => {
-    if (state?.success) {
-      router.push('/u/profile'); // Redirect to profile page or wherever you prefer
-    }
-  }, [state, router]);
+    // Redirect on successful update
+    useEffect(() => {
+        if (state?.success) {
+            router.push('/u/profile'); // Redirect to profile page or wherever you prefer
+        }
+    }, [state, router]);
 
-  return (
-    <div className="login_container">
-      <form action={action} name="form">
-        {/* Name */}
-        <div className="form_group">
-          <label htmlFor="name">
-            Full Name<span className="red">*</span>
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Enter your full name"
-            defaultValue={user?.name || ''}
-            required
-          />
-        </div>
-        <div className="form_text error">
-          {state?.errors?.name && (
-            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.name}</p>
-          )}
-        </div>
+    return (
+        <div className="login_container">
+            <form action={action} name="form">
+                {/* Name */}
+                <div className="form_group">
+                    <label htmlFor="name">
+                        Full Name<span className="red">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        defaultValue={user?.name || ''}
+                        required
+                    />
+                </div>
+                <div className="form_text error">
+                    {state?.errors?.name && (
+                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.name}</p>
+                    )}
+                </div>
 
-        {/* Email (Disabled) */}
-        <div className="form_group">
-          <label htmlFor="email">
-            Email<span className="red">*</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            defaultValue={user?.email || ''}
-            disabled
-            required
-          />
-        </div>
-        <div className="form_text error">
-          {state?.errors?.email && (
-            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.email}</p>
-          )}
-        </div>
+                {/* Email (Disabled) */}
+                <div className="form_group">
+                    <label htmlFor="email">
+                        Email<span className="red">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        defaultValue={user?.email || ''}
+                        disabled
+                        required
+                    />
+                </div>
+                <div className="form_text error">
+                    {state?.errors?.email && (
+                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.email}</p>
+                    )}
+                </div>
 
-        {/* Username (Handle) */}
-        <div className="form_group">
-          <label htmlFor="handle">
-            Username<span className="red">*</span>
-          </label>
-          <input
-            type="text"
-            id="handle"
-            name="handle"
-            placeholder="Enter your username"
-            defaultValue={user?.handle || ''}
-            required
-          />
-        </div>
-        <div className="form_text error">
-          {state?.errors?.handle && (
-            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.handle}</p>
-          )}
-        </div>
+                {/* Username (Handle) */}
+                <div className="form_group">
+                    <label htmlFor="handle">
+                        Username<span className="red">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="handle"
+                        name="handle"
+                        placeholder="Enter your username"
+                        defaultValue={user?.handle || ''}
+                        required
+                    />
+                </div>
+                <div className="form_text error">
+                    {state?.errors?.handle && (
+                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.handle}</p>
+                    )}
+                </div>
 
-        {/* Date of Birth */}
-        <div className="form_group">
-          <label htmlFor="dateOfBirth">
-            Date of Birth (MM/DD/YYYY)
-          </label>
-          <input
-            type="text"
-            id="dateOfBirth"
-            name="dateOfBirth"
-            placeholder="MM/DD/YYYY"
-            value={dateOfBirth}
-            onChange={handleDateOfBirthChange}
-            maxLength={10}
-          />
-        </div>
-        <div className="form_text error">
-          {state?.errors?.dateOfBirth && (
-            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.dateOfBirth}</p>
-          )}
-        </div>
+                {/* Date of Birth */}
+                <div className="form_group">
+                    <label htmlFor="dateOfBirth">
+                        Date of Birth (DD/MM/YYYY)
+                    </label>
+                    <input
+                        type="text"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        placeholder="DD/MM/YYYY"
+                        value={dateOfBirth}
+                        onChange={handleDateOfBirthChange}
+                        maxLength={10}
+                    />
+                </div>
+                <div className="form_text error">
+                    {state?.errors?.dateOfBirth && (
+                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.dateOfBirth}</p>
+                    )}
+                </div>
 
-        {/* Bio */}
-        <div className="form_group">
-          <label htmlFor="bio">Bio</label>
-          <textarea
-            id="bio"
-            name="bio"
-            placeholder="Tell us about yourself"
-            defaultValue={user?.bio || ''}
-            maxLength={160}
-            className="form_textarea"
-          />
-        </div>
-        <div className="form_text error">
-          {state?.errors?.bio && (
-            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.bio}</p>
-          )}
-        </div>
+                {/* Bio */}
+                <div className="form_group">
+                    <label htmlFor="bio">Bio</label>
+                    <textarea
+                        id="bio"
+                        name="bio"
+                        placeholder="Tell us about yourself"
+                        defaultValue={user?.bio || ''}
+                        maxLength={160}
+                        className="form_textarea"
+                    />
+                </div>
+                <div className="form_text error">
+                    {state?.errors?.bio && (
+                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.bio}</p>
+                    )}
+                </div>
 
-        {/* General Error */}
-        <div className="form_text error">
-          {state?.errors?.general && (
-            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.general}</p>
-          )}
-        </div>
+                {/* General Error */}
+                <div className="form_text error">
+                    {state?.errors?.general && (
+                        <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.general}</p>
+                    )}
+                </div>
 
-        {/* Submit Button */}
-        <div className="form_group">
-          <button type="submit" className="btn btn_primary" disabled={pending}>
-            {pending ? 'Updating...' : 'Update'}
-          </button>
+                {/* Submit Button */}
+                <div className="form_group">
+                    <button type="submit" className="btn btn_primary" disabled={pending}>
+                        {pending ? 'Updating...' : 'Update'}
+                    </button>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
-  );
+    );
 }
