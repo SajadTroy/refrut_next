@@ -15,10 +15,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
                 />
             </head>
-            <body className='children'>
-                {children}
-                <SpeedInsights />
-                <Analytics />
+            <body>
+                <div className='children'>
+                    {children}
+                    <SpeedInsights />
+                    <Analytics />
+                </div>
             </body>
         </html>
     );
