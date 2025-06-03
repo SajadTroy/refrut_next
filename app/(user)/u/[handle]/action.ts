@@ -4,30 +4,7 @@ import { getSessionUserDetails } from '@/lib/session';
 import connectDB from '@/lib/database';
 import User from '@/models/User';
 import Follow from '@/models/Follow';
-import { redirect } from 'next/navigation';
 import Post from '@/models/Post';
-import mongoose from 'mongoose';
-
-// Define TypeScript interfaces based on Mongoose schemas
-interface LoginDetail {
-  ip: string;
-  latitude?: number;
-  longitude?: number;
-  country?: string;
-  region?: string;
-  isp?: string;
-  device?: string;
-  browser?: string;
-  timestamp: Date;
-}
-
-interface SocialLinks {
-  x?: string;
-  facebook?: string;
-  instagram?: string;
-  linkedin?: string;
-  github?: string;
-}
 
 interface User {
   _id: string;

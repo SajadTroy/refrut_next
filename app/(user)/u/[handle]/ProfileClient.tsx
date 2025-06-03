@@ -11,26 +11,6 @@ import { getUser } from '@/app/(user)/u/[handle]/action';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-interface LoginDetail {
-  ip: string;
-  latitude?: number;
-  longitude?: number;
-  country?: string;
-  region?: string;
-  isp?: string;
-  device?: string;
-  browser?: string;
-  timestamp: Date;
-}
-
-interface SocialLinks {
-  x?: string;
-  facebook?: string;
-  instagram?: string;
-  linkedin?: string;
-  github?: string;
-}
-
 interface User {
   _id: string;
   name: string;

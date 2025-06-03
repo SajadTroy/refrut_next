@@ -3,8 +3,8 @@
 import { destroySession, getSession } from '@/lib/session';
 import connectDB from '@/lib/database';
 import User from '@/models/User';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import Follow from '@/models/Follow';
+import Post from '@/models/Post';
 
 export type LogoutFormState = {
   errors?: {
@@ -12,6 +12,26 @@ export type LogoutFormState = {
   };
   success?: boolean;
 };
+
+interface Post {
+  _id: string;
+  parentPost?: string;
+  author: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  likes: string[];
+  cchildPosts: string[];
+  tags: string[];
+}
+
+interface Follow {
+  _id: string;
+  follower: string;
+  following: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export type FetchUserProfileState = {
   user?: {
@@ -29,6 +49,9 @@ export type FetchUserProfileState = {
     roles: string[];
     status: 'active' | 'inactive' | 'banned';
   };
+  followers?: Follow[];
+  followings?: Follow[];
+  posts?: Post[];
   errors?: {
     general?: string;
   };
@@ -57,7 +80,7 @@ export async function fetchUserProfile(userId: string): Promise<FetchUserProfile
 
     // Fetch user from database
     const user = await User.findById(userId).select('-password -verificationToken -resetPasswordToken');
-    
+
     if (!user) {
       return { errors: { general: 'User not found' } };
     }
@@ -71,8 +94,15 @@ export async function fetchUserProfile(userId: string): Promise<FetchUserProfile
       return { errors: { general: 'Unauthorized: Cannot view this profile' } };
     }
 
+    const userFollowers = await Follow.find({ following: user._id }).exec() as Follow[];
+    const userFollowings = await Follow.find({ follower: user._id }).exec() as Follow[];
+    const userPosts = await Post.find({ author: user._id }).exec() as Post[];
+
     return {
       success: true,
+      followers: userFollowers,
+      followings: userFollowings,
+      posts: userPosts,
       user: {
         _id: user._id.toString(),
         name: user.name,

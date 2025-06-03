@@ -10,6 +10,26 @@ import { logout, LogoutFormState, fetchUserProfile, FetchUserProfileState } from
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface Post {
+  _id: string;
+  parentPost?: string;
+  author: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  likes: string[];
+  cchildPosts: string[];
+  tags: string[];
+}
+
+interface Follow {
+  _id: string;
+  follower: string;
+  following: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ClientUser {
   _id: string;
   name: string;
@@ -28,6 +48,9 @@ export interface ClientUser {
 
 export default function UserProfileClient({ userId }: { userId: string }) {
   const [user, setUser] = useState<ClientUser | null>(null);
+  const [followers, setFollowers] = useState<Follow[] | null>(null);
+  const [followings, setFollowings] = useState<Follow[] | null>(null);
+  const [posts, setPosts] = useState<Post[] | null>(null);
   const [imgSrc, setImgSrc] = useState('/img/avatars/default.png');
   const [error, setError] = useState<string | null>(null);
   const [state, action, pending] = useActionState<LogoutFormState, FormData>(logout, { errors: {} });
@@ -39,6 +62,9 @@ export default function UserProfileClient({ userId }: { userId: string }) {
       const result: FetchUserProfileState = await fetchUserProfile(userId);
       if (result.success && result.user) {
         setUser(result.user);
+        setFollowers(result.followers || null);
+        setFollowings(result.followings || null);
+        setPosts(result.posts || null);
         setImgSrc(result.user.profilePicture || '/img/avatars/default.png');
       } else {
         setError(result.errors?.general || 'Failed to load profile');
@@ -116,21 +142,21 @@ export default function UserProfileClient({ userId }: { userId: string }) {
         </div>
         <div className="profile_stats">
           <div className="stat_item">
-            <span className="stat_value">123</span>
+            <span className="stat_value">{posts?.length || 0}</span>
             <span className="stat_label">Posts</span>
           </div>
           <div className="stat_item">
-            <span className="stat_value">456</span>
+            <span className="stat_value">{followers?.length || 0}</span>
             <span className="stat_label">Followers</span>
           </div>
           <div className="stat_item">
-            <span className="stat_value">789</span>
+            <span className="stat_value">{followings?.length || 0}</span>
             <span className="stat_label">Following</span>
           </div>
         </div>
         <div className="profile_button">
           <button className="follow_button">Edit Profile</button>
-           &nbsp;
+          &nbsp;
           <form action={action}>
             <button
               type="submit"
