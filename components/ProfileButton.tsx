@@ -1,9 +1,7 @@
-'use client';
-
 import '@/styles/Profile.css';
-import 'react-loading-skeleton/dist/skeleton.css';
 import { followUser, isFollowing, unfollowUser } from '@/app/(user)/u/[handle]/action';
-import { useEffect, useState } from 'react';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 interface User {
   _id: string;
@@ -23,68 +21,29 @@ type ProfileButtonProps = {
   user: User;
 };
 
-export default function ProfileButton({ handle, user }: ProfileButtonProps) {
-  const [isFollowingUser, setIsFollowingUser] = useState(false);
-  const [loading, setLoading] = useState(false);
+export default async function ProfileButton({ handle, user }: ProfileButtonProps) {
+  const isFollowingUser = await isFollowing(handle);
 
-  // On mount (or when `handle` changes), check the follow status once
-  useEffect(() => {
-    async function checkFollowing() {
-      try {
-        const followingStatus: boolean = await isFollowing(handle);
-        setIsFollowingUser(followingStatus);
-      } catch {
-        console.error('Error checking follow status.');
-      }
+  async function handleFollowAction(formData: FormData) {
+    'use server';
+    const action = formData.get('action');
+
+    if (action === 'follow') {
+      await followUser(handle);
+    } else if (action === 'unfollow') {
+      await unfollowUser(handle);
     }
-    checkFollowing();
-  }, [handle]);
 
-  // Toggle follow/unfollow without any page refresh
-  const handleFollowToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (!user || loading) return;
-    setLoading(true);
-
-    try {
-      if (isFollowingUser) {
-        const result = await unfollowUser(handle);
-        if (result.success) {
-          setIsFollowingUser(false);
-        } else {
-          alert(result.error || 'Could not unfollow.');
-        }
-      } else {
-        const result = await followUser(handle);
-        if (result.success) {
-          setIsFollowingUser(true);
-        } else {
-          alert(result.error || 'Could not follow.');
-        }
-      }
-    } catch {
-      alert('Network or server error.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    revalidatePath(`/u/${handle}`);
+    redirect(`/u/${handle}`);
+  }
 
   return (
-    <div className="profile_button">
-      <button
-        onClick={handleFollowToggle}
-        disabled={loading}
-        className={`follow_button ${isFollowingUser ? 'following' : ''}`}
-      >
-        {loading
-          ? isFollowingUser
-            ? 'Unfollowing…'
-            : 'Following…'
-          : isFollowingUser
-          ? 'Unfollow'
-          : 'Follow'}
+    <form action={handleFollowAction} className="profile_button">
+      <input type="hidden" name="action" value={isFollowingUser ? 'unfollow' : 'follow'} />
+      <button className={`follow_button ${isFollowingUser ? 'following' : ''}`} type="submit">
+        {isFollowingUser ? 'Unfollow' : 'Follow'}
       </button>
-    </div>
+    </form>
   );
 }
