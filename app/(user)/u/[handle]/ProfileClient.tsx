@@ -1,15 +1,11 @@
-'use client';
-
 import '@/styles/Profile.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { followUser, getUser, isFollowing, unfollowUser } from '@/app/(user)/u/[handle]/action';
+import { getUser, isFollowing } from '@/app/(user)/u/[handle]/action';
 
-// Assuming Skeleton is from a library like react-loading-skeleton
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import ProfileButton from '@/components/ProfileButton';
 
 interface User {
   _id: string;
@@ -18,7 +14,7 @@ interface User {
   handle: string;
   bio?: string;
   profilePicture?: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   isVerified: boolean;
   roles: string[];
   status: string;
@@ -29,8 +25,8 @@ interface Post {
   parentPost?: string;
   author: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;    
+  updatedAt: string;      
   likes: string[];
   cchildPosts: string[];
   tags: string[];
@@ -40,8 +36,8 @@ interface Follow {
   _id: string;
   follower: string;
   following: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;       
+  updatedAt: string;     
 }
 
 interface UserResponse {
@@ -50,109 +46,39 @@ interface UserResponse {
   followings?: Follow[];
   posts?: Post[];
   handle?: string;
-  redirect?: string; // Added to indicate redirect URL
+  redirect?: string; 
 }
 
-export default function ProfileClient({ handle }: { handle: string }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [followers, setFollowers] = useState<Follow[] | null>(null);
-  const [followings, setFollowings] = useState<Follow[] | null>(null);
-  const [posts, setPosts] = useState<Post[] | null>(null);
-  const [isFollowingUser, setIsFollowingUser] = useState(false)
-  const [imgSrc, setImgSrc] = useState('/img/avatars/default.png');
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+const fallbackUser: User = {
+  _id: '0',
+  name: 'Unknown',
+  profilePicture: '/img/avatars/default.png',
+  email: 'null',
+  handle: 'null',
+  bio: 'null',
+  dateOfBirth: "null",
+  isVerified: false,
+  roles: [],
+  status: 'inactive'
+};
 
-  useEffect(() => {
-    async function loadProfile() {
-      try {
-        const result: UserResponse = await getUser(handle);
-        if (result.redirect) {
-          router.push(result.redirect); // Use router.push instead of redirect
-        } else if (result.user) {
-          setUser(result.user);
-          setFollowers(result.followers || null);
-          setFollowings(result.followings || null);
-          setPosts(result.posts || null);
-          setImgSrc(result.user.profilePicture || '/img/avatars/default.png');
-        } else {
-          setError(result.handle || 'Failed to load profile');
-          if (result.handle?.includes('No user found')) {
-            setError('No user found.');
-          }
-        }
-      } catch (err) {
-        setError('An error occurred while loading the profile');
-      }
-    }
-    loadProfile();
-  }, [handle, router]);
+export default async function ProfileClient({ handle }: { handle: string }) {
 
-  
-  useEffect(() => {
-    async function checkFollowing() {
-      try {
-        const followingStatus: Boolean = await isFollowing(handle);
-        if (followingStatus) {
-          setIsFollowingUser(true);
-        } else {
-          setIsFollowingUser(false);
-        }
-      } catch (err) {
-        setError('An error occurred while loading the follow status');
-      }
-    }
-    checkFollowing();
-  }, [handle, router]);
+  const result: UserResponse = await getUser(handle);
 
-  const handleFollowToggle = async () => {
-    if (!user) return;
-    try {
-      let result;
-      if (isFollowingUser) {
-        result = await unfollowUser(handle);
-        if (result.success) {
-          setIsFollowingUser(false);
-          setFollowers(followers ? followers.filter(f => f.follower !== user._id) : null);
-        }
-      } else {
-        result = await followUser(handle);
-        if (result.success) {
-          setIsFollowingUser(true);
-          setFollowers(followers ? [...followers, {
-            _id: `temp-${Date.now()}`, // Temporary ID
-            follower: user._id,
-            following: user._id,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }] : [{
-            _id: `temp-${Date.now()}`,
-            follower: user._id,
-            following: user._id,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }]);
-        }
-      }
-      if (result.error) {
-        setError(result.error);
-      }
-    } catch (err) {
-      setError('An error occurred while updating follow status');
-    }
-  };
+  const imageSrc = result.user?.profilePicture?.startsWith('http')
+    ? result.user?.profilePicture
+    : '/img/avatars/default.png';
 
   return (
     <div className="profile-container">
-      {error && (error)}
       <div className="top_profile">
         <div className="profile_header">
           <div className="profile_image">
-            {user ? (
+            {result.user ? (
               <Image
-                src={imgSrc}
-                alt={`Avatar of ${user?.name || 'User'}`}
-                onError={() => setImgSrc('/img/avatars/default.png')}
+                src={imageSrc}
+                alt={`Avatar of ${result.user?.name || 'User'}`}
                 width={100}
                 height={100}
                 className="profile_avatar"
@@ -163,10 +89,10 @@ export default function ProfileClient({ handle }: { handle: string }) {
           </div>
           <div className="profile_details">
             <h1 className="profile_name">
-              {user ? (
+              {result.user ? (
                 <>
-                  {user.name}
-                  {user.roles.includes('creator') && (
+                  {result.user.name}
+                  {result.user.roles.includes('creator') && (
                     <div className="verified">
                       <svg
                         width="24"
@@ -185,41 +111,33 @@ export default function ProfileClient({ handle }: { handle: string }) {
               )}
             </h1>
             <span style={{ marginTop: '2px' }} className="profile_handle">
-              {user ? `@${user.handle}` : <Skeleton width={100} />}
+              {result.user ? `@${result.user.handle}` : <Skeleton width={100} />}
             </span>
           </div>
         </div>
         <div className="profile_about">
           <p className="profile_bio">
-            {user ? user.bio || 'This user has not set a bio yet.' : <Skeleton width={200} />}
+            {result.user ? result.user.bio || 'This user has not set a bio yet.' : <Skeleton width={200} />}
           </p>
         </div>
         <div className="profile_stats">
           <div className="stat_item">
-            <span className="stat_value">{posts?.length || 0}</span>
+            <span className="stat_value">{result.posts?.length || 0}</span>
             <span className="stat_label">Posts</span>
           </div>
           <div className="stat_item">
-            <span className="stat_value">{followers?.length || 0}</span>
+            <span className="stat_value">{result.followers?.length || 0}</span>
             <span className="stat_label">Followers</span>
           </div>
           <div className="stat_item">
-            <span className="stat_value">{followings?.length || 0}</span>
+            <span className="stat_value">{result.followings?.length || 0}</span>
             <span className="stat_label">Following</span>
           </div>
         </div>
-        <div className="profile_button">
-          <form style={{ width: '100%' }}>
-            <button onClick={handleFollowToggle}
-              type="submit"
-              className={`follow_button ${isFollowingUser ? 'following' : null}`}>
-              {isFollowingUser ? "Unfollow" : "Follow"}
-            </button>
-          </form>
-        </div>
+        <ProfileButton handle={handle} user={result.user ?? fallbackUser} />
       </div>
       <div className="tabs">
-        {user ? (
+        {result.user ? (
           <>
             <div className="tab active">
               <Link href={`/u/${handle}`}>Posts</Link>

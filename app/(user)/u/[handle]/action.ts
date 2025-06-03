@@ -12,7 +12,7 @@ interface User {
   handle: string;
   bio?: string;
   profilePicture?: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;     // changed from Date to string
   isVerified: boolean;
   roles: string[];
   status: string;
@@ -23,8 +23,8 @@ interface Post {
   parentPost?: string;
   author: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;        // changed from Date to string
+  updatedAt: string;        // changed from Date to string
   likes: string[];
   cchildPosts: string[];
   tags: string[];
@@ -34,8 +34,8 @@ interface Follow {
   _id: string;
   follower: string;
   following: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;        // changed from Date to string
+  updatedAt: string;        // changed from Date to string
 }
 
 interface UserResponse {
@@ -57,25 +57,81 @@ export async function getUser(handle: string): Promise<UserResponse> {
 
     const session = await getSessionUserDetails();
 
-    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -updatedAt -createdAt -resetPasswordToken -verificationTokenExpiry -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins').exec() as User | null;
+    // Fetch a “lean” JavaScript object (still has ObjectId & Date inside)
+    const rawUser = await User
+      .findOne({ handle })
+      .select(
+        '-password -verificationToken -updatedAt -createdAt ' +
+        '-resetPasswordToken -verificationTokenExpiry -__v ' +
+        '-resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins'
+      ).exec();
 
-    if (!publicUser) {
-      return { handle: "No user found" };
+    if (!rawUser) {
+      return { handle: 'No user found' };
     }
 
-    if (publicUser._id.toString() === session.userId) {
+    // If it's the session user, redirect
+    if (rawUser._id.toString() === session.userId) {
       return { redirect: '/u/profile' };
     }
 
-    const userFollowers = await Follow.find({ following: publicUser._id }).exec() as Follow[];
-    const userFollowings = await Follow.find({ follower: publicUser._id }).exec() as Follow[];
-    const userPosts = await Post.find({ author: publicUser._id }).exec() as Post[];
+
+    const rawFollowers = await Follow.find({ following: rawUser._id }).exec();
+    const rawFollowings = await Follow.find({ follower: rawUser._id }).exec();
+    const rawPosts = await Post.find({ author: rawUser._id }).exec();
+
+    const user: User = {
+      _id: rawUser._id.toString(),
+      name: rawUser.name,
+      email: rawUser.email,
+      handle: rawUser.handle,
+      bio: rawUser.bio || undefined,
+      profilePicture: rawUser.profilePicture || undefined,
+      dateOfBirth: rawUser.dateOfBirth
+        ? rawUser.dateOfBirth.toISOString()
+        : undefined,
+      isVerified: rawUser.isVerified,
+      roles: Array.isArray(rawUser.roles) ? rawUser.roles.map(String) : [],
+      status: rawUser.status,
+    };
+
+    // 2) Convert each Follow‐document in `rawFollowers` / `rawFollowings`:
+    const followers: Follow[] = rawFollowers.map((f) => ({
+      _id: f._id.toString(),
+      follower: f.follower.toString(),
+      following: f.following.toString(),
+      createdAt: f.createdAt.toISOString(),
+      updatedAt: f.updatedAt.toISOString(),
+    }));
+
+    const followings: Follow[] = rawFollowings.map((f) => ({
+      _id: f._id.toString(),
+      follower: f.follower.toString(),
+      following: f.following.toString(),
+      createdAt: f.createdAt.toISOString(),
+      updatedAt: f.updatedAt.toISOString(),
+    }));
+
+    // 3) Convert each Post‐document in `rawPosts`:
+    const posts: Post[] = rawPosts.map((p) => ({
+      _id: p._id.toString(),
+      parentPost: p.parentPost ? p.parentPost.toString() : undefined,
+      author: p.author.toString(),
+      content: p.content,
+      createdAt: p.createdAt.toISOString(),
+      updatedAt: p.updatedAt.toISOString(),
+      likes: Array.isArray(p.likes) ? p.likes.map(String) : [],
+      cchildPosts: Array.isArray(p.cchildPosts)
+        ? p.cchildPosts.map(String)
+        : [],
+      tags: Array.isArray(p.tags) ? p.tags.map(String) : [],
+    }));
 
     return {
-      user: publicUser,
-      followers: userFollowers,
-      followings: userFollowings,
-      posts: userPosts
+      user,
+      followers,
+      followings,
+      posts,
     };
   } catch (error) {
     console.error('Error fetching user:', error);
