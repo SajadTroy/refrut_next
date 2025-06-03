@@ -86,6 +86,12 @@ export async function updateProfile(
         // Connect to the database
         await connectDB();
 
+        let handleUSer = await User.findOne({ handle: handle });
+
+        if (handleUSer) {
+            return { errors: { handle: "Handle is already used." } };
+        }
+
         // Parse dateOfBirth to Date object if provided
         let parsedDateOfBirth = null;
         if (dateOfBirth) {
