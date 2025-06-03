@@ -11,7 +11,7 @@ export default function LogoutButton() {
     return (
         <div className="profile_button">
             <button className="follow_button">Edit Profile</button>
-            &nbsp;
+            &nbsp;&nbsp;
             <form action={action}>
                 <button
                     type="submit"
