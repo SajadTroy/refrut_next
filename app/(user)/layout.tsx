@@ -49,8 +49,6 @@ export default async function RootLayout({
     pathname = '/';
   }
 
-  console.log('Final pathname:', pathname);
-
   return (
     <html lang="en">
       <head>
