@@ -78,7 +78,7 @@ export async function getUser(handle: string): Promise<UserResponse> {
       return { handle: "Required user handle." };
     }
 
-    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -resetPasswordToken -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks').lean().exec() as User | null;
+    const publicUser = await User.findOne({ handle }).select('-password -verificationToken -resetPasswordToken -verificationTokenExpiry -__v -resetPasswordTokenExpiry -resetPasswordToken -lastLogin -socialLinks -recentLogins').lean().exec() as User | null;
 
     if (!publicUser) {
       return { handle: "No user found" };
