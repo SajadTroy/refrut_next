@@ -90,26 +90,26 @@
 }
 
 .profile-container .top_profile .profile_button .follow_button {
-    padding: 10px 20px;
-    width: 100%;
-    background-color: #000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 10px 20px !important;
+    width: 100% !important;
+    background-color: #000 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .profile-container .top_profile .profile_button .follow_button:hover {
-    background-color: #333;
+    background-color: #333 !important;
 }
 
 .profile-container .top_profile .profile_button .follow_button.following {
-    background-color: #efefef;
-    color: #000;
-    border: #000 solid 1px;
+    background-color: #efefef !important;
+    color: #000 !important;
+    border: #000 solid 1px !important;
 }
 
 .profile-container .tabs {

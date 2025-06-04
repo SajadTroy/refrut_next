@@ -30,6 +30,7 @@
     "embla-carousel": "^8.3.0",
     "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
+    "framer-motion": "^12.16.0",
     "fs": "^0.0.1-security",
     "generate-password": "^1.7.1",
     "googleapis": "^148.0.0",

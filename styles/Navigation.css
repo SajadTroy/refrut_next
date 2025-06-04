@@ -72,9 +72,9 @@
     background-color: #f0f0f0;
 }
 
-/* .container .desktop_nav_container .left_section .menu_items .nav_item.active {
+.container .desktop_nav_container .left_section .menu_items .nav_item.active {
     background-color: #f0f0f0; 
-} */
+}
 
 .container .desktop_nav_container .left_section .menu_items .nav_item.red span, 
 .container .desktop_nav_container .left_section .menu_items .nav_item.red svg {
@@ -198,9 +198,9 @@
     background-color: #f0f0f0;
 }
 
-/* .container .mobile_nav_container .nav_container .nav_item.active {
+.container .mobile_nav_container .nav_container .nav_item.active {
     background-color: #f0f0f0;
-} */
+}
 
 .container .mobile_nav_container .nav_container .nav_item a {
     width: 100%;
