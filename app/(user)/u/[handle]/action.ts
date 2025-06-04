@@ -59,7 +59,7 @@ export async function getUser(handle: string): Promise<UserResponse> {
 
     // Fetch a “lean” JavaScript object (still has ObjectId & Date inside)
     const rawUser = await User
-      .findOne({ handle })
+      .findOne({ handle: { $regex: `^${handle}$`, $options: 'i' } })
       .select(
         '-password -verificationToken -updatedAt -createdAt ' +
         '-resetPasswordToken -verificationTokenExpiry -__v ' +
