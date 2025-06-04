@@ -152,7 +152,7 @@ export async function isFollowing(handle: string): Promise<boolean> {
       return false;
     }
 
-    const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
+    const publicUser = await User.findOne({ handle: { $regex: `^${handle}$`, $options: 'i' } }).select('_id').exec() as User | null;
     if (!publicUser) {
       return false;
     }
@@ -182,7 +182,7 @@ export async function followUser(handle: string): Promise<{ success?: boolean; e
       redirect('/auth/login');
     }
 
-    const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
+    const publicUser = await User.findOne({ handle: { $regex: `^${handle}$`, $options: 'i' } }).select('_id').exec() as User | null;
     if (!publicUser) {
       return { error: "User not found." };
     }
@@ -228,7 +228,7 @@ export async function unfollowUser(handle: string): Promise<{ success?: boolean;
       redirect('/auth/login');
     }
 
-    const publicUser = await User.findOne({ handle }).select('_id').exec() as User | null;
+    const publicUser = await User.findOne({ handle: { $regex: `^${handle}$`, $options: 'i' } }).select('_id').exec() as User | null;
     if (!publicUser) {
       return { error: "User not found." };
     }
