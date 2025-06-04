@@ -66,6 +66,8 @@ export default async function ProfileClient({ handle }: { handle: string }) {
 
   const result: UserResponse = await getUser(handle);
 
+  const isFollowingUser = await isFollowing(handle);
+
   const imageSrc = result.user?.profilePicture?.startsWith('http')
     ? result.user?.profilePicture
     : '/img/avatars/default.png';
@@ -76,7 +78,7 @@ export default async function ProfileClient({ handle }: { handle: string }) {
         <div className="profile_header">
           <div className="profile_image">
             {result.user ? (
-              <Image
+              <img
                 src={imageSrc}
                 alt={`Avatar of ${result.user?.name || 'User'}`}
                 width={100}
@@ -134,7 +136,7 @@ export default async function ProfileClient({ handle }: { handle: string }) {
             <span className="stat_label">Following</span>
           </div>
         </div>
-        <ProfileButton handle={handle} user={result.user ?? fallbackUser} />
+        <ProfileButton handle={handle} user={result.user ?? fallbackUser} initialIsFollowing={isFollowingUser} />
       </div>
       <div className="tabs">
         {result.user ? (

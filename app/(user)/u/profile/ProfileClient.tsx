@@ -35,7 +35,7 @@ export default async function UserProfileClient({ userId }: { userId: string }) 
         <div className="profile_header">
           <div className="profile_image">
             {result.user ? (
-              <Image
+              <img
                 src={imageSrc}
                 alt={`Avatar of ${result.user?.name}`}
                 width={100}

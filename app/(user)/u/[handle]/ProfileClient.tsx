@@ -78,7 +78,7 @@ export default async function ProfileClient({ handle }: { handle: string }) {
         <div className="profile_header">
           <div className="profile_image">
             {result.user ? (
-              <Image
+              <img
                 src={imageSrc}
                 alt={`Avatar of ${result.user?.name || 'User'}`}
                 width={100}
