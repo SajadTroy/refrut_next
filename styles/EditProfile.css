@@ -21,7 +21,6 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-top: 20px;
 }
 
 .login_container form .form_row {
