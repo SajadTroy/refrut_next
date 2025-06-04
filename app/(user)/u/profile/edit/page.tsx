@@ -1,6 +1,7 @@
 import '@/styles/EditProfile.css';
 import EditProfileClient from '@/app/(user)/u/profile/edit/EditProfile';
 import { verifySession } from '@/lib/session';
+import { getUser } from '../../[handle]/action';
 
 export async function generateMetadata() {
 
@@ -22,5 +23,7 @@ export async function generateMetadata() {
 
 export default async function UserProfile() {
   const { userId } = await verifySession();
-  return (<EditProfileClient userId={userId} />);
+  const { user } = await getUser(userId);
+
+  return (<EditProfileClient userId={userId} initialUser={user || null} />);
 }
