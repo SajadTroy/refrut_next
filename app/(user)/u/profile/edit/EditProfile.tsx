@@ -77,12 +77,12 @@ export default function EditProfile({ userId, initialUser }: EditProfileProps) {
 
   // Animation variants
   const formVariants = {
-    initial: { opacity: 1, y: 0 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    initial: { opacity: 0, y: 0 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.1 } },
   };
 
   const inputVariants = {
-    initial: { opacity: 1, x: 0 },
+    initial: { opacity: 0, x: 0 },
     animate: { opacity: 1, x: 0, transition: { duration: 0.3, delay: 0.1 } },
     hover: { scale: 1 },
   };
