@@ -7,6 +7,7 @@ export type SignupFormState = {
   errors?: {
     fullName?: string;
     email?: string;
+    password?: string;
     dateOfBirth?: string;
     general?: string;
   };
@@ -20,6 +21,7 @@ export async function signup(
   const result = await signupUser(
     formData.get('fullName') as string,
     formData.get('email') as string,
+    formData.get('password') as string,
     formData.get('dateOfBirth') as string
   );
 

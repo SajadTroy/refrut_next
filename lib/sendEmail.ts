@@ -1,4 +1,3 @@
-import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -25,7 +24,7 @@ export interface EmailUser {
 
 export default async function sendEmail(
     user: EmailUser,
-    type: 'signup' | 'password-reset' | 'password-reset-confirmation' | 'new-login'
+    type: 'signup' | 'password-reset' | 'password-reset-confirmation' | 'new-login' | 'verification-success'
 ): Promise<void> {
     let subject: string;
     let message: string;
@@ -67,6 +66,9 @@ export default async function sendEmail(
     } else if (type === 'password-reset-confirmation') {
         subject = 'Your Password Has Been Reset';
         message = `Hello <strong>${user.name}</strong>,<br> The password for your account with the handle <strong>@${user.handle}</strong> has been reset. If this was not you, please contact our support team immediately.`;
+    } else if(type == 'verification-success') {
+        subject = 'Account Verified Successfully';
+        message = `Hello <strong>${user.name}</strong>,<br>Your account has been verified successfully. You can now login using your email and the password you created during signup.`;
     } else {
         // new-login
         if (!user.ip || !user.loginTime) {
@@ -132,16 +134,6 @@ export default async function sendEmail(
   `;
 
     try {
-        // const transporter = nodemailer.createTransport({
-        //     host: process.env.EMAIL_HOST,
-        //     port: Number(process.env.EMAIL_PORT),
-        //     secure: true,
-        //     auth: {
-        //         user: process.env.EMAIL_USER,
-        //         pass: process.env.EMAIL_PASS,
-        //     },
-        // });
-
         await resend.emails.send({
             from: `"Refrut" <noreply@lufta.in>`,
             to: user.email,

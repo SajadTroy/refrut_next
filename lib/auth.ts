@@ -29,6 +29,7 @@ export type LoginResState = {
 export type SignupResState = {
     fullName?: string;
     email?: string;
+    password?: string;
     dateOfBirth?: string;
     general?: string;
     success?: boolean;
@@ -182,19 +183,13 @@ export async function loginUser(
 export async function signupUser(
     fullName: string,
     email: string,
+    password: string,
     dateOfBirth: string
 ): Promise<SignupResState> {
     try {
         await connectDB();
 
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-        const password = generate.generate({
-            length: 10,
-            numbers: true,
-            symbols: true,
-            uppercase: true,
-            lowercase: true,
-        });
 
         const verificationToken = generate.generate({
             length: 32,
@@ -214,6 +209,20 @@ export async function signupUser(
         }
         if (!dateOfBirth) {
             return { dateOfBirth: 'Date of birth is required' };
+        }
+
+        // Password validation
+        if (!password) {
+            return { password: 'Password is required' };
+        }
+        if (password.length < 7) {
+            return { password: 'Password must be longer than 6 characters' };
+        }
+        if (!/[A-Za-z]/.test(password)) {
+            return { password: 'Password must contain at least one letter' };
+        }
+        if (!/\d/.test(password)) {
+            return { password: 'Password must contain at least one number' };
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -69,6 +69,23 @@ export default function SignupClient() {
           )}
         </div>
         <div className="form_group">
+          <label htmlFor="password">
+            Password<span className="red">*</span>
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password must contain at least one letter, one number, and be longer than 6 characters."
+            required
+          />
+        </div>
+        <div className="form_text error">
+          {state?.errors?.password && (
+            <p style={{ color: 'red', fontSize: '14px' }}>{state.errors.password}</p>
+          )}
+        </div>
+        <div className="form_group">
           <label htmlFor="dateOfBirth">
             Date of Birth<span className="red">*</span>
           </label>
