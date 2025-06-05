@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }) {
       applicationName: 'Refrut',
       referrer: 'origin-when-cross-origin',
       openGraph: {
-        title: `@${result.user?.handle} - Refrut`,
+        title: `"${result.user?.name}"(@${result.user?.handle})`,
         description: `View @${result.user?.handle}'s profile and their shared thoughts on Refrut.`,
         url: `https://refrut.com/u/${result.user?.handle}`,
         images: [`${result.user?.profilePicture}`], // optionally dynamic
