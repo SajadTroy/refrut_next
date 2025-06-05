@@ -76,9 +76,12 @@ export default function SignupClient() {
             type="password"
             id="password"
             name="password"
-            placeholder="Password must contain at least one letter, one number, and be longer than 6 characters."
+            placeholder="Password"
             required
           />
+        </div>
+        <div className="form_text">
+            <p style={{ color: 'gray', fontSize: '14px', marginTop: '3px' }}>Password must contain at least one letter, one number, and be longer than 6 characters.</p>
         </div>
         <div className="form_text error">
           {state?.errors?.password && (
