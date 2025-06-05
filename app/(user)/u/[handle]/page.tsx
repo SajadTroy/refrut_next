@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Params }) {
   } else {
     notFound();
   }
-}
+} 
 
 export default async function UserProfile({ params }: { params: Params }) {
   const { handle } = await params;
