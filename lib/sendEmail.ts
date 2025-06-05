@@ -135,7 +135,7 @@ export default async function sendEmail(
 
     try {
         await resend.emails.send({
-            from: `"Refrut" <noreply@lufta.in>`,
+            from: `"Refrut" <refrut@lufta.in>`,
             to: user.email,
             subject,
             html: htmlTemplate,
