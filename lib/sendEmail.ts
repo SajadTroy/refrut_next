@@ -1,4 +1,7 @@
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export interface EmailUser {
     name: string;
@@ -129,18 +132,18 @@ export default async function sendEmail(
   `;
 
     try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: Number(process.env.EMAIL_PORT),
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+        // const transporter = nodemailer.createTransport({
+        //     host: process.env.EMAIL_HOST,
+        //     port: Number(process.env.EMAIL_PORT),
+        //     secure: true,
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS,
+        //     },
+        // });
 
-        await transporter.sendMail({
-            from: `"Refrut" <${process.env.EMAIL_USER}>`,
+        await resend.emails.send({
+            from: `"Refrut" <noreply@lufta.in>`,
             to: user.email,
             subject,
             html: htmlTemplate,
