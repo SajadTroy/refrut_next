@@ -1,0 +1,86 @@
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.actionButton:active {
+  transform: scale(0.98);
+}
+
+.actionButton svg {
+  width: 20px;
+  height: 20px;
+  transition: color 0.2s ease;
+}
+
+/* Liked state */
+.actionButton.liked {
+  color: #ef4444;
+}
+
+.actionButton.liked:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+/* Commented state */
+.actionButton.commented {
+  color: #3b82f6;
+}
+
+.actionButton.commented:hover {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+/* Reported state */
+.actionButton.reported {
+  color: #f59e0b;
+}
+
+.actionButton.reported:hover {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .actionButton {
+    padding: 6px 8px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .actionButton svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actionButton {
+    padding: 4px 6px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .actionButton svg {
+    width: 16px;
+    height: 16px;
+  }
+}
