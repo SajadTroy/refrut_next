@@ -34,7 +34,7 @@ export default function SignupClient() {
             <img src="/img/res/logo.png" alt="Logo" />
           </a>
         </div>
-        <div className="form_group">
+        <div className="form_group" style={{ marginTop: '20px' }}>
           <label htmlFor="fullName">
             Full Name<span className="red">*</span>
           </label>
@@ -81,7 +81,7 @@ export default function SignupClient() {
           />
         </div>
         <div className="form_text">
-            <p style={{ color: 'gray', fontSize: '14px', marginTop: '3px' }}>Password must contain at least one letter, one number, and be longer than 6 characters.</p>
+          <p style={{ color: 'gray', fontSize: '14px', marginTop: '3px' }}>Password must contain at least one letter, one number, and be longer than 6 characters.</p>
         </div>
         <div className="form_text error">
           {state?.errors?.password && (
