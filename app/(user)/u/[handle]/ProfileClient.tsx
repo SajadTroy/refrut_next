@@ -6,6 +6,7 @@ import { getUser, isFollowing } from '@/app/(user)/u/[handle]/action';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import ProfileButton from '@/components/ProfileButton';
+import { redirect } from 'next/navigation';
 
 interface User {
   _id: string;
@@ -65,6 +66,10 @@ const fallbackUser: User = {
 export default async function ProfileClient({ handle }: { handle: string }) {
 
   const result: UserResponse = await getUser(handle);
+
+  if (result.redirect) {
+    redirect(result.redirect);
+  }
 
   const isFollowingUser = await isFollowing(handle);
 
