@@ -5,11 +5,6 @@ import Navigation from '@/components/Navigation';
 import { headers } from 'next/headers';
 import { checkAuthStatus } from '@/lib/session';
 
-export const metadata = {
-  title: 'Piecom',
-  description: 'Your social platform',
-};
-
 export default async function RootLayout({
   children,
 }: {
