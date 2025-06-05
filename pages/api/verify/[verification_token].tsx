@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         await sendEmail({
             name: user.name,
-            email: user.emai,
+            email: user.email,
             dateOfBirth: user.dateOfBirth,
             handle: user.handle,
             _id: user._id.toString(),
