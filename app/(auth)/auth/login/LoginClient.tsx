@@ -33,7 +33,7 @@ export default function LoginClient() {
                         <img src="/img/res/logo.png" alt="Logo" />
                     </a>
                 </div>
-                <div className="form_group">
+                <div className="form_group" style={{ marginTop: '20px' }}>
                     <label htmlFor="email">Email<span className='red'>*</span></label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required />
                 </div>

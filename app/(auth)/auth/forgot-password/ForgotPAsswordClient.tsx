@@ -18,7 +18,7 @@ export default function ForgotPasswordClient() {
                         <img src="/img/res/logo.png" alt="Logo" />
                     </a>
                 </div>
-                <div className="form_group">
+                <div className="form_group" style={{ marginTop: '20px' }}>
                     <label htmlFor="email">
                         Email<span className="red">*</span>
                     </label>
